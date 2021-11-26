@@ -167,6 +167,22 @@ public:
 
 };
 
+DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger) {
+	return new DGCVerifier(keysStorage, rulesStorage, logger);
+}
+
+void DGCVerifier_release(DGCVerifier* dgcVerifier) {
+	delete dgcVerifier;
+}
+
+bool DGCVerifier_verifyMinSdkVersion(DGCVerifier* dgcVerifier) {
+	return dgcVerifier->verifyMinSdkVersion();
+}
+
+CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string& dgcQr) {
+	return dgcVerifier->verify(dgcQr);
+}
+
 DGCVerifier::DGCVerifier(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger) :
 		m_keysStorage(keysStorage), m_rulesStorage(rulesStorage), m_logger(logger) {
 	if (m_logger == NULL) {

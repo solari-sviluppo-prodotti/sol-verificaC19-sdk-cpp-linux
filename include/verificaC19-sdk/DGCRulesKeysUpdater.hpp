@@ -102,6 +102,52 @@ private:
 
 }; // class DGCRulesKeysUpdater
 
+extern "C" {
+
+/**
+ * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ */
+DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_create(int intervalSeconds,
+		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
+		IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger);
+typedef DGCRulesKeysUpdater* (*pfDGCRulesKeysUpdaterRulesAndKeys_create)(int, IRulesProvider*, IRulesStorage*,
+		IKeysProvider*, IKeysStorage*, ILogger*);
+
+/**
+ * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ */
+DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_create(int intervalSeconds,
+		IRulesKeysProvider* rulesKeysProvider, IRulesStorage* rulesStorage,
+		IKeysStorage* keysStorage, ILogger* logger);
+typedef DGCRulesKeysUpdater* (*pfDGCRulesKeysUpdaterRulesKeys_create)(int, IRulesKeysProvider*,
+		IRulesStorage*, IKeysStorage*, ILogger*);
+
+/**
+ * DGCRulesKeysUpdater destructor interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_release(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
+typedef void (*pfDGCRulesKeysUpdater_release)(DGCRulesKeysUpdater*);
+
+/**
+ * DGCRulesKeysUpdater forceUpdateRules interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_forceUpdateRules(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_forceUpdateRules)(DGCRulesKeysUpdater*);
+
+/**
+ * DGCRulesKeysUpdater forceUpdateKeys interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_forceUpdateKeys(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_forceUpdateKeys)(DGCRulesKeysUpdater*);
+
+/**
+ * DGCRulesKeysUpdater forceUpdateAll interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_forceUpdateAll(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_forceUpdateAll)(DGCRulesKeysUpdater*);
+
+}
+
 } // namespace verificaC19Sdk
 
 #endif // #ifndef DGC_RULES_KEYS_UPDATER_HPP

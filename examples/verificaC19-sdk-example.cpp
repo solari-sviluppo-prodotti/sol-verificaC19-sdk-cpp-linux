@@ -1,6 +1,7 @@
 // Copyright (c) 2021 Solari di Udine S.p.A
 // Licensed under the Apache License, Version 2.0
 
+#include <dlfcn.h>
 #include <unistd.h>
 #include <KeysStorageMemory.hpp>
 #include <KeysProviderTest.hpp>
@@ -108,27 +109,46 @@ int main (int argc, char** argv) {
 		}
 	}
 
-	logger.info("---------- Test certificate, blacklisted Mickey Mouse with Updater ----------");
+	logger.info("---------- Test with dynamic library loading ----------");
 	{
 		KeysStorageMemory keysStorage;
 		KeysProviderItaly keysProvider(NULL);
 		RulesStorageMemory rulesStorage;
 		RulesProviderItaly rulesProvider(NULL);
-		DGCRulesKeysUpdater rulesKeysUpdater(86400, &rulesProvider, &rulesStorage, &keysProvider, &keysStorage, NULL);
-		if (rulesStorage.lastUpdate() > 86400 || keysStorage.lastUpdate() > 86400) {
-			logger.info("Rules or Keys are updating, waiting");
-			while (rulesStorage.lastUpdate() > 86400 || keysStorage.lastUpdate() > 86400) {
-				usleep(10000);
-			}
-		}
 
-		DGCVerifier verifier(&keysStorage, &rulesStorage, NULL);
-		if (!verifier.verifyMinSdkVersion()) {
-			logger.error("Minimum SDK version does not match");
+		void* verificaC19Handle = dlopen("libverificaC19-sdk.so", RTLD_NOW);
+		if (verificaC19Handle == NULL) {
+			logger.info("Error loading SDK library");
 		} else {
-			CertificateSimple certificate = verifier.verify("HC1:6BFOXN%TSMAHN-H3YS1IK47ES6IXJR4E47X5*T917VF+UOGIS1RYZV:X9RLMSV9 NI4EFSYS:%OD3PYE9*FJ9QMQC8$.AIGCY0K5$0V-AVB85PSHDCR.9K%47IG$+9OPPYE97NVA.D9B92FF9B9LW4G%89-85QNC%05$0VD9%.OMRE/IE%TE6UGYGGCY0$2P0GB*$K8KG+9RR$F+ F%J00N89M40%KLR2A KZ*U0I1-I0*OC6H0/VMNPM/UESJ0A5L5M0G+SI*VSDKPZ0CN62XEAW1 WUQRELS4J1TZWV63HUTN /K9:KFKF+SF3*86AL3*IC%OYZQ5I9 LG/HLIJLKNF8JF172QDRB2C3OUW3IQ6RYMKHDV4*F -IMBCJIO%OA8EV/G3L-NG:2EQB*:C8FFIVT:1QI 8NIMW:BW$BY$M/+8%RFV8C3LVZ:2T+8IQ9LF8I66WWD");
-			logCertificate(certificate, logger);
+			pfDGCVerifier_create fDGCVerifier_create = (pfDGCVerifier_create)dlsym(verificaC19Handle, "DGCVerifier_create");
+			pfDGCVerifier_release fDGCVerifier_release = (pfDGCVerifier_release)dlsym(verificaC19Handle, "DGCVerifier_release");
+			pfDGCVerifier_verifyMinSdkVersion fDGCVerifier_verifyMinSdkVersion = (pfDGCVerifier_verifyMinSdkVersion)dlsym(verificaC19Handle, "DGCVerifier_verifyMinSdkVersion");
+			pfDGCVerifier_verify fDGCVerifier_verify = (pfDGCVerifier_verify)dlsym(verificaC19Handle, "DGCVerifier_verify");
+
+			pfDGCRulesKeysUpdaterRulesAndKeys_create fDGCRulesKeysUpdater_create = (pfDGCRulesKeysUpdaterRulesAndKeys_create)dlsym(verificaC19Handle, "DGCRulesKeysUpdaterRulesAndKeys_create");
+			pfDGCRulesKeysUpdater_release fDGCRulesKeysUpdater_release = (pfDGCRulesKeysUpdater_release)dlsym(verificaC19Handle, "DGCRulesKeysUpdater_release");
+
+			DGCRulesKeysUpdater* rulesKeysUpdater = fDGCRulesKeysUpdater_create(86400, &rulesProvider, &rulesStorage, &keysProvider, &keysStorage, NULL);
+			if (rulesStorage.lastUpdate() > 86400 || keysStorage.lastUpdate() > 86400) {
+				logger.info("Rules or Keys are updating, waiting");
+				while (rulesStorage.lastUpdate() > 86400 || keysStorage.lastUpdate() > 86400) {
+					usleep(10000);
+				}
+			}
+
+			DGCVerifier* verifier = fDGCVerifier_create(&keysStorage, &rulesStorage, &logger);
+
+			if (!fDGCVerifier_verifyMinSdkVersion(verifier)) {
+				logger.error("Minimum SDK version does not match");
+			} else {
+				CertificateSimple certificate = fDGCVerifier_verify(verifier, "HC1:6BFOXN%TS3DH0YOJ58S S-W5HDC *M0II*%6C9B5G2+$NEJPP-IA%NGRIRJPC%OQHIZC4.OI:OIG/Q80P2W4VZ0K1H$$05QN*Y0K.G +AG5T01HJCAMKN$71Z95Z11VTO.L8YBJ-B93:GQBGZHHBIH5C99.B4DBF:F0.8ELG:.CC-8LQECKEBLDSH8XAG.6A-JE:GQA KX-SZDG0$JO+SW*PR+PHXF8IQV$K%OKOUFBBQR-S3D1PI0/7Q.H0807-L9CL62/2JJ11K2919GI1X1DDM8RMA0/41:6Z.2:NC-%CN$KJLCLF9+FJE 4Y3LL/II 05B9.Z8M+8:Y001HCY0R%0IGF5JNCPIGSUNG6YS75XJ/J0/V7.UI$RU8ZB.W2FI28LHUZUYZQNI9Y FQQGQ$FP DDVBDVBBX33UQLTU8L20H6/*12SADB9:G9J+9Y 5LJA8JF8JFHJP7NVDEBK3JQ7TI 05QNT+CCZ1ZA2I+T*R9XZ6/:COTJCURIF8CZPCJ4EF5LU5I-Q:.N$P9DX5NAM*PJYD3L2V0GBG.JL4LESU72S1CM%5OC%VSTJ8NC1TGO:QS02V505GJUTH");
+				fDGCVerifier_release(verifier);
+				logCertificate(certificate, logger);
+			}
+
+			fDGCRulesKeysUpdater_release(rulesKeysUpdater);
+
+			dlclose(verificaC19Handle);
 		}
 	}
-
 }

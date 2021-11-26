@@ -50,5 +50,5 @@ install(TARGETS verificaC19-sdk LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATIO
 INSTALL(DIRECTORY ${DIR_INCLUDE}/verificaC19-sdk DESTINATION include)
 
 add_executable(verificaC19-example ${SRC_EXAMPLES} ${SRC_EXAMPLES_KEYS_PROVIDER} ${SRC_EXAMPLES_KEYS_STORAGE} ${SRC_EXAMPLE_RULES_PROVIDER} ${SRC_EXAMPLE_RULES_STORAGE} ${SRC_EXAMPLES_LOGGERS})
-target_link_libraries (verificaC19-example verificaC19-sdk -lcrypto -lz -lcn-cbor -lcurl -ljsoncpp -lpthread)
+target_link_libraries (verificaC19-example verificaC19-sdk -lcrypto -lz -lcn-cbor -lcurl -ljsoncpp -lpthread -ldl)
 install(TARGETS verificaC19-example ARCHIVE DESTINATION bin RUNTIME DESTINATION bin)

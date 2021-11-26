@@ -55,6 +55,34 @@ private:
 
 }; // class DGCVerifier
 
+extern "C" {
+
+/**
+ * DGCVerifier constructor interface for C and for dynamic loading
+ */
+DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger);
+typedef DGCVerifier* (*pfDGCVerifier_create)(IKeysStorage*, IRulesStorage*, ILogger*);
+
+/**
+ * DGCVerifier destructor interface for C and for dynamic loading
+ */
+void DGCVerifier_release(DGCVerifier* dgcVerifier);
+typedef void (*pfDGCVerifier_release)(DGCVerifier*);
+
+/**
+ * DGCVerifier verifyMinSdkVersion interface for C and for dynamic loading
+ */
+bool DGCVerifier_verifyMinSdkVersion(DGCVerifier* dgcVerifier);
+typedef bool (*pfDGCVerifier_verifyMinSdkVersion)(DGCVerifier*);
+
+/**
+ * DGCVerifier verify interface for C and for dynamic loading
+ */
+CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string& dgcQr);
+typedef CertificateSimple (*pfDGCVerifier_verify)(DGCVerifier*, const std::string);
+
+}
+
 } // namespace verificaC19Sdk
 
 #endif // #ifndef DGC_VERIFIER_HPP

@@ -17,6 +17,38 @@ public:
 
 };
 
+DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_create(int intervalSeconds,
+		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
+		IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger) {
+	return new DGCRulesKeysUpdater(intervalSeconds,
+			rulesProvider, rulesStorage,
+			keysProvider, keysStorage, logger);
+}
+
+DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_create(int intervalSeconds,
+		IRulesKeysProvider* rulesKeysProvider, IRulesStorage* rulesStorage,
+		IKeysStorage* keysStorage, ILogger* logger) {
+	return new DGCRulesKeysUpdater(intervalSeconds,
+			rulesKeysProvider, rulesStorage,
+			keysStorage, logger);
+}
+
+void DGCRulesKeysUpdater_release(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	delete dgcRulesKeysUpdater;
+}
+
+void DGCRulesKeysUpdater_forceUpdateRules(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	dgcRulesKeysUpdater->forceUpdateRules();
+}
+
+void DGCRulesKeysUpdater_forceUpdateKeys(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	dgcRulesKeysUpdater->forceUpdateKeys();
+}
+
+void DGCRulesKeysUpdater_forceUpdateAll(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	dgcRulesKeysUpdater->forceUpdateAll();
+}
+
 DGCRulesKeysUpdater::DGCRulesKeysUpdater(int intervalSeconds,
 		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
 		IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger) :
