@@ -79,6 +79,8 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b9ba363015d882b6e2c4d5f599612c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a0b9ba363015d882b6e2c4d5f599612c3">DGCVerifier</a> (<a class="el" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a> *keysStorage, <a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a> *rulesStorage, <a class="el" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> *logger)</td></tr>
 <tr class="separator:a0b9ba363015d882b6e2c4d5f599612c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13bf7495ae61d9e7cab3ecae574975cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a13bf7495ae61d9e7cab3ecae574975cc">setScanMode</a> (const std::string &amp;scanMode)</td></tr>
+<tr class="separator:a13bf7495ae61d9e7cab3ecae574975cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51cb722a15d4f92e9658fda9a00c87e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a51cb722a15d4f92e9658fda9a00c87e7">verifyMinSdkVersion</a> () const</td></tr>
 <tr class="separator:a51cb722a15d4f92e9658fda9a00c87e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a807a55900ed4a05d5c0cc3f119d79617"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a807a55900ed4a05d5c0cc3f119d79617">verify</a> (const std::string &amp;dgcQr) const</td></tr>
@@ -130,6 +132,31 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a13bf7495ae61d9e7cab3ecae574975cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13bf7495ae61d9e7cab3ecae574975cc">&#9670;&nbsp;</a></span>setScanMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void verificaC19Sdk::DGCVerifier::setScanMode </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>scanMode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set scan mode, default scan mode at object construction is SCAN_MODE_3G</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scanMode</td><td>Scan mode, SCAN_MODE_2G accept only vaccination and recovery certificatesl, SCAN_MODE_3G accept also test certificates </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a807a55900ed4a05d5c0cc3f119d79617"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a807a55900ed4a05d5c0cc3f119d79617">&#9670;&nbsp;</a></span>verify()</h2>
 

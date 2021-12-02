@@ -109,6 +109,25 @@ int main (int argc, char** argv) {
 		}
 	}
 
+	logger.info("---------- Test certificate, IT: MOLECULAR test 2G mode ------");
+	{
+		KeysStorageMemory keysStorage;
+		KeysProviderTest keysProvider(&logger);
+		RulesStorageMemory rulesStorage;
+		RulesProviderTest rulesProvider(&logger);
+		keysProvider.refreshKeys(&keysStorage);
+		rulesProvider.refreshRules(&rulesStorage);
+
+		DGCVerifier verifier(&keysStorage, &rulesStorage, &logger);
+		verifier.setScanMode(SCAN_MODE_2G);
+		if (!verifier.verifyMinSdkVersion()) {
+			logger.error("Minimum SDK version does not match");
+		} else {
+			CertificateSimple certificate = verifier.verify("HC1:6BFOXN%TS3DH0YOJ58S S-W5HDC *M0II*%6C9B5G2+$NEJPP-IA%NGRIRJPC%OQHIZC4.OI:OIG/Q80P2W4VZ0K1H$$05QN*Y0K.G +AG5T01HJCAMKN$71Z95Z11VTO.L8YBJ-B93:GQBGZHHBIH5C99.B4DBF:F0.8ELG:.CC-8LQECKEBLDSH8XAG.6A-JE:GQA KX-SZDG0$JO+SW*PR+PHXF8IQV$K%OKOUFBBQR-S3D1PI0/7Q.H0807-L9CL62/2JJ11K2919GI1X1DDM8RMA0/41:6Z.2:NC-%CN$KJLCLF9+FJE 4Y3LL/II 05B9.Z8M+8:Y001HCY0R%0IGF5JNCPIGSUNG6YS75XJ/J0/V7.UI$RU8ZB.W2FI28LHUZUYZQNI9Y FQQGQ$FP DDVBDVBBX33UQLTU8L20H6/*12SADB9:G9J+9Y 5LJA8JF8JFHJP7NVDEBK3JQ7TI 05QNT+CCZ1ZA2I+T*R9XZ6/:COTJCURIF8CZPCJ4EF5LU5I-Q:.N$P9DX5NAM*PJYD3L2V0GBG.JL4LESU72S1CM%5OC%VSTJ8NC1TGO:QS02V505GJUTH");
+			logCertificate(certificate, logger);
+		}
+	}
+
 	logger.info("---------- Test with dynamic library loading ----------");
 	{
 		KeysStorageMemory keysStorage;
@@ -123,6 +142,7 @@ int main (int argc, char** argv) {
 			pfDGCVerifier_create fDGCVerifier_create = (pfDGCVerifier_create)dlsym(verificaC19Handle, "DGCVerifier_create");
 			pfDGCVerifier_release fDGCVerifier_release = (pfDGCVerifier_release)dlsym(verificaC19Handle, "DGCVerifier_release");
 			pfDGCVerifier_verifyMinSdkVersion fDGCVerifier_verifyMinSdkVersion = (pfDGCVerifier_verifyMinSdkVersion)dlsym(verificaC19Handle, "DGCVerifier_verifyMinSdkVersion");
+			pfDGCVerifier_setScanMode fDGCVerifier_setScanMode = (pfDGCVerifier_setScanMode)dlsym(verificaC19Handle, "DGCVerifier_setScanMode");
 			pfDGCVerifier_verify fDGCVerifier_verify = (pfDGCVerifier_verify)dlsym(verificaC19Handle, "DGCVerifier_verify");
 
 			pfDGCRulesKeysUpdaterRulesAndKeys_create fDGCRulesKeysUpdater_create = (pfDGCRulesKeysUpdaterRulesAndKeys_create)dlsym(verificaC19Handle, "DGCRulesKeysUpdaterRulesAndKeys_create");
@@ -141,6 +161,7 @@ int main (int argc, char** argv) {
 			if (!fDGCVerifier_verifyMinSdkVersion(verifier)) {
 				logger.error("Minimum SDK version does not match");
 			} else {
+				DGCVerifier_setScanMode(verifier, SCAN_MODE_2G);
 				CertificateSimple certificate = fDGCVerifier_verify(verifier, "HC1:6BFOXN%TS3DH0YOJ58S S-W5HDC *M0II*%6C9B5G2+$NEJPP-IA%NGRIRJPC%OQHIZC4.OI:OIG/Q80P2W4VZ0K1H$$05QN*Y0K.G +AG5T01HJCAMKN$71Z95Z11VTO.L8YBJ-B93:GQBGZHHBIH5C99.B4DBF:F0.8ELG:.CC-8LQECKEBLDSH8XAG.6A-JE:GQA KX-SZDG0$JO+SW*PR+PHXF8IQV$K%OKOUFBBQR-S3D1PI0/7Q.H0807-L9CL62/2JJ11K2919GI1X1DDM8RMA0/41:6Z.2:NC-%CN$KJLCLF9+FJE 4Y3LL/II 05B9.Z8M+8:Y001HCY0R%0IGF5JNCPIGSUNG6YS75XJ/J0/V7.UI$RU8ZB.W2FI28LHUZUYZQNI9Y FQQGQ$FP DDVBDVBBX33UQLTU8L20H6/*12SADB9:G9J+9Y 5LJA8JF8JFHJP7NVDEBK3JQ7TI 05QNT+CCZ1ZA2I+T*R9XZ6/:COTJCURIF8CZPCJ4EF5LU5I-Q:.N$P9DX5NAM*PJYD3L2V0GBG.JL4LESU72S1CM%5OC%VSTJ8NC1TGO:QS02V505GJUTH");
 				fDGCVerifier_release(verifier);
 				logCertificate(certificate, logger);

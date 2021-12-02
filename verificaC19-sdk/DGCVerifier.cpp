@@ -179,12 +179,16 @@ bool DGCVerifier_verifyMinSdkVersion(DGCVerifier* dgcVerifier) {
 	return dgcVerifier->verifyMinSdkVersion();
 }
 
+void DGCVerifier_setScanMode(DGCVerifier* dgcVerifier, const std::string& scanMode) {
+	return dgcVerifier->setScanMode(scanMode);
+}
+
 CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string& dgcQr) {
 	return dgcVerifier->verify(dgcQr);
 }
 
 DGCVerifier::DGCVerifier(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger) :
-		m_keysStorage(keysStorage), m_rulesStorage(rulesStorage), m_logger(logger) {
+		m_scanMode(SCAN_MODE_3G), m_keysStorage(keysStorage), m_rulesStorage(rulesStorage), m_logger(logger) {
 	if (m_logger == NULL) {
 		m_logger = new LoggerNull();
 	}
@@ -208,6 +212,10 @@ bool DGCVerifier::verifyMinSdkVersion() const {
 		}
 	}
 	return true;
+}
+
+void DGCVerifier::setScanMode(const std::string& scanMode) {
+	m_scanMode = scanMode;
 }
 
 CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
@@ -781,78 +789,84 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 				}
 
 				if (certificate.isTest()) {
-					int startHour = -1;
-					int endHour = -1;
+					if (m_scanMode == SCAN_MODE_2G) {
+						certificateSimple.certificateStatus = NOT_VALID;
+						m_logger->debug("Digital certificate of %s not valid for selected scan mode",
+								certificate.test.dateTimeOfCollection.c_str());
+					} else {
+						int startHour = -1;
+						int endHour = -1;
 
-					if (certificate.test.typeOfTest == MOLECULAR) {
-						std::string startHours = m_rulesStorage->getRule(RULE_NAME_molecular_test_start_hours, RULE_TYPE_GENERIC);
-						std::string endHours = m_rulesStorage->getRule(RULE_NAME_molecular_test_end_hours, RULE_TYPE_GENERIC);
-						if (startHours.empty() || endHours.empty()) {
-							m_logger->info("Molecular test validity hours not found (%s - %s)",
-									startHours.c_str(), endHours.c_str());
+						if (certificate.test.typeOfTest == MOLECULAR) {
+							std::string startHours = m_rulesStorage->getRule(RULE_NAME_molecular_test_start_hours, RULE_TYPE_GENERIC);
+							std::string endHours = m_rulesStorage->getRule(RULE_NAME_molecular_test_end_hours, RULE_TYPE_GENERIC);
+							if (startHours.empty() || endHours.empty()) {
+								m_logger->info("Molecular test validity hours not found (%s - %s)",
+										startHours.c_str(), endHours.c_str());
+								certificateSimple.certificateStatus = NOT_VALID;
+								break;
+							}
+							startHour = atoi(startHours.c_str());
+							endHour = atoi(endHours.c_str());
+						}
+
+						else if (certificate.test.typeOfTest == RAPID) {
+							std::string startHours = m_rulesStorage->getRule(RULE_NAME_rapid_test_start_hours, RULE_TYPE_GENERIC);
+							std::string endHours = m_rulesStorage->getRule(RULE_NAME_rapid_test_end_hours, RULE_TYPE_GENERIC);
+							if (startHours.empty() || endHours.empty()) {
+								m_logger->info("Rapid test validity hours not found (%s - %s)",
+										startHours.c_str(), endHours.c_str());
+								certificateSimple.certificateStatus = NOT_VALID;
+								break;
+							}
+							startHour = atoi(startHours.c_str());
+							endHour = atoi(endHours.c_str());
+						}
+
+						else {
+							m_logger->info("Unknown test type %s",
+									certificate.test.typeOfTest.c_str());
 							certificateSimple.certificateStatus = NOT_VALID;
 							break;
 						}
-						startHour = atoi(startHours.c_str());
-						endHour = atoi(endHours.c_str());
-					}
 
-					else if (certificate.test.typeOfTest == RAPID) {
-						std::string startHours = m_rulesStorage->getRule(RULE_NAME_rapid_test_start_hours, RULE_TYPE_GENERIC);
-						std::string endHours = m_rulesStorage->getRule(RULE_NAME_rapid_test_end_hours, RULE_TYPE_GENERIC);
-						if (startHours.empty() || endHours.empty()) {
-							m_logger->info("Rapid test validity hours not found (%s - %s)",
-									startHours.c_str(), endHours.c_str());
+						if (certificate.test.testResult != NOT_DETECTED) {
+							m_logger->info("Test result is not 'not detected' %s",
+									certificate.test.testResult.c_str());
 							certificateSimple.certificateStatus = NOT_VALID;
 							break;
 						}
-						startHour = atoi(startHours.c_str());
-						endHour = atoi(endHours.c_str());
-					}
 
-					else {
-						m_logger->info("Unknown test type %s",
-								certificate.test.typeOfTest.c_str());
-						certificateSimple.certificateStatus = NOT_VALID;
-						break;
-					}
+						// get current datetime
+						time_t t = time(NULL);
+						struct tm currentDateTime;
+						localtime_r(&t, &currentDateTime);
 
-					if (certificate.test.testResult != NOT_DETECTED) {
-						m_logger->info("Test result is not 'not detected' %s",
-								certificate.test.testResult.c_str());
-						certificateSimple.certificateStatus = NOT_VALID;
-						break;
-					}
+						// get current time
+						time_t currentTime = t + currentDateTime.tm_gmtoff;
 
-					// get current datetime
-					time_t t = time(NULL);
-					struct tm currentDateTime;
-					localtime_r(&t, &currentDateTime);
+						// get test datetime
+						struct tm testDateTime;
+						memset(&testDateTime, 0, sizeof(testDateTime));
+						strptime(certificate.test.dateTimeOfCollection.c_str(), "%Y-%m-%dT%H:%M:%S%z", &testDateTime);
 
-					// get current time
-					time_t currentTime = t + currentDateTime.tm_gmtoff;
+						// get recovery from day
+						time_t recoveryTime = mktime(&testDateTime);
 
-					// get test datetime
-					struct tm testDateTime;
-					memset(&testDateTime, 0, sizeof(testDateTime));
-					strptime(certificate.test.dateTimeOfCollection.c_str(), "%Y-%m-%dT%H:%M:%S%z", &testDateTime);
-
-					// get recovery from day
-					time_t recoveryTime = mktime(&testDateTime);
-
-					long hours = (currentTime - recoveryTime) / 3600;
-					if (hours < startHour || hours > endHour) {
-						// digital certificate not valid
-						m_logger->info("Digital certificate of %s not valid (%d: %d - %d)",
+						long hours = (currentTime - recoveryTime) / 3600;
+						if (hours < startHour || hours > endHour) {
+							// digital certificate not valid
+							m_logger->info("Digital certificate of %s not valid (%d: %d - %d)",
+									certificate.test.dateTimeOfCollection.c_str(),
+									hours, startHour, endHour);
+							certificateSimple.certificateStatus = NOT_VALID;
+							break;
+						}
+						certificateSimple.certificateStatus = VALID;
+						m_logger->debug("Digital certificate of %s valid (%d: %d - %d)",
 								certificate.test.dateTimeOfCollection.c_str(),
 								hours, startHour, endHour);
-						certificateSimple.certificateStatus = NOT_VALID;
-						break;
 					}
-					certificateSimple.certificateStatus = VALID;
-					m_logger->debug("Digital certificate of %s valid (%d: %d - %d)",
-							certificate.test.dateTimeOfCollection.c_str(),
-							hours, startHour, endHour);
 				}
 			} while (false);
 

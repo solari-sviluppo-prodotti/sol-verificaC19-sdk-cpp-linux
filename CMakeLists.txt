@@ -13,11 +13,11 @@ set (DIR_EXAMPLES_LOGGERS "${CMAKE_CURRENT_SOURCE_DIR}/examples/loggers")
 
 message(${DIR_EXAMPLES})
 
-set (CXX_FLAGS_COMMON "$ENV{CXXFLAGS} -fPIC -O0") 
+set (CXX_FLAGS_COMMON "$ENV{CXXFLAGS} -fPIC -O0")
 set (CMAKE_CXX_FLAGS_RELEASE "${CXX_FLAGS_COMMON} -s")
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CXX_FLAGS_COMMON} -g")
 
-set (C_FLAGS_COMMON "$ENV{CFLAGS} -O0") 
+set (C_FLAGS_COMMON "$ENV{CFLAGS} -O0")
 set (CMAKE_C_FLAGS_RELEASE "${C_FLAGS_COMMON} -s")
 set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${C_FLAGS_COMMON} -g")
 
@@ -44,7 +44,7 @@ aux_source_directory(${DIR_EXAMPLES_LOGGERS} SRC_EXAMPLES_LOGGERS)
 
 add_library(verificaC19-sdk SHARED ${SRC_VERIFICAC19_SDK})
 set_target_properties(verificaC19-sdk PROPERTIES OUTPUT_NAME verificaC19-sdk)
-set_target_properties(verificaC19-sdk PROPERTIES VERSION 1.0.2)
+set_target_properties(verificaC19-sdk PROPERTIES VERSION 1.0.4)
 target_link_libraries(verificaC19-sdk -lcrypto -lz -lcn-cbor)
 install(TARGETS verificaC19-sdk LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION include)
 INSTALL(DIRECTORY ${DIR_INCLUDE}/verificaC19-sdk DESTINATION include)
