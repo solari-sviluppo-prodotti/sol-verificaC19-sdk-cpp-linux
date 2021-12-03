@@ -4,9 +4,11 @@
 #ifndef CERTIFICATE_MODEL_HPP
 #define CERTIFICATE_MODEL_HPP
 
-#include <string>
-//#include <list>
 #include <verificaC19-sdk/models/CertificateStatus.hpp>
+
+#ifdef __cplusplus
+
+#include <string>
 
 namespace verificaC19Sdk {
 
@@ -189,5 +191,7 @@ public:
 };
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
 
 #endif // #ifndef CERTIFICATE_SIMPLE_HPP

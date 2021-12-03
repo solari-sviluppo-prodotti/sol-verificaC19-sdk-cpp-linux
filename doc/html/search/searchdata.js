@@ -1,27 +1,24 @@
 var indexSectionsWithContent =
 {
-  0: "bcdefgilmprstv",
-  1: "cdiprstv",
-  2: "bcdefgilrsv",
-  3: "cdfgimprstv",
-  4: "s"
+  0: "cdfgipst",
+  1: "c",
+  2: "cdfgipst",
+  3: "s"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "functions",
-  3: "variables",
-  4: "pages"
+  2: "variables",
+  3: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Functions",
-  3: "Variables",
-  4: "Pages"
+  2: "Variables",
+  3: "Pages"
 };
 

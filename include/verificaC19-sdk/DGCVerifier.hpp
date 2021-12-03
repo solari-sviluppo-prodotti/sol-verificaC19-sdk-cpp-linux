@@ -9,6 +9,11 @@
 #include <verificaC19-sdk/interfaces/ILogger.hpp>
 #include <verificaC19-sdk/models/CertificateSimple.hpp>
 
+#define SCAN_MODE_2G   "2G"
+#define SCAN_MODE_3G   "3G"
+
+#ifdef __cplusplus
+
 namespace verificaC19Sdk {
 
 #define DGCVerifier_SDK_Version "1.0.4"
@@ -17,9 +22,6 @@ namespace verificaC19Sdk {
  * Implements Digital Certificate verification
  */
 class DGCVerifier {
-
-#define SCAN_MODE_2G   "2G"
-#define SCAN_MODE_3G   "3G"
 
 public:
 
@@ -70,31 +72,31 @@ private:
 extern "C" {
 
 /**
- * DGCVerifier constructor interface for C and for dynamic loading
+ * DGCVerifier constructor interface for dynamic loading
  */
 DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger);
 typedef DGCVerifier* (*pfDGCVerifier_create)(IKeysStorage*, IRulesStorage*, ILogger*);
 
 /**
- * DGCVerifier destructor interface for C and for dynamic loading
+ * DGCVerifier destructor interface for dynamic loading
  */
 void DGCVerifier_release(DGCVerifier* dgcVerifier);
 typedef void (*pfDGCVerifier_release)(DGCVerifier*);
 
 /**
- * DGCVerifier verifyMinSdkVersion interface for C and for dynamic loading
+ * DGCVerifier verifyMinSdkVersion interface for dynamic loading
  */
 bool DGCVerifier_verifyMinSdkVersion(DGCVerifier* dgcVerifier);
 typedef bool (*pfDGCVerifier_verifyMinSdkVersion)(DGCVerifier*);
 
 /**
- * DGCVerifier setScanMode interface for C and for dynamic loading
+ * DGCVerifier setScanMode interface for dynamic loading
  */
 void DGCVerifier_setScanMode(DGCVerifier* dgcVerifier, const std::string& scanMode);
 typedef void (*pfDGCVerifier_setScanMode)(DGCVerifier*, const std::string&);
 
 /**
- * DGCVerifier verify interface for C and for dynamic loading
+ * DGCVerifier verify interface for dynamic loading
  */
 CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string& dgcQr);
 typedef CertificateSimple (*pfDGCVerifier_verify)(DGCVerifier*, const std::string);
@@ -102,5 +104,51 @@ typedef CertificateSimple (*pfDGCVerifier_verify)(DGCVerifier*, const std::strin
 }
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * DGCVerifier constructor interface for C and for dynamic loading
+ */
+void* DGCVerifier_c_create(void* keysStorage, void* rulesStorage, void* logger);
+typedef void* (*pfDGCVerifier_c_create)(void*, void*, void*);
+
+/**
+ * DGCVerifier destructor interface for C and for dynamic loading
+ */
+void DGCVerifier_c_release(void* dgcVerifier);
+typedef void (*pfDGCVerifier_c_release)(void*);
+
+/**
+ * DGCVerifier verifyMinSdkVersion interface for C and for dynamic loading
+ */
+bool DGCVerifier_c_verifyMinSdkVersion(void* dgcVerifier);
+typedef bool (*pfDGCVerifier_c_verifyMinSdkVersion)(void*);
+
+/**
+ * DGCVerifier setScanMode interface for C and for dynamic loading
+ */
+void DGCVerifier_c_setScanMode(void* dgcVerifier, const char* scanMode);
+typedef void (*pfDGCVerifier_c_setScanMode)(void*, const char*);
+
+/**
+ * DGCVerifier verify interface for C and for dynamic loading
+ */
+struct CertificateSimple_c* DGCVerifier_c_verify(void* dgcVerifier, const char* dgcQr);
+typedef struct CertificateSimple_c* (*pfDGCVerifier_c_verify)(void*, const char*);
+
+/**
+ * Release object created by DGCVerifier_c_verify
+ */
+void CertificateSimple_c_release(struct CertificateSimple_c* certificate);
+typedef void (*pfCertificateSimple_c_release)(struct CertificateSimple_c*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // #ifndef DGC_VERIFIER_HPP

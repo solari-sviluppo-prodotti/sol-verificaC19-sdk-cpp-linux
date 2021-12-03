@@ -4,8 +4,11 @@
 #ifndef IKEYS_PROVIDER_HPP
 #define IKEYS_PROVIDER_HPP
 
-#include <string>
 #include <verificaC19-sdk/interfaces/IKeysStorage.hpp>
+
+#ifdef __cplusplus
+
+#include <string>
 
 namespace verificaC19Sdk {
 
@@ -27,5 +30,7 @@ public:
 };
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
 
 #endif // #ifndef IKEYS_PROVIDER_HPP

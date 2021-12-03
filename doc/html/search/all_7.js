@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lastupdate_42',['lastUpdate',['../classverificaC19Sdk_1_1IKeysStorage.html#ae2e956e7059e2c121d6d144fc778b785',1,'verificaC19Sdk::IKeysStorage::lastUpdate()'],['../classverificaC19Sdk_1_1IRulesStorage.html#a36ca5ca5ba29e0ad611bdf555085e03d',1,'verificaC19Sdk::IRulesStorage::lastUpdate()']]]
+  ['timestamp_10',['timeStamp',['../structCertificateSimple__c.html#a26bfe32dae02b33c4ecc44d059414c48',1,'CertificateSimple_c']]]
 ];

@@ -17,38 +17,6 @@ public:
 
 };
 
-DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_create(int intervalSeconds,
-		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
-		IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger) {
-	return new DGCRulesKeysUpdater(intervalSeconds,
-			rulesProvider, rulesStorage,
-			keysProvider, keysStorage, logger);
-}
-
-DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_create(int intervalSeconds,
-		IRulesKeysProvider* rulesKeysProvider, IRulesStorage* rulesStorage,
-		IKeysStorage* keysStorage, ILogger* logger) {
-	return new DGCRulesKeysUpdater(intervalSeconds,
-			rulesKeysProvider, rulesStorage,
-			keysStorage, logger);
-}
-
-void DGCRulesKeysUpdater_release(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
-	delete dgcRulesKeysUpdater;
-}
-
-void DGCRulesKeysUpdater_forceUpdateRules(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
-	dgcRulesKeysUpdater->forceUpdateRules();
-}
-
-void DGCRulesKeysUpdater_forceUpdateKeys(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
-	dgcRulesKeysUpdater->forceUpdateKeys();
-}
-
-void DGCRulesKeysUpdater_forceUpdateAll(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
-	dgcRulesKeysUpdater->forceUpdateAll();
-}
-
 DGCRulesKeysUpdater::DGCRulesKeysUpdater(int intervalSeconds,
 		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
 		IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger) :
@@ -181,5 +149,68 @@ void DGCRulesKeysUpdater::updateKeys() const {
 	}
 }
 
+DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_create(int intervalSeconds,
+		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
+		IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger) {
+	return new DGCRulesKeysUpdater(intervalSeconds,
+			rulesProvider, rulesStorage,
+			keysProvider, keysStorage, logger);
+}
+
+DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_create(int intervalSeconds,
+		IRulesKeysProvider* rulesKeysProvider, IRulesStorage* rulesStorage,
+		IKeysStorage* keysStorage, ILogger* logger) {
+	return new DGCRulesKeysUpdater(intervalSeconds,
+			rulesKeysProvider, rulesStorage,
+			keysStorage, logger);
+}
+
+void DGCRulesKeysUpdater_release(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	delete dgcRulesKeysUpdater;
+}
+
+void DGCRulesKeysUpdater_forceUpdateRules(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	dgcRulesKeysUpdater->forceUpdateRules();
+}
+
+void DGCRulesKeysUpdater_forceUpdateKeys(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	dgcRulesKeysUpdater->forceUpdateKeys();
+}
+
+void DGCRulesKeysUpdater_forceUpdateAll(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	dgcRulesKeysUpdater->forceUpdateAll();
+}
 
 } // namespace verificaC19Sdk
+
+void* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
+		void* rulesProvider, void* rulesStorage,
+		void* keysProvider, void* keysStorage, void* logger) {
+	return new verificaC19Sdk::DGCRulesKeysUpdater(intervalSeconds,
+			(verificaC19Sdk::IRulesProvider*)rulesProvider, (verificaC19Sdk::IRulesStorage*)rulesStorage,
+			(verificaC19Sdk::IKeysProvider*)keysProvider, (verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::ILogger*)logger);
+}
+
+void* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
+		void* rulesKeysProvider, void* rulesStorage,
+		void* keysStorage, void* logger) {
+	return new verificaC19Sdk::DGCRulesKeysUpdater(intervalSeconds,
+			(verificaC19Sdk::IRulesKeysProvider*)rulesKeysProvider, (verificaC19Sdk::IRulesStorage*)rulesStorage,
+			(verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::ILogger*)logger);
+}
+
+void DGCRulesKeysUpdater_c_release(void* dgcRulesKeysUpdater) {
+	delete (verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater;
+}
+
+void DGCRulesKeysUpdater_c_forceUpdateRules(void* dgcRulesKeysUpdater) {
+	DGCRulesKeysUpdater_forceUpdateRules((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
+}
+
+void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater) {
+	DGCRulesKeysUpdater_forceUpdateKeys((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
+}
+
+void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater) {
+	DGCRulesKeysUpdater_forceUpdateAll((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
+}

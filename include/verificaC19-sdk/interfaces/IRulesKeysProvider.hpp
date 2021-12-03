@@ -4,9 +4,12 @@
 #ifndef IRULES_KEYS_PROVIDER_HPP
 #define IRULES_KEYS_PROVIDER_HPP
 
-#include <string>
 #include <verificaC19-sdk/interfaces/IRulesProvider.hpp>
 #include <verificaC19-sdk/interfaces/IKeysProvider.hpp>
+
+#ifdef __cplusplus
+
+#include <string>
 
 namespace verificaC19Sdk {
 
@@ -47,5 +50,7 @@ public:
 };
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
 
 #endif // #ifndef IRULES_KEYS_PROVIDER_HPP

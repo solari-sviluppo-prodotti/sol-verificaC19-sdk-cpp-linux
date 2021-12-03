@@ -92,3 +92,17 @@ void RulesProviderItaly::refreshRules(IRulesStorage* rulesStorage) const {
 }
 
 } // namespace verificaC19Sdk
+
+void* RulesProviderItaly_c_create(void* logger) {
+	return new verificaC19Sdk::RulesProviderItaly((verificaC19Sdk::ILogger*)logger);
+}
+
+void RulesProviderItaly_c_release(const void* rulesProviderItaly) {
+	verificaC19Sdk::RulesProviderItaly* this_ = (verificaC19Sdk::RulesProviderItaly*)rulesProviderItaly;
+	delete this_;
+}
+
+void RulesProviderItaly_c_refreshKeys(const void* rulesProviderItaly, void* rulesStorage) {
+	verificaC19Sdk::RulesProviderItaly* this_ = (verificaC19Sdk::RulesProviderItaly*)rulesProviderItaly;
+	this_->refreshRules((verificaC19Sdk::IRulesStorage*)rulesStorage);
+}

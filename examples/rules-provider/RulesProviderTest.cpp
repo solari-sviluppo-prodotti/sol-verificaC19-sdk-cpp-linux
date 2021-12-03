@@ -37,3 +37,17 @@ void RulesProviderTest::refreshRules(IRulesStorage* rulesStorage) const {
 }
 
 } // namespace verificaC19Sdk
+
+void* RulesProviderTest_c_create(void* logger) {
+	return new verificaC19Sdk::RulesProviderTest((verificaC19Sdk::ILogger*)logger);
+}
+
+void RulesProviderTest_c_release(const void* rulesProviderTest) {
+	verificaC19Sdk::RulesProviderTest* this_ = (verificaC19Sdk::RulesProviderTest*)rulesProviderTest;
+	delete this_;
+}
+
+void RulesProviderTest_c_refreshRules(const void* rulesProviderTest, void* rulesStorage) {
+	verificaC19Sdk::RulesProviderTest* this_ = (verificaC19Sdk::RulesProviderTest*)rulesProviderTest;
+	this_->refreshRules((verificaC19Sdk::IRulesStorage*)rulesStorage);
+}

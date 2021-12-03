@@ -1,6 +1,7 @@
 // Copyright (c) 2021 Solari di Udine S.p.A
 // Licensed under the Apache License, Version 2.0
 
+#include <cstring>
 #include <RulesStorageMemory.hpp>
 
 namespace verificaC19Sdk {
@@ -42,3 +43,50 @@ void RulesStorageMemory::rollbackUpdatedRules() {
 }
 
 } // namespace verificaC19Sdk
+
+void* RulesStorageMemory_c_create() {
+	return new verificaC19Sdk::RulesStorageMemory();
+}
+
+void RulesStorageMemory_c_release(const void* rulesStorageMemory) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	delete this_;
+}
+
+const char* RulesStorageMemory_c_getRule(const void* rulesStorageMemory, const char* name, const char* type) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	std::string value = this_->getRule(std::string(name), std::string(type));
+	char* p = (char*)malloc(value.length() + 1);
+	strcpy(p, value.c_str());
+	return p;
+}
+
+void RulesStorageMemory_c_beginUpdatingRules(const void* rulesStorageMemory) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	this_->beginUpdatingRules();
+}
+
+void RulesStorageMemory_c_storeRule(const void* rulesStorageMemory, const char* name, const char* type, const char* value) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	this_->storeRule(std::string(name), std::string(type), std::string(value));
+}
+
+void RulesStorageMemory_c_commitUpdatedRules(const void* rulesStorageMemory) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	this_->commitUpdatedRules();
+}
+
+void RulesStorageMemory_c_rollbackUpdatedRules(const void* rulesStorageMemory) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	this_->rollbackUpdatedRules();
+}
+
+bool RulesStorageMemory_c_isUpdating(const void* rulesStorageMemory) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	return this_->isUpdating();
+}
+
+time_t RulesStorageMemory_c_lastUpdate(const void* rulesStorageMemory) {
+	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
+	return this_->lastUpdate();
+}

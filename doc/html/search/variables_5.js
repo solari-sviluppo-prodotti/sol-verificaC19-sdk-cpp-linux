@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['manufacturer_137',['manufacturer',['../classverificaC19Sdk_1_1VaccinationModel.html#a58da65ba47642ca5d646adccd99d36e8',1,'verificaC19Sdk::VaccinationModel']]],
-  ['medicinalproduct_138',['medicinalProduct',['../classverificaC19Sdk_1_1VaccinationModel.html#a2b1b21a4a20d864b27a8af0fd0b89a4a',1,'verificaC19Sdk::VaccinationModel']]]
+  ['person_17',['person',['../structCertificateSimple__c.html#a11deb034d0d69bdb92ed11be716a5a86',1,'CertificateSimple_c']]]
 ];

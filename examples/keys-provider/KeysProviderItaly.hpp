@@ -4,10 +4,13 @@
 #ifndef KEYS_PROVIDER_ITALY_HPP
 #define KEYS_PROVIDER_ITALY_HPP
 
-#include <string>
-#include <map>
 #include <verificaC19-sdk/interfaces/IKeysProvider.hpp>
 #include <verificaC19-sdk/interfaces/ILogger.hpp>
+
+#ifdef __cplusplus
+
+#include <string>
+#include <map>
 
 namespace verificaC19Sdk {
 
@@ -29,5 +32,24 @@ private:
 };
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void* KeysProviderItaly_c_create(void* logger);
+typedef void* (*pfKeysProviderItaly_c_create)(void*);
+
+void KeysProviderItaly_c_release(const void* keysProviderItaly);
+typedef void (*pfKeysProviderItaly_c_release)(const void*);
+
+void KeysProviderItaly_c_refreshKeys(const void* keysProviderItaly, void* keysStorage);
+typedef void (*pfKeysProviderItaly_c_refreshKeys)(const void*, void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // #ifndef KEYS_PROVIDER_ITALY_HPP

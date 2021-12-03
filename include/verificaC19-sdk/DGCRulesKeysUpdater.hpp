@@ -4,9 +4,12 @@
 #ifndef DGC_RULES_KEYS_UPDATER_HPP
 #define DGC_RULES_KEYS_UPDATER_HPP
 
-#include <pthread.h>
 #include <verificaC19-sdk/interfaces/IRulesKeysProvider.hpp>
 #include <verificaC19-sdk/interfaces/ILogger.hpp>
+
+#ifdef __cplusplus
+
+#include <pthread.h>
 
 namespace verificaC19Sdk {
 
@@ -149,5 +152,57 @@ typedef bool (*pfDGCRulesKeysUpdater_forceUpdateAll)(DGCRulesKeysUpdater*);
 }
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ */
+void* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
+		void* rulesProvider, void* rulesStorage,
+		void* keysProvider, void* keysStorage, void* logger);
+typedef void* (*pfDGCRulesKeysUpdaterRulesAndKeys_c_create)(int, void*, void*,
+		void*, void*, void*);
+
+/**
+ * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ */
+void* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
+		void* rulesKeysProvider, void* rulesStorage,
+		void* keysStorage, void* logger);
+typedef void* (*pfDGCRulesKeysUpdaterRulesKeys_c_create)(int, void*,
+		void*, void*, void*);
+
+/**
+ * DGCRulesKeysUpdater destructor interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_c_release(void* dgcRulesKeysUpdater);
+typedef void (*pfDGCRulesKeysUpdater_c_release)(void*);
+
+/**
+ * DGCRulesKeysUpdater forceUpdateRules interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_c_forceUpdateRules(void* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_c_forceUpdateRules)(void*);
+
+/**
+ * DGCRulesKeysUpdater forceUpdateKeys interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_c_forceUpdateKeys)(void*);
+
+/**
+ * DGCRulesKeysUpdater forceUpdateAll interface for C and for dynamic loading
+ */
+void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_c_forceUpdateAll)(void*);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // #ifndef DGC_RULES_KEYS_UPDATER_HPP

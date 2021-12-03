@@ -4,16 +4,22 @@
 #ifndef ILOGGER_HPP
 #define ILOGGER_HPP
 
-#include <string>
-
-namespace verificaC19Sdk {
-
 enum LogLevel {
 	NONE,
 	ERROR,
 	INFO,
 	DEBUG
 };
+
+typedef enum LogLevel LogLevel;
+
+#ifdef __cplusplus
+
+#include <string>
+
+namespace verificaC19Sdk {
+
+typedef enum ::LogLevel LogLevel;
 
 /**
  * Interface to implement Logger service
@@ -52,5 +58,7 @@ public:
 };
 
 } // namespace verificaC19Sdk
+
+#endif // #ifdef __cplusplus
 
 #endif // #ifndef ILOGGER_HPP

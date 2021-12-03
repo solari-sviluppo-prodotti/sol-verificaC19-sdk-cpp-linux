@@ -5,6 +5,7 @@ project(terminale VERSION 2.0.0)
 set (DIR_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 set (DIR_VERIFICAC19_SDK "${CMAKE_CURRENT_SOURCE_DIR}/verificaC19-sdk")
 set (DIR_EXAMPLES "${CMAKE_CURRENT_SOURCE_DIR}/examples")
+set (DIR_EXAMPLES_C "${CMAKE_CURRENT_SOURCE_DIR}/examples/c")
 set (DIR_EXAMPLES_KEYS_PROVIDER "${CMAKE_CURRENT_SOURCE_DIR}/examples/keys-provider")
 set (DIR_EXAMPLES_KEYS_STORAGE "${CMAKE_CURRENT_SOURCE_DIR}/examples/keys-storage")
 set (DIR_EXAMPLES_RULES_PROVIDER "${CMAKE_CURRENT_SOURCE_DIR}/examples/rules-provider")
@@ -27,6 +28,7 @@ include_directories(
 	"${CMAKE_CURRENT_SOURCE_DIR}/${ROOT_SOURCE_DIR}"
 	"${DIR_INCLUDE}"
 	"${DIR_EXAMPLES}"
+	"${DIR_EXAMPLES_C}"
 	"${DIR_EXAMPLES_KEYS_PROVIDER}"
 	"${DIR_EXAMPLES_KEYS_STORAGE}"
 	"${DIR_EXAMPLES_RULES_PROVIDER}"
@@ -36,6 +38,7 @@ include_directories(
 
 aux_source_directory(${DIR_VERIFICAC19_SDK} SRC_VERIFICAC19_SDK)
 aux_source_directory(${DIR_EXAMPLES} SRC_EXAMPLES)
+aux_source_directory(${DIR_EXAMPLES_C} SRC_EXAMPLES_C)
 aux_source_directory(${DIR_EXAMPLES_KEYS_PROVIDER} SRC_EXAMPLES_KEYS_PROVIDER)
 aux_source_directory(${DIR_EXAMPLES_KEYS_STORAGE} SRC_EXAMPLES_KEYS_STORAGE)
 aux_source_directory(${DIR_EXAMPLES_RULES_PROVIDER} SRC_EXAMPLE_RULES_PROVIDER)
@@ -52,3 +55,7 @@ INSTALL(DIRECTORY ${DIR_INCLUDE}/verificaC19-sdk DESTINATION include)
 add_executable(verificaC19-example ${SRC_EXAMPLES} ${SRC_EXAMPLES_KEYS_PROVIDER} ${SRC_EXAMPLES_KEYS_STORAGE} ${SRC_EXAMPLE_RULES_PROVIDER} ${SRC_EXAMPLE_RULES_STORAGE} ${SRC_EXAMPLES_LOGGERS})
 target_link_libraries (verificaC19-example verificaC19-sdk -lcrypto -lz -lcn-cbor -lcurl -ljsoncpp -lpthread -ldl)
 install(TARGETS verificaC19-example ARCHIVE DESTINATION bin RUNTIME DESTINATION bin)
+
+add_executable(verificaC19-c-example ${SRC_EXAMPLES_C} ${SRC_EXAMPLES_KEYS_PROVIDER} ${SRC_EXAMPLES_KEYS_STORAGE} ${SRC_EXAMPLE_RULES_PROVIDER} ${SRC_EXAMPLE_RULES_STORAGE} ${SRC_EXAMPLES_LOGGERS})
+target_link_libraries (verificaC19-c-example verificaC19-sdk -lcrypto -lz -lcn-cbor -lcurl -ljsoncpp -lpthread -ldl)
+install(TARGETS verificaC19-c-example ARCHIVE DESTINATION bin RUNTIME DESTINATION bin)
