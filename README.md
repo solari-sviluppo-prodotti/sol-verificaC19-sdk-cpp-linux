@@ -75,6 +75,74 @@ enum CertificateStatus status = result.certificateStatus;
 
 ```
 
+The rules and keys updater process is managed by th `DGCRulesKeysUpdater` class.
+
+This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage
+and IKeysProvider and IRulesProvider interfaces to access to providers.
+
+Optionally you can use a implementation of ILogger interface to log operations.
+
+You can simply instantiate and configure it:
+
+```
+#include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
+
+LoggerStdout logger(DEBUG);
+KeysStorageMemory keysStorage;
+RulesStorageMemory rulesStorage;
+KeysProviderItaly(&logger);
+RulesProviderItaly(&logger);
+
+DGCRulesKeysUpdater rulesKeyUpdater(86400, &rulesProvider, &rulesStorage,
+		&keysProvider, &keysStorage, &logger);
+```
+
+so the complete example with rules and keys update and DGC verify is:
+
+```
+#include <verificaC19-sdk/DGCVerifier.hpp>
+#include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
+
+// Initialization (at startup)
+
+LoggerStdout logger(DEBUG);
+KeysStorageMemory keysStorage;
+RulesStorageMemory rulesStorage;
+KeysProviderItaly keysProvider(&logger);
+RulesProviderItaly rulesProvider(&logger);
+
+// This automatically updates rules and keys every 86400 seconds
+DGCRulesKeysUpdater rulesKeyUpdater(86400, &rulesProvider, &rulesStorage,
+		&keysProvider, &keysStorage, &logger);
+
+DGCVerifier verifier(&keysStorage, &rulesStorage, &logger);
+
+// At startup wait to have a valid set of rules and keys, if this is
+// first application launch the storage cuold be empty
+if (!rulesKeyUpdater.isUpdated()) {
+	// Signal to user that rules and keys is updating
+	while (!rulesKeyUpdater.isUpdated()) {
+		usleep(10000);
+	}
+	// Signal to user that rules and keys was updated
+}
+
+
+// Usage (for every readed Digital Certificate)
+
+if (!verifier.verifyMinSdkVersion()) {
+  logger.error("Minimum SDK version does not match");
+}
+
+std::string qrCode = "Raw qr code data starting with HC1:";
+
+// Decode and validate the qr code data.
+// The result will contain all the details of the validated object
+CertificateSimple result = verifier.verify(qrCode);
+
+enum CertificateStatus status = result.certificateStatus;
+```
+
 #### Rules and Keys storage
 
 Rules and Keys storage are mandatory services and must be implemented using
@@ -96,7 +164,7 @@ Rules and Keys update provider are an optional services used to update Keys and 
 and can be implemented using IRulesProvider, IKeysProbider or IRulesKeysProvider interfaces.
 
 SDK provide example implementations to update Rules and Keys from Italian provider,
-(RulesProviderItaly and KeysProvuderItaly) but you can implement provider
+(RulesProviderItaly and KeysProviderItaly) but you can implement provider
 to get Rules or Keys from other states or by your custom provider.
 
 Interfaces declare methods to refresh Rules or Keys or All (IRulesKeysProvider).
