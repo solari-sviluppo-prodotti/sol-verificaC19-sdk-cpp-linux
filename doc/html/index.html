@@ -122,6 +122,62 @@ Usage</h3>
 <div class="line"> </div>
 <div class="line">enum CertificateStatus status = result.certificateStatus;</div>
 <div class="line">...</div>
+</div><!-- fragment --><p>The rules and keys updater process is managed by th <code>DGCRulesKeysUpdater</code> class.</p>
+<p>This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage and IKeysProvider and IRulesProvider interfaces to access to providers.</p>
+<p>Optionally you can use a implementation of ILogger interface to log operations.</p>
+<p>You can simply instantiate and configure it:</p>
+<div class="fragment"><div class="line">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</div>
+<div class="line"> </div>
+<div class="line">LoggerStdout logger(DEBUG);</div>
+<div class="line">KeysStorageMemory keysStorage;</div>
+<div class="line">RulesStorageMemory rulesStorage;</div>
+<div class="line">KeysProviderItaly(&amp;logger);</div>
+<div class="line">RulesProviderItaly(&amp;logger);</div>
+<div class="line"> </div>
+<div class="line">DGCRulesKeysUpdater rulesKeyUpdater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
+<div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;logger);</div>
+</div><!-- fragment --><p>so the complete example with rules and keys update and DGC verify is:</p>
+<div class="fragment"><div class="line">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</div>
+<div class="line">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</div>
+<div class="line"> </div>
+<div class="line">// Initialization (at startup)</div>
+<div class="line"> </div>
+<div class="line">LoggerStdout logger(DEBUG);</div>
+<div class="line">KeysStorageMemory keysStorage;</div>
+<div class="line">RulesStorageMemory rulesStorage;</div>
+<div class="line">KeysProviderItaly keysProvider(&amp;logger);</div>
+<div class="line">RulesProviderItaly rulesProvider(&amp;logger);</div>
+<div class="line"> </div>
+<div class="line">// This automatically updates rules and keys every 86400 seconds</div>
+<div class="line">DGCRulesKeysUpdater rulesKeyUpdater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
+<div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;logger);</div>
+<div class="line"> </div>
+<div class="line">DGCVerifier verifier(&amp;keysStorage, &amp;rulesStorage, &amp;logger);</div>
+<div class="line"> </div>
+<div class="line">// At startup wait to have a valid set of rules and keys, if this is</div>
+<div class="line">// first application launch the storage cuold be empty</div>
+<div class="line">if (!rulesKeyUpdater.isUpdated()) {</div>
+<div class="line">    // Signal to user that rules and keys is updating</div>
+<div class="line">    while (!rulesKeyUpdater.isUpdated()) {</div>
+<div class="line">        usleep(10000);</div>
+<div class="line">    }</div>
+<div class="line">    // Signal to user that rules and keys was updated</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">// Usage (for every readed Digital Certificate)</div>
+<div class="line"> </div>
+<div class="line">if (!verifier.verifyMinSdkVersion()) {</div>
+<div class="line">  logger.error(&quot;Minimum SDK version does not match&quot;);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">std::string qrCode = &quot;Raw qr code data starting with HC1:&quot;;</div>
+<div class="line"> </div>
+<div class="line">// Decode and validate the qr code data.</div>
+<div class="line">// The result will contain all the details of the validated object</div>
+<div class="line">CertificateSimple result = verifier.verify(qrCode);</div>
+<div class="line"> </div>
+<div class="line">enum CertificateStatus status = result.certificateStatus;</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
 Rules and Keys storage</h3>
 <p>Rules and Keys storage are mandatory services and must be implemented using IRulesStorage and IKeysStorage interfaces.</p>
@@ -136,7 +192,7 @@ Rules and Keys storage</h3>
 <h3><a class="anchor" id="autotoc_md8"></a>
 Rules and Keys provider</h3>
 <p>Rules and Keys update provider are an optional services used to update Keys and Rules and can be implemented using IRulesProvider, IKeysProbider or IRulesKeysProvider interfaces.</p>
-<p>SDK provide example implementations to update Rules and Keys from Italian provider, (RulesProviderItaly and KeysProvuderItaly) but you can implement provider to get Rules or Keys from other states or by your custom provider.</p>
+<p>SDK provide example implementations to update Rules and Keys from Italian provider, (RulesProviderItaly and KeysProviderItaly) but you can implement provider to get Rules or Keys from other states or by your custom provider.</p>
 <p>Interfaces declare methods to refresh Rules or Keys or All (IRulesKeysProvider).</p>
 <p>Interface methods request instance of Rules or Keys storage interface as described above.</p>
 <h3><a class="anchor" id="autotoc_md9"></a>

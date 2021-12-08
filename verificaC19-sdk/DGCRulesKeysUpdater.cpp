@@ -73,6 +73,11 @@ void DGCRulesKeysUpdater::forceUpdateAll() {
 	forceUpdateKeys();
 }
 
+bool DGCRulesKeysUpdater::isUpdated() const {
+	return m_rulesStorage->lastUpdate() < m_intervalSeconds &&
+			m_keysStorage->lastUpdate() < m_intervalSeconds;
+}
+
 void* DGCRulesKeysUpdater::updaterThread(void* p) {
 	static_cast<DGCRulesKeysUpdater*>(p)->updaterThread();
 	DGCRulesKeysUpdater* this_ = (DGCRulesKeysUpdater*)p;
@@ -181,6 +186,10 @@ void DGCRulesKeysUpdater_forceUpdateAll(DGCRulesKeysUpdater* dgcRulesKeysUpdater
 	dgcRulesKeysUpdater->forceUpdateAll();
 }
 
+bool DGCRulesKeysUpdater_isUpdated(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
+	return dgcRulesKeysUpdater->isUpdated();
+}
+
 } // namespace verificaC19Sdk
 
 void* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
@@ -213,4 +222,8 @@ void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater) {
 
 void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater) {
 	DGCRulesKeysUpdater_forceUpdateAll((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
+}
+
+bool DGCRulesKeysUpdater_c_isUpdated(void* dgcRulesKeysUpdater) {
+	return DGCRulesKeysUpdater_isUpdated((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
 }

@@ -82,6 +82,12 @@ public:
 	 */
 	void forceUpdateAll();
 
+	/**
+	 * Check if rules and keys are updated or need to wait for update
+	 * Useful for first startup to wait to have almost a first set of rules and keys
+	 */
+	bool isUpdated() const;
+
 private:
 
 	void updateAll() const;
@@ -108,7 +114,7 @@ private:
 extern "C" {
 
 /**
- * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ * DGCRulesKeysUpdater constructor interface for dynamic loading
  */
 DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_create(int intervalSeconds,
 		IRulesProvider* rulesProvider, IRulesStorage* rulesStorage,
@@ -117,7 +123,7 @@ typedef DGCRulesKeysUpdater* (*pfDGCRulesKeysUpdaterRulesAndKeys_create)(int, IR
 		IKeysProvider*, IKeysStorage*, ILogger*);
 
 /**
- * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ * DGCRulesKeysUpdater constructor interface for dynamic loading
  */
 DGCRulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_create(int intervalSeconds,
 		IRulesKeysProvider* rulesKeysProvider, IRulesStorage* rulesStorage,
@@ -126,28 +132,34 @@ typedef DGCRulesKeysUpdater* (*pfDGCRulesKeysUpdaterRulesKeys_create)(int, IRule
 		IRulesStorage*, IKeysStorage*, ILogger*);
 
 /**
- * DGCRulesKeysUpdater destructor interface for C and for dynamic loading
+ * DGCRulesKeysUpdater destructor interface for dynamic loading
  */
 void DGCRulesKeysUpdater_release(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
 typedef void (*pfDGCRulesKeysUpdater_release)(DGCRulesKeysUpdater*);
 
 /**
- * DGCRulesKeysUpdater forceUpdateRules interface for C and for dynamic loading
+ * DGCRulesKeysUpdater forceUpdateRules interface for dynamic loading
  */
 void DGCRulesKeysUpdater_forceUpdateRules(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_forceUpdateRules)(DGCRulesKeysUpdater*);
+typedef void (*pfDGCRulesKeysUpdater_forceUpdateRules)(DGCRulesKeysUpdater*);
 
 /**
- * DGCRulesKeysUpdater forceUpdateKeys interface for C and for dynamic loading
+ * DGCRulesKeysUpdater forceUpdateKeys interface for dynamic loading
  */
 void DGCRulesKeysUpdater_forceUpdateKeys(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_forceUpdateKeys)(DGCRulesKeysUpdater*);
+typedef void (*pfDGCRulesKeysUpdater_forceUpdateKeys)(DGCRulesKeysUpdater*);
 
 /**
- * DGCRulesKeysUpdater forceUpdateAll interface for C and for dynamic loading
+ * DGCRulesKeysUpdater forceUpdateAll interface for dynamic loading
  */
 void DGCRulesKeysUpdater_forceUpdateAll(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_forceUpdateAll)(DGCRulesKeysUpdater*);
+typedef void (*pfDGCRulesKeysUpdater_forceUpdateAll)(DGCRulesKeysUpdater*);
+
+/**
+ * DGCRulesKeysUpdater isUpdated interface for dynamic loading
+ */
+bool DGCRulesKeysUpdater_isUpdated(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_isUpdated)(DGCRulesKeysUpdater*);
 
 }
 
@@ -187,19 +199,26 @@ typedef void (*pfDGCRulesKeysUpdater_c_release)(void*);
  * DGCRulesKeysUpdater forceUpdateRules interface for C and for dynamic loading
  */
 void DGCRulesKeysUpdater_c_forceUpdateRules(void* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_c_forceUpdateRules)(void*);
+typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateRules)(void*);
 
 /**
  * DGCRulesKeysUpdater forceUpdateKeys interface for C and for dynamic loading
  */
 void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_c_forceUpdateKeys)(void*);
+typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateKeys)(void*);
 
 /**
  * DGCRulesKeysUpdater forceUpdateAll interface for C and for dynamic loading
  */
 void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_c_forceUpdateAll)(void*);
+typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateAll)(void*);
+
+
+/**
+ * DGCRulesKeysUpdater isUpdated interface for C and for dynamic loading
+ */
+bool DGCRulesKeysUpdater_c_isUpdated(void* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_c_isUpdated)(void*);
 
 #ifdef __cplusplus
 }
