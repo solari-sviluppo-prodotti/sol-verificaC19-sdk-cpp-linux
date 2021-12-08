@@ -33,8 +33,8 @@ namespace verificaC19Sdk {
 
 // BASE45
 static std::string decodeBase45(const std::string& src) {
-	static const char BASE45_CHARSET[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
-
+	// map used to get real value for every input character and also to validate
+	// the input character
 	static signed char _C2I[256] = {
 		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
 		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -59,27 +59,36 @@ static std::string decodeBase45(const std::string& src) {
 
 	std::stringstream decoded;
 
+	// loop for each group of three characters (last group can have only two characters)
 	for(int i = 0; i < src.length(); i += 3) {
 		int x,a,b;
 
+		// to decode base45 data we must have at least two characters
 		if (src.length() - i < 2)
 			return "";
 
+		// validate the two charatres read, must be in base45 charset interval
 		if ((-1 == (a = _C2I[src[i]])) || (-1 == (b = _C2I[src[i+1]])))
 			return "";
 
+		// calculate output value
 		x = a + 45 * b;
 
+		// if we have at least three characters, get also the third character
 		if (src.length() - i >= 3) {
+			// validate the third character read, must be in base45 charset interval
 			if (-1 == (a = _C2I[src[i+2]]))
 				return "";
 
+			// calculate output value
 			x += a * 45 * 45;
 
+			// write high part of output value
 			decoded << (char)(x / 256);
 			x %= 256;
 		};
 
+		// write low part of output value
 		decoded << (char)x;
 	};
 
