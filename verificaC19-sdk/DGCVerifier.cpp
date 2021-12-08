@@ -61,7 +61,8 @@ static std::string decodeBase45(const std::string& src) {
 
 	// loop for each group of three characters (last group can have only two characters)
 	for(int i = 0; i < src.length(); i += 3) {
-		int x,a,b;
+		long x;
+		int a,b;
 
 		// to decode base45 data we must have at least two characters
 		if (src.length() - i < 2)
@@ -83,10 +84,18 @@ static std::string decodeBase45(const std::string& src) {
 			// calculate output value
 			x += a * 45 * 45;
 
+			// check output value range
+			if (x > 0xFFFF)
+				return "";
+
 			// write high part of output value
 			decoded << (char)(x / 256);
 			x %= 256;
-		};
+		} else {
+			// check output value range
+			if (x > 0xFF)
+				return "";
+		}
 
 		// write low part of output value
 		decoded << (char)x;
