@@ -10,13 +10,13 @@ providing interfaces to easily implement specific providers for every country's 
 #### Dependencies
 
 The following dependencies are used in the project by the verifier SDK:
-- **[zlib](https://github.com/madler/zlib).** Zlib is a general-purpose, patent-free, lossless data compression library which is used by many different programs.
-- **[cn-cbor](https://github.com/jimsch/cn-cbor).** A constrained node implementation of CBOR in C.
-- **[libcrypto](https://github.com/openssl/openssl).** OpenSSL is a robust, commercial-grade, full-featured Open Source Toolkit for the Transport Layer Security (TLS) protocol formerly known as the Secure Sockets Layer (SSL) protocol.
+- **[zlib](https://github.com/madler/zlib) 1.2.11.** Zlib is a general-purpose, patent-free, lossless data compression library which is used by many different programs.
+- **[cn-cbor](https://github.com/jimsch/cn-cbor) 1.0.0.** A constrained node implementation of CBOR in C.
+- **[libcrypto](https://github.com/openssl/openssl) at least 1.0.2j.** OpenSSL is a robust, commercial-grade, full-featured Open Source Toolkit for the Transport Layer Security (TLS) protocol formerly known as the Secure Sockets Layer (SSL) protocol.
 
 The following dependencies are used in the project by the examples:
-- **[libcurl](https://github.com/curl/curl).** Library for transferring data specified with URL syntax.
-- **[jsoncpp](https://github.com/open-source-parsers/jsoncpp).** JSON is a lightweight data-interchange format. It can represent numbers, strings, ordered sequences of values, and collections of name/value pairs.
+- **[libcurl](https://github.com/curl/curl) at least 7.61.0.** Library for transferring data specified with URL syntax.
+- **[jsoncpp](https://github.com/open-source-parsers/jsoncpp) at least 1.8.4.** JSON is a lightweight data-interchange format. It can represent numbers, strings, ordered sequences of values, and collections of name/value pairs.
 
 #### Build
 
