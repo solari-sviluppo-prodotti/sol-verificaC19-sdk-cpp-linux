@@ -22,7 +22,7 @@ The following dependencies are used in the project by the examples:
 
 Once cloned, to build on your system you can use this command:
 
-```
+```sh
 cmake .
 make
 make install # as root or sudoer
@@ -45,7 +45,7 @@ Optionally you can use a implementation of ILogger interface to log operations.
 
 You can simply instantiate and configure it:
 
-```
+```cpp
 #include <verificaC19-sdk/DGCVerifier.hpp>
 
 LoggerStdout logger(DEBUG);
@@ -58,7 +58,7 @@ DGCVerifier verifier(&keysStorage, &rulesStorage, &logger);
 Once instantiated and configured with storage services, you can simply use it
 calling the following methods:
 
-```
+```cpp
 ...
 if (!verifier.verifyMinSdkVersion()) {
   logger.error("Minimum SDK version does not match");
@@ -84,7 +84,7 @@ Optionally you can use a implementation of ILogger interface to log operations.
 
 You can simply instantiate and configure it:
 
-```
+```cpp
 #include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
 
 LoggerStdout logger(DEBUG);
@@ -99,7 +99,7 @@ DGCRulesKeysUpdater rulesKeyUpdater(86400, &rulesProvider, &rulesStorage,
 
 so the complete example with rules and keys update and DGC verify is:
 
-```
+```cpp
 #include <verificaC19-sdk/DGCVerifier.hpp>
 #include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
 
