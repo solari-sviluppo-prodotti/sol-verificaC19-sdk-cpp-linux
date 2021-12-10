@@ -40,7 +40,7 @@ public:
 	 * Set scan mode, default scan mode at object construction is SCAN_MODE_3G
 	 *
 	 * @param scanMode Scan mode, SCAN_MODE_2G accept only vaccination and recovery
-	 *                 certificatesl, SCAN_MODE_3G accept also test certificates
+	 *                 certificates, SCAN_MODE_3G accept also test certificates
 	 */
 	void setScanMode(const std::string& scanMode);
 

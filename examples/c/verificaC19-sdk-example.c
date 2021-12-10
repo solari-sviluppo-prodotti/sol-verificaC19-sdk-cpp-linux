@@ -4,13 +4,14 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
-#include <KeysStorageMemory.hpp>
-#include <KeysProviderTest.hpp>
-#include <KeysProviderItaly.hpp>
-#include <RulesStorageMemory.hpp>
-#include <RulesProviderTest.hpp>
-#include <RulesProviderItaly.hpp>
-#include <LoggerStdout.hpp>
+#include <examples/keys-storage/KeysStorageMemory.hpp>
+#include <examples/keys-provider/KeysProviderTest.hpp>
+#include <examples/keys-provider/KeysProviderItaly.hpp>
+#include <examples/rules-storage/RulesStorageMemory.hpp>
+#include <examples/rules-provider/RulesProviderTest.hpp>
+#include <examples/rules-provider/RulesProviderItaly.hpp>
+#include <examples/loggers/LoggerStdout.hpp>
+
 #include <verificaC19-sdk/DGCVerifier.hpp>
 #include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
 

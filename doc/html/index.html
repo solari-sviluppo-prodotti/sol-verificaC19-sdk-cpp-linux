@@ -101,7 +101,10 @@ Usage</h3>
 <p>This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage.</p>
 <p>Optionally you can use a implementation of ILogger interface to log operations.</p>
 <p>You can simply instantiate and configure it:</p>
-<div class="fragment"><div class="line">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;examples/keys-storage/KeysStorageMemory.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-storage/RulesStorageMemory.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/loggers/LoggerStdout.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line">LoggerStdout logger(DEBUG);</div>
 <div class="line">KeysStorageMemory keysStorage;</div>
@@ -111,22 +114,32 @@ Usage</h3>
 </div><!-- fragment --><p>Once instantiated and configured with storage services, you can simply use it calling the following methods:</p>
 <div class="fragment"><div class="line">...</div>
 <div class="line">if (!verifier.verifyMinSdkVersion()) {</div>
-<div class="line">  logger.error(&quot;Minimum SDK version does not match&quot;);</div>
+<div class="line">  logger.error(<span class="stringliteral">&quot;Minimum SDK version does not match&quot;</span>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">std::string qrCode = &quot;Raw qr code data starting with HC1:&quot;;</div>
+<div class="line"><span class="comment">// Setup scan mode</span></div>
+<div class="line">verifier.setScanMode(SCAN_MODE_2G);</div>
 <div class="line"> </div>
-<div class="line">// Decode and validate the qr code data.</div>
-<div class="line">// The result will contain all the details of the validated object</div>
+<div class="line">std::string qrCode = <span class="stringliteral">&quot;Raw qr code data starting with HC1:&quot;</span>;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Decode and validate the qr code data.</span></div>
+<div class="line"><span class="comment">// The result will contain all the details of the validated object</span></div>
 <div class="line">CertificateSimple result = verifier.verify(qrCode);</div>
 <div class="line"> </div>
-<div class="line">enum CertificateStatus status = result.certificateStatus;</div>
+<div class="line"><span class="keyword">enum</span> CertificateStatus status = result.certificateStatus;</div>
 <div class="line">...</div>
 </div><!-- fragment --><p>The rules and keys updater process is managed by th <code>DGCRulesKeysUpdater</code> class.</p>
 <p>This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage and IKeysProvider and IRulesProvider interfaces to access to providers.</p>
 <p>Optionally you can use a implementation of ILogger interface to log operations.</p>
 <p>You can simply instantiate and configure it:</p>
-<div class="fragment"><div class="line">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;examples/keys-storage/KeysStorageMemory.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/keys-provider/KeysProviderTest.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/keys-provider/KeysProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-storage/RulesStorageMemory.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-provider/RulesProviderTest.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-provider/RulesProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/loggers/LoggerStdout.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line">LoggerStdout logger(DEBUG);</div>
 <div class="line">KeysStorageMemory keysStorage;</div>
@@ -137,10 +150,17 @@ Usage</h3>
 <div class="line">DGCRulesKeysUpdater rulesKeyUpdater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
 <div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;logger);</div>
 </div><!-- fragment --><p>so the complete example with rules and keys update and DGC verify is:</p>
-<div class="fragment"><div class="line">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</div>
-<div class="line">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;examples/keys-storage/KeysStorageMemory.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/keys-provider/KeysProviderTest.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/keys-provider/KeysProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-storage/RulesStorageMemory.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-provider/RulesProviderTest.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/rules-provider/RulesProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;examples/loggers/LoggerStdout.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</span></div>
 <div class="line"> </div>
-<div class="line">// Initialization (at startup)</div>
+<div class="line"><span class="comment">// Initialization (at startup)</span></div>
 <div class="line"> </div>
 <div class="line">LoggerStdout logger(DEBUG);</div>
 <div class="line">KeysStorageMemory keysStorage;</div>
@@ -148,40 +168,43 @@ Usage</h3>
 <div class="line">KeysProviderItaly keysProvider(&amp;logger);</div>
 <div class="line">RulesProviderItaly rulesProvider(&amp;logger);</div>
 <div class="line"> </div>
-<div class="line">// This automatically updates rules and keys every 86400 seconds</div>
+<div class="line"><span class="comment">// This automatically updates rules and keys every 86400 seconds</span></div>
 <div class="line">DGCRulesKeysUpdater rulesKeyUpdater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
 <div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;logger);</div>
 <div class="line"> </div>
 <div class="line">DGCVerifier verifier(&amp;keysStorage, &amp;rulesStorage, &amp;logger);</div>
 <div class="line"> </div>
-<div class="line">// At startup wait to have a valid set of rules and keys, if this is</div>
-<div class="line">// first application launch the storage cuold be empty</div>
-<div class="line">if (!rulesKeyUpdater.isUpdated()) {</div>
-<div class="line">    // Signal to user that rules and keys is updating</div>
-<div class="line">    while (!rulesKeyUpdater.isUpdated()) {</div>
+<div class="line"><span class="comment">// At startup wait to have a valid set of rules and keys, if this is</span></div>
+<div class="line"><span class="comment">// first application launch the storage cuold be empty</span></div>
+<div class="line"><span class="keywordflow">if</span> (!rulesKeyUpdater.isUpdated()) {</div>
+<div class="line">    <span class="comment">// Signal to user that rules and keys is updating</span></div>
+<div class="line">    <span class="keywordflow">while</span> (!rulesKeyUpdater.isUpdated()) {</div>
 <div class="line">        usleep(10000);</div>
 <div class="line">    }</div>
-<div class="line">    // Signal to user that rules and keys was updated</div>
+<div class="line">    <span class="comment">// Signal to user that rules and keys was updated</span></div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line">// Usage (for every readed Digital Certificate)</div>
+<div class="line"><span class="comment">// Usage (for every readed Digital Certificate)</span></div>
 <div class="line"> </div>
-<div class="line">if (!verifier.verifyMinSdkVersion()) {</div>
-<div class="line">  logger.error(&quot;Minimum SDK version does not match&quot;);</div>
+<div class="line"><span class="keywordflow">if</span> (!verifier.verifyMinSdkVersion()) {</div>
+<div class="line">  logger.error(<span class="stringliteral">&quot;Minimum SDK version does not match&quot;</span>);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">std::string qrCode = &quot;Raw qr code data starting with HC1:&quot;;</div>
+<div class="line"><span class="comment">// Setup scan mode</span></div>
+<div class="line">verifier.setScanMode(SCAN_MODE_2G);</div>
 <div class="line"> </div>
-<div class="line">// Decode and validate the qr code data.</div>
-<div class="line">// The result will contain all the details of the validated object</div>
+<div class="line">std::string qrCode = <span class="stringliteral">&quot;Raw qr code data starting with HC1:&quot;</span>;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Decode and validate the qr code data.</span></div>
+<div class="line"><span class="comment">// The result will contain all the details of the validated object</span></div>
 <div class="line">CertificateSimple result = verifier.verify(qrCode);</div>
 <div class="line"> </div>
-<div class="line">enum CertificateStatus status = result.certificateStatus;</div>
+<div class="line"><span class="keyword">enum</span> CertificateStatus status = result.certificateStatus;</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
 Rules and Keys storage</h3>
 <p>Rules and Keys storage are mandatory services and must be implemented using IRulesStorage and IKeysStorage interfaces.</p>
-<p>SDK provide example implementations to store Rules and Keys in memory, (RulesStorageMemory and KeysStorageMemory) but you can implement storage in File or in Database.</p>
+<p>SDK provide full working example implementations to store Rules and Keys in memory, (<code>examples/rules-storage/RulesStorageMemory.hpp /.cpp</code> and <code>examples/keys-storage/KeysStorageMemory.hpp /.cpp</code>) but you can implement storage in File or in Database.</p>
 <p>Interfaces declare methods to:</p><ul>
 <li>store Rule or Key without transaction</li>
 <li>store Rules or Keys in transaction, to use "old" Rules or Keys until update is done</li>
@@ -192,17 +215,20 @@ Rules and Keys storage</h3>
 <h3><a class="anchor" id="autotoc_md8"></a>
 Rules and Keys provider</h3>
 <p>Rules and Keys update provider are an optional services used to update Keys and Rules and can be implemented using IRulesProvider, IKeysProbider or IRulesKeysProvider interfaces.</p>
-<p>SDK provide example implementations to update Rules and Keys from Italian provider, (RulesProviderItaly and KeysProviderItaly) but you can implement provider to get Rules or Keys from other states or by your custom provider.</p>
+<p>SDK provide full working example implementations to update Rules and Keys from Italian provider, (<code>examples/rules-provider/RulesProviderItaly.hpp /.cpp</code> and <code>examples/keys-provider/KeysProviderItaly.hpp /.cpp</code>) but you can implement provider to get Rules or Keys from other states or by your custom provider.</p>
 <p>Interfaces declare methods to refresh Rules or Keys or All (IRulesKeysProvider).</p>
 <p>Interface methods request instance of Rules or Keys storage interface as described above.</p>
 <h3><a class="anchor" id="autotoc_md9"></a>
 Logger</h3>
 <p>SDK contemplate use of logger with interface ILogger, but you can easily set a NULL pointer to this to not have log or implement you logger.</p>
-<p>We provide example implementation of standard output logger.</p>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<p>SDK provide example implementation of standard output logger (<code>examples/loggers/LoggerStdout.hpp / .cpp</code>).</p>
+<h2><a class="anchor" id="autotoc_md10"></a>
+Application examples</h2>
+<p>SDK provides also example of C++ (<code>examples/verificaC19-sdk-example.cpp</code>) and C (<code>examples/c/verificaC19-sdk-example.c</code>) applications.</p>
+<h3><a class="anchor" id="autotoc_md11"></a>
 Disclaimer</h3>
 <p>This library is <b>not</b> an official implementation, therefore its use may be subject to restrictions by some countries regulations. The author assumes no responsibility for any unauthorized use of the library and no warranties about the correctness of the implementation, as better stated in the License.</p>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
 Licensing</h3>
 <p>Licensed under the <b>Apache License, Version 2.0</b> (the "License"); you may not use this file except in compliance with the License.</p>
 <p>You may obtain a copy of the License at <a href="https://www.apache.org/licenses/LICENSE-2.0">https://www.apache.org/licenses/LICENSE-2.0</a>.</p>
