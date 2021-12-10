@@ -27,7 +27,9 @@ class DGCRulesKeysUpdater {
 public:
 
 	/**
-	 * @param intervalSeconds Interval in second to check for updated Rules or Keys
+	 * @param intervalSeconds Interval in seconds to check for updated Rules or Keys,
+	 *                        will be automatically corrected to 4 hours if lesser than 4 hours
+	 *                        or to 24 hours if greater than 24 hours
 	 *
 	 * @param rulesProvider Implementation of Rules Provider service, used to retreive
 	 *                     rules from backend provider
@@ -48,7 +50,9 @@ public:
 			IKeysProvider* keysProvider, IKeysStorage* keysStorage, ILogger* logger);
 
 	/**
-	 * @param intervalSeconds Interval in second to check for updated Rules or Keys
+	 * @param intervalSeconds Interval in seconds to check for updated Rules or Keys,
+	 *                        will be automatically corrected to 4 hours if lesser than 4 hours
+	 *                        or to 24 hours if greater than 24 hours
 	 *
 	 * @param rulesKeysProvider Implementation of Rules and Keys Provider service,
 	 *                          used to retreive rules and keys from backend provider

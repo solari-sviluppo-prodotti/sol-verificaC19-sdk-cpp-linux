@@ -30,6 +30,15 @@ DGCRulesKeysUpdater::DGCRulesKeysUpdater(int intervalSeconds,
 		m_logger = new LoggerNull();
 	}
 
+	// set minimum update interval to 4 hours
+	if (m_intervalSeconds < 14400) {
+		m_intervalSeconds = 14400;
+	}
+	// set maximum update interval to 24 hours
+	if (m_intervalSeconds > 86400) {
+		m_intervalSeconds = 86400;
+	}
+
 	pthread_attr_t attrUpdater;
 	pthread_attr_init(&attrUpdater);
 	pthread_create(&m_threadUpdater, &attrUpdater, updaterThread, this);
@@ -46,6 +55,15 @@ DGCRulesKeysUpdater::DGCRulesKeysUpdater(int intervalSeconds,
 				m_forceUpdateRules(false), m_forceUpdateKeys(false) {
 	if (m_logger == NULL) {
 		m_logger = new LoggerNull();
+	}
+
+	// set minimum update interval to 4 hours
+	if (m_intervalSeconds < 14400) {
+		m_intervalSeconds = 14400;
+	}
+	// set maximum update interval to 24 hours
+	if (m_intervalSeconds > 86400) {
+		m_intervalSeconds = 86400;
 	}
 
 	pthread_attr_t attrUpdater;
