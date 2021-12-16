@@ -10,11 +10,10 @@
  *
  */
 enum CertificateStatus {
-	NOT_VALID,
-	NOT_VALID_YET,
-	VALID,
-	PARTIALLY_VALID,
-	NOT_EU_DCC
+	NOT_VALID = 0,
+	NOT_VALID_YET = 1,
+	VALID = 2,
+	NOT_EU_DCC = 4
 };
 
 typedef enum CertificateStatus CertificateStatus;

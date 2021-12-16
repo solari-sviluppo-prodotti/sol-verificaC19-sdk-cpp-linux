@@ -710,7 +710,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						m_logger->info("Digital certificate of %s partially valid (%d: %d - %d)",
 								certificate.vaccination.dateOfVaccination.c_str(),
 								days, startDay, endDay);
-						certificateSimple.certificateStatus = PARTIALLY_VALID;
+						certificateSimple.certificateStatus = VALID;
 						break;
 					}
 					certificateSimple.certificateStatus = VALID;
@@ -777,7 +777,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) partially valid",
 								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
 								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
-						certificateSimple.certificateStatus = PARTIALLY_VALID;
+						certificateSimple.certificateStatus = VALID;
 						break;
 					}
 					certificateSimple.certificateStatus = VALID;

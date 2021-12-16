@@ -24,7 +24,6 @@ static void logCertificate(const CertificateSimple& certificate, const ILogger& 
 		case NOT_VALID: certificateStatus = "NOT_VALID"; break;
 		case NOT_VALID_YET: certificateStatus = "NOT_VALID_YET"; break;
 		case VALID: certificateStatus = "VALID"; break;
-		case PARTIALLY_VALID: certificateStatus = "PARTIALLY_VALID"; break;
 		case NOT_EU_DCC: certificateStatus = "NOT_EU_DCC"; break;
 	}
 	logger.info("Certificate status: %s", certificateStatus.c_str());
