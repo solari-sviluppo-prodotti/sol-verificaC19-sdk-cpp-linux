@@ -694,10 +694,18 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					strptime(certificate.vaccination.dateOfVaccination.c_str(), "%Y-%m-%d", &vaccineDate);
 
 					// get vaccine day
-					time_t vaccineDay = mktime(&vaccineDate) / 3600 / 24;
+					time_t vaccineDay = (mktime(&vaccineDate) + 43200) / 3600 / 24;
 
 					long days = currentDay - vaccineDay;
-					if (days < startDay || days > endDay) {
+					if (days < startDay) {
+						// digital certificate not valid
+						m_logger->info("Digital certificate of %s not valid yet (%d: %d - %d)",
+								certificate.vaccination.dateOfVaccination.c_str(),
+								days, startDay, endDay);
+						certificateSimple.certificateStatus = NOT_VALID_YET;
+						break;
+					}
+					if (days > endDay) {
 						// digital certificate not valid
 						m_logger->info("Digital certificate of %s not valid (%d: %d - %d)",
 								certificate.vaccination.dateOfVaccination.c_str(),
@@ -746,7 +754,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					strptime(certificate.recoveryStatement.certificateValidFrom.c_str(), "%Y-%m-%d", &recoveryFromDate);
 
 					// get recovery from day
-					time_t recoveryFromDay = mktime(&recoveryFromDate) / 3600 / 24;
+					time_t recoveryFromDay = (mktime(&recoveryFromDate) + 43200) / 3600 / 24;
 
 					// get recovery until date
 					struct tm recoveryUntilDate;
@@ -754,11 +762,11 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					strptime(certificate.recoveryStatement.certificateValidUntil.c_str(), "%Y-%m-%d", &recoveryUntilDate);
 
 					// get recovery to day
-					time_t recoveryUntilDay = mktime(&recoveryUntilDate) / 3600 / 24;
+					time_t recoveryUntilDay = (mktime(&recoveryUntilDate) + 43200) / 3600 / 24;
 
 					if (currentDay < recoveryFromDay) {
-						// certificate not yet valid
-						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) non yet valid",
+						// certificate not valid yet
+						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) not valid yet",
 								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
 								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
 						certificateSimple.certificateStatus = NOT_VALID_YET;
@@ -766,7 +774,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					}
 					if (currentDay > recoveryUntilDay && currentDay > recoveryFromDay + endDay) {
 						// certificate not valid
-						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) non valid",
+						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) not valid",
 								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
 								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
 						certificateSimple.certificateStatus = NOT_VALID;
@@ -805,7 +813,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 								break;
 							}
 							startHour = atoi(startHours.c_str());
-							endHour = atoi(endHours.c_str());
+							endHour = atoi(endHours.c_str()) - 1; // extreme excluded
 						}
 
 						else if (certificate.test.typeOfTest == RAPID) {
@@ -818,7 +826,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 								break;
 							}
 							startHour = atoi(startHours.c_str());
-							endHour = atoi(endHours.c_str());
+							endHour = atoi(endHours.c_str()) - 1; // extreme excluded
 						}
 
 						else {
@@ -852,7 +860,17 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						time_t recoveryTime = mktime(&testDateTime);
 
 						long hours = (currentTime - recoveryTime) / 3600;
-						if (hours < startHour || hours > endHour) {
+						if (currentTime < recoveryTime) hours--; // -1 .. -3599 / 3600 = 0, we want = -1
+						hours--; // for daylinght saving
+						if (hours < startHour) {
+							// digital certificate not valid
+							m_logger->info("Digital certificate of %s not valid yet (%d: %d - %d)",
+									certificate.test.dateTimeOfCollection.c_str(),
+									hours, startHour, endHour);
+							certificateSimple.certificateStatus = NOT_VALID_YET;
+							break;
+						}
+						if (hours > endHour) {
 							// digital certificate not valid
 							m_logger->info("Digital certificate of %s not valid (%d: %d - %d)",
 									certificate.test.dateTimeOfCollection.c_str(),
