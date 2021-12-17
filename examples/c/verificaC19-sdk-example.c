@@ -204,9 +204,9 @@ int main (int argc, char** argv) {
 		}
 		DGCVerifier_c_release(verifier);
 		DGCRulesKeysUpdater_c_release(rulesKeyUpdater);
-		RulesProviderTest_c_release(rulesProvider);
+		RulesProviderItaly_c_release(rulesProvider);
 		RulesStorageMemory_c_release(rulesStorage);
-		KeysProviderTest_c_release(keysProvider);
+		KeysProviderItaly_c_release(keysProvider);
 		KeysStorageMemory_c_release(keysStorage);
 	}
 

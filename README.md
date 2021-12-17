@@ -46,14 +46,14 @@ Optionally you can use a implementation of ILogger interface to log operations.
 You can simply instantiate and configure it:
 
 ```cpp
-#include <examples/keys-storage/KeysStorageMemory.hpp>
-#include <examples/rules-storage/RulesStorageMemory.hpp>
+#include <examples/keys-storage/KeysStorageFile.hpp>
+#include <examples/rules-storage/RulesStorageFile.hpp>
 #include <examples/loggers/LoggerStdout.hpp>
 #include <verificaC19-sdk/DGCVerifier.hpp>
 
 LoggerStdout logger(DEBUG);
-KeysStorageMemory keysStorage;
-RulesStorageMemory rulesStorage;
+KeysStorageFile keysStorage;
+RulesStorageFile rulesStorage;
 
 DGCVerifier verifier(&keysStorage, &rulesStorage, &logger);
 ```
@@ -91,18 +91,16 @@ Optionally you can use a implementation of ILogger interface to log operations.
 You can simply instantiate and configure it:
 
 ```cpp
-#include <examples/keys-storage/KeysStorageMemory.hpp>
-#include <examples/keys-provider/KeysProviderTest.hpp>
+#include <examples/keys-storage/KeysStorageFile.hpp>
 #include <examples/keys-provider/KeysProviderItaly.hpp>
-#include <examples/rules-storage/RulesStorageMemory.hpp>
-#include <examples/rules-provider/RulesProviderTest.hpp>
+#include <examples/rules-storage/RulesStorageFile.hpp>
 #include <examples/rules-provider/RulesProviderItaly.hpp>
 #include <examples/loggers/LoggerStdout.hpp>
 #include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
 
 LoggerStdout logger(DEBUG);
-KeysStorageMemory keysStorage;
-RulesStorageMemory rulesStorage;
+KeysStorageFile keysStorage;
+RulesStorageFile rulesStorage;
 KeysProviderItaly(&logger);
 RulesProviderItaly(&logger);
 
@@ -113,11 +111,9 @@ DGCRulesKeysUpdater rulesKeyUpdater(86400, &rulesProvider, &rulesStorage,
 so the complete example with rules and keys update and DGC verify is:
 
 ```cpp
-#include <examples/keys-storage/KeysStorageMemory.hpp>
-#include <examples/keys-provider/KeysProviderTest.hpp>
+#include <examples/keys-storage/KeysStorageFile.hpp>
 #include <examples/keys-provider/KeysProviderItaly.hpp>
-#include <examples/rules-storage/RulesStorageMemory.hpp>
-#include <examples/rules-provider/RulesProviderTest.hpp>
+#include <examples/rules-storage/RulesStorageFile.hpp>
 #include <examples/rules-provider/RulesProviderItaly.hpp>
 #include <examples/loggers/LoggerStdout.hpp>
 #include <verificaC19-sdk/DGCVerifier.hpp>
@@ -126,8 +122,8 @@ so the complete example with rules and keys update and DGC verify is:
 // Initialization (at startup)
 
 LoggerStdout logger(DEBUG);
-KeysStorageMemory keysStorage;
-RulesStorageMemory rulesStorage;
+KeysStorageFile keysStorage;
+RulesStorageFile rulesStorage;
 KeysProviderItaly keysProvider(&logger);
 RulesProviderItaly rulesProvider(&logger);
 
@@ -171,10 +167,15 @@ enum CertificateStatus status = result.certificateStatus;
 Rules and Keys storage are mandatory services and must be implemented using
 IRulesStorage and IKeysStorage interfaces.
 
-SDK provide full working example implementations to store Rules and Keys in memory,
+SDK provide:
+- full working example implementations to store Rules and Keys in memory,
 (`examples/rules-storage/RulesStorageMemory.hpp /.cpp` and
  `examples/keys-storage/KeysStorageMemory.hpp /.cpp`)
- but you can implement storage in File or in Database.
+- full working example implementations to store Rules and Keys in json File,
+(`examples/rules-storage/RulesStorageFile.hpp /.cpp` and
+ `examples/keys-storage/KeysStorageFile.hpp /.cpp`)
+
+but you can implement your storage in File or in Database.
 
 Interfaces declare methods to:
 - store Rule or Key without transaction

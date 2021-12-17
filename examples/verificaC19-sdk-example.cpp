@@ -4,6 +4,10 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
+#include <cstring>
+#include <sstream>
+#include <fstream>
+
 #include <examples/keys-storage/KeysStorageMemory.hpp>
 #include <examples/keys-provider/KeysProviderTest.hpp>
 #include <examples/keys-provider/KeysProviderItaly.hpp>
