@@ -7,8 +7,6 @@
 #include <verificaC19-sdk/interfaces/IRulesKeysProvider.hpp>
 #include <verificaC19-sdk/interfaces/ILogger.hpp>
 
-#ifdef __cplusplus
-
 #include <pthread.h>
 
 namespace verificaC19Sdk {
@@ -165,67 +163,14 @@ typedef void (*pfDGCRulesKeysUpdater_forceUpdateAll)(DGCRulesKeysUpdater*);
 bool DGCRulesKeysUpdater_isUpdated(DGCRulesKeysUpdater* dgcRulesKeysUpdater);
 typedef bool (*pfDGCRulesKeysUpdater_isUpdated)(DGCRulesKeysUpdater*);
 
-}
+} // extern "C"
 
 } // namespace verificaC19Sdk
 
-#endif // #ifdef __cplusplus
-
-#ifdef __cplusplus
 extern "C" {
-#endif
 
-/**
- * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
- */
-void* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
-		void* rulesProvider, void* rulesStorage,
-		void* keysProvider, void* keysStorage, void* logger);
-typedef void* (*pfDGCRulesKeysUpdaterRulesAndKeys_c_create)(int, void*, void*,
-		void*, void*, void*);
+#include <verificaC19-sdk/DGCRulesKeysUpdater.h>
 
-/**
- * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
- */
-void* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
-		void* rulesKeysProvider, void* rulesStorage,
-		void* keysStorage, void* logger);
-typedef void* (*pfDGCRulesKeysUpdaterRulesKeys_c_create)(int, void*,
-		void*, void*, void*);
-
-/**
- * DGCRulesKeysUpdater destructor interface for C and for dynamic loading
- */
-void DGCRulesKeysUpdater_c_release(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_release)(void*);
-
-/**
- * DGCRulesKeysUpdater forceUpdateRules interface for C and for dynamic loading
- */
-void DGCRulesKeysUpdater_c_forceUpdateRules(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateRules)(void*);
-
-/**
- * DGCRulesKeysUpdater forceUpdateKeys interface for C and for dynamic loading
- */
-void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateKeys)(void*);
-
-/**
- * DGCRulesKeysUpdater forceUpdateAll interface for C and for dynamic loading
- */
-void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateAll)(void*);
-
-
-/**
- * DGCRulesKeysUpdater isUpdated interface for C and for dynamic loading
- */
-bool DGCRulesKeysUpdater_c_isUpdated(void* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_c_isUpdated)(void*);
-
-#ifdef __cplusplus
-}
-#endif
+} // extern "C"
 
 #endif // #ifndef DGC_RULES_KEYS_UPDATER_HPP

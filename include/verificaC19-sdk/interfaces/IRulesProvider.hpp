@@ -6,8 +6,6 @@
 
 #include <verificaC19-sdk/interfaces/IRulesStorage.hpp>
 
-#ifdef __cplusplus
-
 #include <string>
 
 namespace verificaC19Sdk {
@@ -30,7 +28,5 @@ public:
 };
 
 } // namespace verificaC19Sdk
-
-#endif // #ifdef __cplusplus
 
 #endif // #ifndef IRULES_PROVIDER_HPP

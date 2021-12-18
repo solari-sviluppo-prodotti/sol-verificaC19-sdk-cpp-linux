@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['givenname_4',['givenName',['../structCertificateSimple__c.html#a9651ce780baa336ca5b3a4e47f96db20',1,'CertificateSimple_c']]]
+  ['error_21',['error',['../classverificaC19Sdk_1_1ILogger.html#a21123a86a895c1f89709018480a13ff3',1,'verificaC19Sdk::ILogger']]]
 ];

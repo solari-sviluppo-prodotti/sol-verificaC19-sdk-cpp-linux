@@ -75,40 +75,33 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#ifndef ILOGGER_HPP</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#define ILOGGER_HPP</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">enum</span> LogLevel {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    NONE,</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    ERROR,</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    INFO,</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    DEBUG</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;};</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> LogLevel LogLevel;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;verificaC19-sdk/interfaces/LogLevel.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">typedef</span> enum ::LogLevel LogLevel;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1ILogger.html">   18</a></span>&#160;<span class="keyword">class </span><a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> {</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">typedef</span> enum ::LogLevel LogLevel;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">class </span>ILogger {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1ILogger.html#a21123a86a895c1f89709018480a13ff3">   29</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1ILogger.html#a21123a86a895c1f89709018480a13ff3">error</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> error(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1ILogger.html#a5cf1b973408f490e2d7d8ff82bfe0bcb">   38</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1ILogger.html#a5cf1b973408f490e2d7d8ff82bfe0bcb">info</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> info(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1ILogger.html#a6003dad27b7ebdf5f4f179f6f76e11be">   47</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1ILogger.html#a6003dad27b7ebdf5f4f179f6f76e11be">debug</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> debug(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef ILOGGER_HPP</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef ILOGGER_HPP</span></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1ILogger_html"><div class="ttname"><a href="classverificaC19Sdk_1_1ILogger.html">verificaC19Sdk::ILogger</a></div><div class="ttdef"><b>Definition:</b> ILogger.hpp:18</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1ILogger_html_a21123a86a895c1f89709018480a13ff3"><div class="ttname"><a href="classverificaC19Sdk_1_1ILogger.html#a21123a86a895c1f89709018480a13ff3">verificaC19Sdk::ILogger::error</a></div><div class="ttdeci">virtual void error(const std::string &amp;format,...) const =0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1ILogger_html_a5cf1b973408f490e2d7d8ff82bfe0bcb"><div class="ttname"><a href="classverificaC19Sdk_1_1ILogger.html#a5cf1b973408f490e2d7d8ff82bfe0bcb">verificaC19Sdk::ILogger::info</a></div><div class="ttdeci">virtual void info(const std::string &amp;format,...) const =0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1ILogger_html_a6003dad27b7ebdf5f4f179f6f76e11be"><div class="ttname"><a href="classverificaC19Sdk_1_1ILogger.html#a6003dad27b7ebdf5f4f179f6f76e11be">verificaC19Sdk::ILogger::debug</a></div><div class="ttdeci">virtual void debug(const std::string &amp;format,...) const =0</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

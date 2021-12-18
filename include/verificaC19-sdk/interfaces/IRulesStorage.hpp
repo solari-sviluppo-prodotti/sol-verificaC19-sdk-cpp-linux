@@ -4,8 +4,6 @@
 #ifndef IRULES_STORAGE_HPP
 #define IRULES_STORAGE_HPP
 
-#ifdef __cplusplus
-
 #include <string>
 
 namespace verificaC19Sdk {
@@ -97,7 +95,5 @@ public:
 };
 
 } // namespace verificaC19Sdk
-
-#endif // #ifdef __cplusplus
 
 #endif // #ifndef IRULES_STORAGE_HPP

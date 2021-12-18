@@ -4,26 +4,12 @@
 #ifndef CERTIFICATE_STATUS_HPP
 #define CERTIFICATE_STATUS_HPP
 
-/**
- *
- * This enum class defines all the possible status of certifications after their verification.
- *
- */
-enum CertificateStatus {
-	NOT_VALID = 0,
-	NOT_VALID_YET = 1,
-	VALID = 2,
-	NOT_EU_DCC = 4
-};
+#include <verificaC19-sdk/models/CertificateStatus.h>
 
-typedef enum CertificateStatus CertificateStatus;
-
-#ifdef __cplusplus
 namespace verificaC19Sdk {
 
 typedef enum ::CertificateStatus CertificateStatus;
 
 } // namespace verificaC19Sdk
-#endif
 
 #endif // #ifndef CERTIFICATE_STATUS_HPP

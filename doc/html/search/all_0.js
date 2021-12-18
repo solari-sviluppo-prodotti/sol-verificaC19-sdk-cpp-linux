@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['certificatesimple_5fc_0',['CertificateSimple_c',['../structCertificateSimple__c.html',1,'']]],
-  ['certificatestatus_1',['certificateStatus',['../structCertificateSimple__c.html#aac7e6c4528b8d83910f59d7bb10936bc',1,'CertificateSimple_c']]]
+  ['beginupdatingkeys_0',['beginUpdatingKeys',['../classverificaC19Sdk_1_1IKeysStorage.html#a9e377ecea8dbba352a2ee6d0b84e722e',1,'verificaC19Sdk::IKeysStorage']]],
+  ['beginupdatingrules_1',['beginUpdatingRules',['../classverificaC19Sdk_1_1IRulesStorage.html#ad13fbb29a46b811a5111d6cf91b46dff',1,'verificaC19Sdk::IRulesStorage']]]
 ];

@@ -4,16 +4,16 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
-#include <examples/keys-storage/KeysStorageMemory.hpp>
-#include <examples/keys-provider/KeysProviderTest.hpp>
-#include <examples/keys-provider/KeysProviderItaly.hpp>
-#include <examples/rules-storage/RulesStorageMemory.hpp>
-#include <examples/rules-provider/RulesProviderTest.hpp>
-#include <examples/rules-provider/RulesProviderItaly.hpp>
-#include <examples/loggers/LoggerStdout.hpp>
+#include <examples/keys-storage/KeysStorageMemory.h>
+#include <examples/keys-provider/KeysProviderTest.h>
+#include <examples/keys-provider/KeysProviderItaly.h>
+#include <examples/rules-storage/RulesStorageMemory.h>
+#include <examples/rules-provider/RulesProviderTest.h>
+#include <examples/rules-provider/RulesProviderItaly.h>
+#include <examples/loggers/LoggerStdout.h>
 
-#include <verificaC19-sdk/DGCVerifier.hpp>
-#include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
+#include <verificaC19-sdk/DGCVerifier.h>
+#include <verificaC19-sdk/DGCRulesKeysUpdater.h>
 
 static void logCertificate(const struct CertificateSimple_c* certificate, const void* logger) {
 	LoggerStdout_c_info(logger, "---------- Certificate log ----------");

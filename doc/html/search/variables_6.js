@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['standardisedfamilyname_18',['standardisedFamilyName',['../structCertificateSimple__c.html#a88ecc5afa17d199d42efe2b1f3747f88',1,'CertificateSimple_c']]],
-  ['standardisedgivenname_19',['standardisedGivenName',['../structCertificateSimple__c.html#a51b6c093abd796c78b7c75de3c6aab79',1,'CertificateSimple_c']]]
+  ['person_143',['person',['../classverificaC19Sdk_1_1CertificateModel.html#a14cf8918f36a6213d22175aa4c34bc85',1,'verificaC19Sdk::CertificateModel::person()'],['../structCertificateSimple__c.html#a11deb034d0d69bdb92ed11be716a5a86',1,'CertificateSimple_c::person()'],['../classverificaC19Sdk_1_1CertificateSimple.html#ad6fe718620ae074c57104e70fd202b06',1,'verificaC19Sdk::CertificateSimple::person()']]]
 ];

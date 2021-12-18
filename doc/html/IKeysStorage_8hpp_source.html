@@ -75,41 +75,47 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#ifndef IKEYS_STORAGE_HPP</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#define IKEYS_STORAGE_HPP</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">class </span>IKeysStorage {</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a> {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> std::string getKey(<span class="keyword">const</span> std::string&amp; kid) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> beginUpdatingKeys() = 0;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> storeKey(<span class="keyword">const</span> std::string&amp; kid, <span class="keyword">const</span> std::string&amp; ecx) = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> commitUpdatedKeys() = 0;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> rollbackUpdatedKeys() = 0;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> isUpdating() = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setLastStoredKeyToken(std::string&amp; token) = 0;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">virtual</span> std::string getLastStoredKeyToken() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">virtual</span> time_t lastUpdate() = 0;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#a9cde0e7b6cd229d4c7d3ff6fa5505e30">   25</a></span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#a9cde0e7b6cd229d4c7d3ff6fa5505e30">getKey</a>(<span class="keyword">const</span> std::string&amp; kid) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#a9e377ecea8dbba352a2ee6d0b84e722e">   30</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#a9e377ecea8dbba352a2ee6d0b84e722e">beginUpdatingKeys</a>() = 0;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#a3452f39a1ff50a986fde73ee1a49b982">   40</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#a3452f39a1ff50a986fde73ee1a49b982">storeKey</a>(<span class="keyword">const</span> std::string&amp; kid, <span class="keyword">const</span> std::string&amp; ecx) = 0;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#ad7fd0bebb3292e613367e6c0e59f9637">   45</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#ad7fd0bebb3292e613367e6c0e59f9637">commitUpdatedKeys</a>() = 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#acc77de09c6787a877a0857ea8807a876">   50</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#acc77de09c6787a877a0857ea8807a876">rollbackUpdatedKeys</a>() = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#a35c83b465c71bdb8b821fc7958214f9a">   57</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#a35c83b465c71bdb8b821fc7958214f9a">isUpdating</a>() = 0;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#a303a09f000cbf820e3b78ed6adc01ab9">   64</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#a303a09f000cbf820e3b78ed6adc01ab9">setLastStoredKeyToken</a>(std::string&amp; token) = 0;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#a4715558e3005beb1b620c54dd8ee1eb0">   71</a></span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#a4715558e3005beb1b620c54dd8ee1eb0">getLastStoredKeyToken</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1IKeysStorage.html#ae2e956e7059e2c121d6d144fc778b785">   78</a></span>&#160;    <span class="keyword">virtual</span> time_t <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html#ae2e956e7059e2c121d6d144fc778b785">lastUpdate</a>() = 0;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef IKEYS_STORAGE_HPP</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef IKEYS_STORAGE_HPP</span></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html">verificaC19Sdk::IKeysStorage</a></div><div class="ttdef"><b>Definition:</b> IKeysStorage.hpp:14</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_a303a09f000cbf820e3b78ed6adc01ab9"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#a303a09f000cbf820e3b78ed6adc01ab9">verificaC19Sdk::IKeysStorage::setLastStoredKeyToken</a></div><div class="ttdeci">virtual void setLastStoredKeyToken(std::string &amp;token)=0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_a3452f39a1ff50a986fde73ee1a49b982"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#a3452f39a1ff50a986fde73ee1a49b982">verificaC19Sdk::IKeysStorage::storeKey</a></div><div class="ttdeci">virtual void storeKey(const std::string &amp;kid, const std::string &amp;ecx)=0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_a35c83b465c71bdb8b821fc7958214f9a"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#a35c83b465c71bdb8b821fc7958214f9a">verificaC19Sdk::IKeysStorage::isUpdating</a></div><div class="ttdeci">virtual bool isUpdating()=0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_a4715558e3005beb1b620c54dd8ee1eb0"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#a4715558e3005beb1b620c54dd8ee1eb0">verificaC19Sdk::IKeysStorage::getLastStoredKeyToken</a></div><div class="ttdeci">virtual std::string getLastStoredKeyToken() const =0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_a9cde0e7b6cd229d4c7d3ff6fa5505e30"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#a9cde0e7b6cd229d4c7d3ff6fa5505e30">verificaC19Sdk::IKeysStorage::getKey</a></div><div class="ttdeci">virtual std::string getKey(const std::string &amp;kid) const =0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_a9e377ecea8dbba352a2ee6d0b84e722e"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#a9e377ecea8dbba352a2ee6d0b84e722e">verificaC19Sdk::IKeysStorage::beginUpdatingKeys</a></div><div class="ttdeci">virtual void beginUpdatingKeys()=0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_acc77de09c6787a877a0857ea8807a876"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#acc77de09c6787a877a0857ea8807a876">verificaC19Sdk::IKeysStorage::rollbackUpdatedKeys</a></div><div class="ttdeci">virtual void rollbackUpdatedKeys()=0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_ad7fd0bebb3292e613367e6c0e59f9637"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#ad7fd0bebb3292e613367e6c0e59f9637">verificaC19Sdk::IKeysStorage::commitUpdatedKeys</a></div><div class="ttdeci">virtual void commitUpdatedKeys()=0</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html_ae2e956e7059e2c121d6d144fc778b785"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html#ae2e956e7059e2c121d6d144fc778b785">verificaC19Sdk::IKeysStorage::lastUpdate</a></div><div class="ttdeci">virtual time_t lastUpdate()=0</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

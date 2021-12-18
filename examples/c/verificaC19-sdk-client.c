@@ -8,14 +8,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <examples/keys-storage/KeysStorageFile.hpp>
-#include <examples/keys-provider/KeysProviderItaly.hpp>
-#include <examples/rules-storage/RulesStorageFile.hpp>
-#include <examples/rules-provider/RulesProviderItaly.hpp>
-#include <examples/loggers/LoggerStdout.hpp>
+#include <examples/keys-storage/KeysStorageFile.h>
+#include <examples/keys-provider/KeysProviderItaly.h>
+#include <examples/rules-storage/RulesStorageFile.h>
+#include <examples/rules-provider/RulesProviderItaly.h>
+#include <examples/loggers/LoggerStdout.h>
 
-#include <verificaC19-sdk/DGCVerifier.hpp>
-#include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
+#include <verificaC19-sdk/DGCVerifier.h>
+#include <verificaC19-sdk/DGCRulesKeysUpdater.h>
 
 static void logCertificate(const struct CertificateSimple_c* certificate, const void* logger) {
 	LoggerStdout_c_info(logger, "---------- Certificate log ----------");

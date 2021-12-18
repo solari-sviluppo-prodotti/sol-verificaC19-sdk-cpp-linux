@@ -80,87 +80,68 @@ $(function() {
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;verificaC19-sdk/interfaces/ILogger.hpp&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;verificaC19-sdk/models/CertificateSimple.hpp&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define SCAN_MODE_2G   &quot;2G&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define SCAN_MODE_3G   &quot;3G&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define DGCVerifier_SDK_Version &quot;1.0.4&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define DGCVerifier_SDK_Version &quot;1.0.4&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1DGCVerifier.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a> {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">class </span>DGCVerifier {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    DGCVerifier(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> setScanMode(<span class="keyword">const</span> std::string&amp; scanMode);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">bool</span> verifyMinSdkVersion() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    CertificateSimple verify(<span class="keyword">const</span> std::string&amp; dgcQr) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1DGCVerifier.html#a0b9ba363015d882b6e2c4d5f599612c3">   32</a></span>&#160;    <a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html#a0b9ba363015d882b6e2c4d5f599612c3">DGCVerifier</a>(<a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a>* keysStorage, <a class="code" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a>* rulesStorage, <a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a>* logger);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1DGCVerifier.html#a13bf7495ae61d9e7cab3ecae574975cc">   40</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html#a13bf7495ae61d9e7cab3ecae574975cc">setScanMode</a>(<span class="keyword">const</span> std::string&amp; scanMode);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1DGCVerifier.html#a51cb722a15d4f92e9658fda9a00c87e7">   47</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html#a51cb722a15d4f92e9658fda9a00c87e7">verifyMinSdkVersion</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1DGCVerifier.html#a807a55900ed4a05d5c0cc3f119d79617">   56</a></span>&#160;    <a class="code" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a> <a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html#a807a55900ed4a05d5c0cc3f119d79617">verify</a>(<span class="keyword">const</span> std::string&amp; dgcQr) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    std::string m_scanMode;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a>* m_keysStorage;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a>* m_rulesStorage;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a>* m_logger;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::string m_scanMode;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    IKeysStorage* m_keysStorage;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    IRulesStorage* m_rulesStorage;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    ILogger* m_logger;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}; <span class="comment">// class DGCVerifier</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">typedef</span> DGCVerifier* (*pfDGCVerifier_create)(IKeysStorage*, IRulesStorage*, ILogger*);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">void</span> DGCVerifier_release(DGCVerifier* dgcVerifier);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">typedef</span> void (*pfDGCVerifier_release)(DGCVerifier*);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">bool</span> DGCVerifier_verifyMinSdkVersion(DGCVerifier* dgcVerifier);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">typedef</span> bool (*pfDGCVerifier_verifyMinSdkVersion)(DGCVerifier*);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keywordtype">void</span> DGCVerifier_setScanMode(DGCVerifier* dgcVerifier, <span class="keyword">const</span> std::string&amp; scanMode);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">typedef</span> void (*pfDGCVerifier_setScanMode)(DGCVerifier*, <span class="keyword">const</span> std::string&amp;);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, <span class="keyword">const</span> std::string&amp; dgcQr);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword">typedef</span> CertificateSimple (*pfDGCVerifier_verify)(DGCVerifier*, <span class="keyword">const</span> std::string);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifdef __cplusplus</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keywordtype">void</span>* DGCVerifier_c_create(<span class="keywordtype">void</span>* keysStorage, <span class="keywordtype">void</span>* rulesStorage, <span class="keywordtype">void</span>* logger);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">void</span>* (*pfDGCVerifier_c_create)(<span class="keywordtype">void</span>*, <span class="keywordtype">void</span>*, <span class="keywordtype">void</span>*);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keywordtype">void</span> DGCVerifier_c_release(<span class="keywordtype">void</span>* dgcVerifier);</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="keyword">typedef</span> void (*pfDGCVerifier_c_release)(<span class="keywordtype">void</span>*);</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="keywordtype">bool</span> DGCVerifier_c_verifyMinSdkVersion(<span class="keywordtype">void</span>* dgcVerifier);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keyword">typedef</span> bool (*pfDGCVerifier_c_verifyMinSdkVersion)(<span class="keywordtype">void</span>*);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keywordtype">void</span> DGCVerifier_c_setScanMode(<span class="keywordtype">void</span>* dgcVerifier, <span class="keyword">const</span> <span class="keywordtype">char</span>* scanMode);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keyword">typedef</span> void (*pfDGCVerifier_c_setScanMode)(<span class="keywordtype">void</span>*, <span class="keyword">const</span> <span class="keywordtype">char</span>*);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="keyword">struct </span><a class="code" href="structCertificateSimple__c.html">CertificateSimple_c</a>* DGCVerifier_c_verify(<span class="keywordtype">void</span>* dgcVerifier, <span class="keyword">const</span> <span class="keywordtype">char</span>* dgcQr);</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structCertificateSimple__c.html">CertificateSimple_c</a>* (*pfDGCVerifier_c_verify)(<span class="keywordtype">void</span>*, <span class="keyword">const</span> <span class="keywordtype">char</span>*);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keywordtype">void</span> CertificateSimple_c_release(<span class="keyword">struct</span> <a class="code" href="structCertificateSimple__c.html">CertificateSimple_c</a>* certificate);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keyword">typedef</span> void (*pfCertificateSimple_c_release)(<span class="keyword">struct </span><a class="code" href="structCertificateSimple__c.html">CertificateSimple_c</a>*);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef DGC_VERIFIER_HPP</span></div>
-<div class="ttc" id="astructCertificateSimple__c_html"><div class="ttname"><a href="structCertificateSimple__c.html">CertificateSimple_c</a></div><div class="ttdef"><b>Definition:</b> CertificateSimple.hpp:82</div></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}; <span class="comment">// class DGCVerifier</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>* DGCVerifier_create(<a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a>* keysStorage, <a class="code" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a>* rulesStorage, <a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a>* logger);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">typedef</span> <a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>* (*pfDGCVerifier_create)(<a class="code" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a>*, <a class="code" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a>*, <a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a>*);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span> DGCVerifier_release(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>* dgcVerifier);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">typedef</span> void (*pfDGCVerifier_release)(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>*);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">bool</span> DGCVerifier_verifyMinSdkVersion(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>* dgcVerifier);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">typedef</span> bool (*pfDGCVerifier_verifyMinSdkVersion)(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>*);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">void</span> DGCVerifier_setScanMode(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>* dgcVerifier, <span class="keyword">const</span> std::string&amp; scanMode);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">typedef</span> void (*pfDGCVerifier_setScanMode)(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>*, <span class="keyword">const</span> std::string&amp;);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<a class="code" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a> DGCVerifier_verify(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>* dgcVerifier, <span class="keyword">const</span> std::string&amp; dgcQr);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">typedef</span> <a class="code" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a> (*pfDGCVerifier_verify)(<a class="code" href="classverificaC19Sdk_1_1DGCVerifier.html">DGCVerifier</a>*, <span class="keyword">const</span> std::string);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;} <span class="comment">// extern &quot;C&quot;</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#include &lt;verificaC19-sdk/DGCVerifier.h&gt;</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;} <span class="comment">// extern &quot;C&quot;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef DGC_VERIFIER_HPP</span></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1CertificateSimple_html"><div class="ttname"><a href="classverificaC19Sdk_1_1CertificateSimple.html">verificaC19Sdk::CertificateSimple</a></div><div class="ttdef"><b>Definition:</b> CertificateSimple.hpp:42</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1DGCVerifier_html"><div class="ttname"><a href="classverificaC19Sdk_1_1DGCVerifier.html">verificaC19Sdk::DGCVerifier</a></div><div class="ttdef"><b>Definition:</b> DGCVerifier.hpp:19</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1DGCVerifier_html_a0b9ba363015d882b6e2c4d5f599612c3"><div class="ttname"><a href="classverificaC19Sdk_1_1DGCVerifier.html#a0b9ba363015d882b6e2c4d5f599612c3">verificaC19Sdk::DGCVerifier::DGCVerifier</a></div><div class="ttdeci">DGCVerifier(IKeysStorage *keysStorage, IRulesStorage *rulesStorage, ILogger *logger)</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1DGCVerifier_html_a13bf7495ae61d9e7cab3ecae574975cc"><div class="ttname"><a href="classverificaC19Sdk_1_1DGCVerifier.html#a13bf7495ae61d9e7cab3ecae574975cc">verificaC19Sdk::DGCVerifier::setScanMode</a></div><div class="ttdeci">void setScanMode(const std::string &amp;scanMode)</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1DGCVerifier_html_a51cb722a15d4f92e9658fda9a00c87e7"><div class="ttname"><a href="classverificaC19Sdk_1_1DGCVerifier.html#a51cb722a15d4f92e9658fda9a00c87e7">verificaC19Sdk::DGCVerifier::verifyMinSdkVersion</a></div><div class="ttdeci">bool verifyMinSdkVersion() const</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1DGCVerifier_html_a807a55900ed4a05d5c0cc3f119d79617"><div class="ttname"><a href="classverificaC19Sdk_1_1DGCVerifier.html#a807a55900ed4a05d5c0cc3f119d79617">verificaC19Sdk::DGCVerifier::verify</a></div><div class="ttdeci">CertificateSimple verify(const std::string &amp;dgcQr) const</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IKeysStorage_html"><div class="ttname"><a href="classverificaC19Sdk_1_1IKeysStorage.html">verificaC19Sdk::IKeysStorage</a></div><div class="ttdef"><b>Definition:</b> IKeysStorage.hpp:14</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1ILogger_html"><div class="ttname"><a href="classverificaC19Sdk_1_1ILogger.html">verificaC19Sdk::ILogger</a></div><div class="ttdef"><b>Definition:</b> ILogger.hpp:18</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1IRulesStorage_html"><div class="ttname"><a href="classverificaC19Sdk_1_1IRulesStorage.html">verificaC19Sdk::IRulesStorage</a></div><div class="ttdef"><b>Definition:</b> IRulesStorage.hpp:39</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

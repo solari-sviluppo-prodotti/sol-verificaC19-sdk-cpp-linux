@@ -87,6 +87,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abf03f903c61b8caa1c2e3fb92c016c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a942922098a5ed6080ca1918d6b45a412"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCRulesKeysUpdater.html#a942922098a5ed6080ca1918d6b45a412">forceUpdateAll</a> ()</td></tr>
 <tr class="separator:a942922098a5ed6080ca1918d6b45a412"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d02a24b5d892f33acc790836526067d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCRulesKeysUpdater.html#a3d02a24b5d892f33acc790836526067d">isUpdated</a> () const</td></tr>
+<tr class="separator:a3d02a24b5d892f33acc790836526067d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements Rules and Keys update service</p>
@@ -144,7 +146,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">intervalSeconds</td><td>Interval in second to check for updated Rules or Keys</td></tr>
+    <tr><td class="paramname">intervalSeconds</td><td>Interval in seconds to check for updated Rules or Keys, will be automatically corrected to 4 hours if lesser than 4 hours or to 24 hours if greater than 24 hours</td></tr>
     <tr><td class="paramname">rulesProvider</td><td>Implementation of Rules Provider service, used to retreive rules from backend provider</td></tr>
     <tr><td class="paramname">rulesStorage</td><td>Implementation of Rules Storage service, used to store retreived rules</td></tr>
     <tr><td class="paramname">keysProvider</td><td>Implementation of Keys Provider service, used to retreive keys from backend provider</td></tr>
@@ -201,7 +203,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">intervalSeconds</td><td>Interval in second to check for updated Rules or Keys</td></tr>
+    <tr><td class="paramname">intervalSeconds</td><td>Interval in seconds to check for updated Rules or Keys, will be automatically corrected to 4 hours if lesser than 4 hours or to 24 hours if greater than 24 hours</td></tr>
     <tr><td class="paramname">rulesKeysProvider</td><td>Implementation of Rules and Keys Provider service, used to retreive rules and keys from backend provider</td></tr>
     <tr><td class="paramname">rulesStorage</td><td>Implementation of Rules Storage service, used to store retreived rules</td></tr>
     <tr><td class="paramname">keysStorage</td><td>Implementation of Keys Storage service, used to retreive key needed to verify Digital Certificate validity</td></tr>
@@ -264,6 +266,24 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Force update of rules </p>
+
+</div>
+</div>
+<a id="a3d02a24b5d892f33acc790836526067d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d02a24b5d892f33acc790836526067d">&#9670;&nbsp;</a></span>isUpdated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool verificaC19Sdk::DGCRulesKeysUpdater::isUpdated </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check if rules and keys are updated or need to wait for update Useful for first startup to wait to have almost a first set of rules and keys </p>
 
 </div>
 </div>

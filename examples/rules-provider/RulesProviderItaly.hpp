@@ -7,8 +7,6 @@
 #include <verificaC19-sdk/interfaces/IRulesProvider.hpp>
 #include <verificaC19-sdk/interfaces/ILogger.hpp>
 
-#ifdef __cplusplus
-
 #include <string>
 #include <map>
 
@@ -32,23 +30,10 @@ private:
 
 } // namespace verificaC19Sdk
 
-#endif // #ifdef __cplusplus
-
-#ifdef __cplusplus
 extern "C" {
-#endif
 
-void* RulesProviderItaly_c_create(void* logger);
-typedef void* (*pfRulesProviderItaly_c_create)(void*);
+#include <examples/rules-provider/RulesProviderItaly.h>
 
-void RulesProviderItaly_c_release(const void* rulesProviderItaly);
-typedef void (*pfRulesProviderItaly_c_release)(const void*);
-
-void RulesProviderItaly_c_refreshKeys(const void* rulesProviderItaly, void* rulesStorage);
-typedef void (*pfRulesProviderItaly_c_refreshRules)(const void*, void*);
-
-#ifdef __cplusplus
-}
-#endif
+} // extern "C"
 
 #endif // #ifndef RULES_PROVIDER_ITALY_HPP

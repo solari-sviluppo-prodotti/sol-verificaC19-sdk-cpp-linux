@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['timestamp_20',['timeStamp',['../structCertificateSimple__c.html#a26bfe32dae02b33c4ecc44d059414c48',1,'CertificateSimple_c']]]
+  ['recoverystatement_144',['recoveryStatement',['../classverificaC19Sdk_1_1CertificateModel.html#a94107ab2ffd1b53a3e89ce66002dafad',1,'verificaC19Sdk::CertificateModel']]]
 ];
