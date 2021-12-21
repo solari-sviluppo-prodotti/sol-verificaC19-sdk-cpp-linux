@@ -11,7 +11,7 @@
 namespace verificaC19Sdk {
 
 /**
- * Interface to implement Rules Provider service to retreive rules from backend
+ * Interface to implement Rules Provider service to retrieve rules from backend
  */
 class IRulesProvider {
 
@@ -21,7 +21,7 @@ public:
 	 * Refresh Rules requesting from backend and store in provided Rules storage
 	 *
 	 * @param rulesStorage Implementation of Rules Storage service, used to store
-	 *                     retreived rules
+	 *                     retrieved rules
 	 */
 	virtual void refreshRules(IRulesStorage* rulesStorage) const = 0;
 

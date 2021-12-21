@@ -11,7 +11,7 @@
 namespace verificaC19Sdk {
 
 /**
- * Interface to implement Key Provider service to retreive keys from backend
+ * Interface to implement Key Provider service to retrieve keys from backend
  */
 class IKeysProvider {
 
@@ -21,7 +21,7 @@ public:
 	 * Refresh Keys requesting from backend and store in provided Keys storage
 	 *
 	 * @param keysStorage Implementation of Keys Storage service, used to store
-	 *                    retreived keys
+	 *                    retrieved keys
 	 */
 	virtual void refreshKeys(IKeysStorage* keysStorage) const = 0;
 

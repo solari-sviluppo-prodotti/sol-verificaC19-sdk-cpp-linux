@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['manufacturer_45',['manufacturer',['../classverificaC19Sdk_1_1VaccinationModel.html#a58da65ba47642ca5d646adccd99d36e8',1,'verificaC19Sdk::VaccinationModel']]],
-  ['medicinalproduct_46',['medicinalProduct',['../classverificaC19Sdk_1_1VaccinationModel.html#a2b1b21a4a20d864b27a8af0fd0b89a4a',1,'verificaC19Sdk::VaccinationModel']]]
+  ['lastupdate_46',['lastUpdate',['../classverificaC19Sdk_1_1IKeysStorage.html#ae2e956e7059e2c121d6d144fc778b785',1,'verificaC19Sdk::IKeysStorage::lastUpdate()'],['../classverificaC19Sdk_1_1IRulesStorage.html#a36ca5ca5ba29e0ad611bdf555085e03d',1,'verificaC19Sdk::IRulesStorage::lastUpdate()']]],
+  ['logger_47',['Logger',['../structLogger.html',1,'']]]
 ];

@@ -924,23 +924,23 @@ CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string
 
 } // namespace verificaC19Sdk
 
-void* DGCVerifier_c_create(void* keysStorage, void* rulesStorage, void* logger) {
-	return DGCVerifier_create((verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::IRulesStorage*)rulesStorage, (verificaC19Sdk::ILogger*)logger);
+Verifier* DGCVerifier_c_create(KeysStorage* keysStorage, RulesStorage* rulesStorage, Logger* logger) {
+	return (Verifier*)DGCVerifier_create((verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::IRulesStorage*)rulesStorage, (verificaC19Sdk::ILogger*)logger);
 }
 
-void DGCVerifier_c_release(void* dgcVerifier) {
+void DGCVerifier_c_release(Verifier* dgcVerifier) {
 	DGCVerifier_release((verificaC19Sdk::DGCVerifier*)dgcVerifier);
 }
 
-bool DGCVerifier_c_verifyMinSdkVersion(void* dgcVerifier) {
+bool DGCVerifier_c_verifyMinSdkVersion(Verifier* dgcVerifier) {
 	return DGCVerifier_verifyMinSdkVersion((verificaC19Sdk::DGCVerifier*)dgcVerifier);
 }
 
-void DGCVerifier_c_setScanMode(void* dgcVerifier, const char* scanMode) {
+void DGCVerifier_c_setScanMode(Verifier* dgcVerifier, const char* scanMode) {
 	DGCVerifier_setScanMode((verificaC19Sdk::DGCVerifier*)dgcVerifier, std::string(scanMode));
 }
 
-struct CertificateSimple_c* DGCVerifier_c_verify(void* dgcVerifier, const char* dgcQr) {
+struct CertificateSimple_c* DGCVerifier_c_verify(Verifier* dgcVerifier, const char* dgcQr) {
 	verificaC19Sdk::CertificateSimple certificate = DGCVerifier_verify((verificaC19Sdk::DGCVerifier*)dgcVerifier, std::string(dgcQr));
 	struct CertificateSimple_c* certificate_c = (struct CertificateSimple_c*)calloc(1, sizeof(struct CertificateSimple_c));
 	certificate_c->person.standardisedFamilyName = (char*)calloc(1, certificate.person.standardisedFamilyName.length() + 1);

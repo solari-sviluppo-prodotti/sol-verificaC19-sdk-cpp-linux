@@ -12,7 +12,7 @@
 namespace verificaC19Sdk {
 
 /**
- * Interface to implement Rules and Key Provider service to retreive rules and keys from backend
+ * Interface to implement Rules and Key Provider service to retrieve rules and keys from backend
  */
 class IRulesKeysProvider : public IRulesProvider, IKeysProvider {
 
@@ -22,7 +22,7 @@ public:
 	 * Refresh Rules requesting from backend and store in provided Rules storage
 	 *
 	 * @param rulesStorage Implementation of Rules Storage service, used to store
-	 *                     retreived rules
+	 *                     retrieved rules
 	 */
 	virtual void refreshRules(IRulesStorage* rulesStorage) const { refreshAll(rulesStorage, NULL); }
 
@@ -30,7 +30,7 @@ public:
 	 * Refresh Keys requesting from backend and store in provided Keys storage
 	 *
 	 * @param keysStorage Implementation of Keys Storage service, used to store
-	 *                    retreived keys
+	 *                    retrieved keys
 	 */
 	virtual void refreshKeys(IKeysStorage* keysStorage) const { refreshAll(NULL, keysStorage); }
 
@@ -38,10 +38,10 @@ public:
 	 * Refresh Rules and Keys requesting from backend and store in provided Rules and Keys storage
 	 *
 	 * @param rulesStorage Implementation of Rules Storage service, used to store
-	 *                     retreived rules
+	 *                     retrieved rules
 	 *
 	 * @param keysStorage Implementation of Keys Storage service, used to store
-	 *                    retreived keys
+	 *                    retrieved keys
 	 */
 	virtual void refreshAll(IRulesStorage* rulesStorage, IKeysStorage* keysStorage) const = 0;
 

@@ -4,13 +4,17 @@
 #ifndef RULES_PROVIDER_TEST_H
 #define RULES_PROVIDER_TEST_H
 
-void* RulesProviderTest_c_create(void* logger);
-typedef void* (*pfRulesProviderTest_c_create)(void*);
+#include <verificaC19-sdk/interfaces/RulesProvider.h>
+#include <verificaC19-sdk/interfaces/RulesStorage.h>
+#include <verificaC19-sdk/interfaces/Logger.h>
 
-void RulesProviderTest_c_release(const void* rulesProviderTest);
-typedef void (*pfRulesProviderTest_c_release)(const void*);
+RulesProvider* RulesProviderTest_c_create(Logger* logger);
+typedef RulesProvider* (*pfRulesProviderTest_c_create)(Logger*);
 
-void RulesProviderTest_c_refreshRules(const void* rulesProviderTest, void* keysStorage);
-typedef void (*pfRulesProviderTest_c_refreshRules)(const void*, void*);
+void RulesProviderTest_c_release(const RulesProvider* rulesProviderTest);
+typedef void (*pfRulesProviderTest_c_release)(const RulesProvider*);
+
+void RulesProviderTest_c_refreshRules(const RulesProvider* rulesProviderTest, RulesStorage* keysStorage);
+typedef void (*pfRulesProviderTest_c_refreshRules)(const RulesProvider*, RulesStorage*);
 
 #endif // #ifndef RULES_PROVIDER_TEST_H

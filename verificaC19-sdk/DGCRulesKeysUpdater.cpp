@@ -210,38 +210,38 @@ bool DGCRulesKeysUpdater_isUpdated(DGCRulesKeysUpdater* dgcRulesKeysUpdater) {
 
 } // namespace verificaC19Sdk
 
-void* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
-		void* rulesProvider, void* rulesStorage,
-		void* keysProvider, void* keysStorage, void* logger) {
-	return new verificaC19Sdk::DGCRulesKeysUpdater(intervalSeconds,
+RulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
+		RulesProvider* rulesProvider, RulesStorage* rulesStorage,
+		KeysProvider* keysProvider, KeysStorage* keysStorage, Logger* logger) {
+	return (RulesKeysUpdater*)new verificaC19Sdk::DGCRulesKeysUpdater(intervalSeconds,
 			(verificaC19Sdk::IRulesProvider*)rulesProvider, (verificaC19Sdk::IRulesStorage*)rulesStorage,
 			(verificaC19Sdk::IKeysProvider*)keysProvider, (verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::ILogger*)logger);
 }
 
-void* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
-		void* rulesKeysProvider, void* rulesStorage,
-		void* keysStorage, void* logger) {
-	return new verificaC19Sdk::DGCRulesKeysUpdater(intervalSeconds,
+RulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
+		RulesKeysProvider* rulesKeysProvider, RulesStorage* rulesStorage,
+		KeysStorage* keysStorage, Logger* logger) {
+	return (RulesKeysUpdater*)new verificaC19Sdk::DGCRulesKeysUpdater(intervalSeconds,
 			(verificaC19Sdk::IRulesKeysProvider*)rulesKeysProvider, (verificaC19Sdk::IRulesStorage*)rulesStorage,
 			(verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::ILogger*)logger);
 }
 
-void DGCRulesKeysUpdater_c_release(void* dgcRulesKeysUpdater) {
+void DGCRulesKeysUpdater_c_release(RulesKeysUpdater* dgcRulesKeysUpdater) {
 	delete (verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater;
 }
 
-void DGCRulesKeysUpdater_c_forceUpdateRules(void* dgcRulesKeysUpdater) {
+void DGCRulesKeysUpdater_c_forceUpdateRules(RulesKeysUpdater* dgcRulesKeysUpdater) {
 	DGCRulesKeysUpdater_forceUpdateRules((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
 }
 
-void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater) {
+void DGCRulesKeysUpdater_c_forceUpdateKeys(RulesKeysUpdater* dgcRulesKeysUpdater) {
 	DGCRulesKeysUpdater_forceUpdateKeys((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
 }
 
-void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater) {
+void DGCRulesKeysUpdater_c_forceUpdateAll(RulesKeysUpdater* dgcRulesKeysUpdater) {
 	DGCRulesKeysUpdater_forceUpdateAll((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
 }
 
-bool DGCRulesKeysUpdater_c_isUpdated(void* dgcRulesKeysUpdater) {
+bool DGCRulesKeysUpdater_c_isUpdated(RulesKeysUpdater* dgcRulesKeysUpdater) {
 	return DGCRulesKeysUpdater_isUpdated((verificaC19Sdk::DGCRulesKeysUpdater*)dgcRulesKeysUpdater);
 }

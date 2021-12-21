@@ -4,13 +4,17 @@
 #ifndef RULES_PROVIDER_ITALY_H
 #define RULES_PROVIDER_ITALY_H
 
-void* RulesProviderItaly_c_create(void* logger);
-typedef void* (*pfRulesProviderItaly_c_create)(void*);
+#include <verificaC19-sdk/interfaces/RulesProvider.h>
+#include <verificaC19-sdk/interfaces/RulesStorage.h>
+#include <verificaC19-sdk/interfaces/Logger.h>
 
-void RulesProviderItaly_c_release(const void* rulesProviderItaly);
-typedef void (*pfRulesProviderItaly_c_release)(const void*);
+RulesProvider* RulesProviderItaly_c_create(Logger* logger);
+typedef RulesProvider* (*pfRulesProviderItaly_c_create)(Logger*);
 
-void RulesProviderItaly_c_refreshKeys(const void* rulesProviderItaly, void* rulesStorage);
-typedef void (*pfRulesProviderItaly_c_refreshRules)(const void*, void*);
+void RulesProviderItaly_c_release(const RulesProvider* rulesProviderItaly);
+typedef void (*pfRulesProviderItaly_c_release)(const RulesProvider*);
+
+void RulesProviderItaly_c_refreshKeys(const RulesProvider* rulesProviderItaly, RulesStorage* rulesStorage);
+typedef void (*pfRulesProviderItaly_c_refreshRules)(const RulesProvider*, RulesStorage*);
 
 #endif // #ifndef RULES_PROVIDER_ITALY_H

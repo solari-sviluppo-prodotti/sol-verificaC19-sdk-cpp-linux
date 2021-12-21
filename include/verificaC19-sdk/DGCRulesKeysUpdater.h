@@ -4,53 +4,62 @@
 #ifndef DGC_RULES_KEYS_UPDATER_H
 #define DGC_RULES_KEYS_UPDATER_H
 
-/**
- * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
- */
-void* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
-		void* rulesProvider, void* rulesStorage,
-		void* keysProvider, void* keysStorage, void* logger);
-typedef void* (*pfDGCRulesKeysUpdaterRulesAndKeys_c_create)(int, void*, void*,
-		void*, void*, void*);
+#include <verificaC19-sdk/interfaces/KeysProvider.h>
+#include <verificaC19-sdk/interfaces/KeysStorage.h>
+#include <verificaC19-sdk/interfaces/RulesProvider.h>
+#include <verificaC19-sdk/interfaces/RulesStorage.h>
+#include <verificaC19-sdk/interfaces/RulesKeysProvider.h>
+#include <verificaC19-sdk/interfaces/Logger.h>
+
+typedef struct {} RulesKeysUpdater;
 
 /**
  * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
  */
-void* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
-		void* rulesKeysProvider, void* rulesStorage,
-		void* keysStorage, void* logger);
-typedef void* (*pfDGCRulesKeysUpdaterRulesKeys_c_create)(int, void*,
-		void*, void*, void*);
+RulesKeysUpdater* DGCRulesKeysUpdaterRulesAndKeys_c_create(int intervalSeconds,
+		RulesProvider* rulesProvider, RulesStorage* rulesStorage,
+		KeysProvider* keysProvider, KeysStorage* keysStorage, Logger* logger);
+typedef RulesKeysUpdater* (*pfDGCRulesKeysUpdaterRulesAndKeys_c_create)(int, RulesProvider*, RulesStorage*,
+		KeysProvider*, KeysStorage*, Logger*);
+
+/**
+ * DGCRulesKeysUpdater constructor interface for C and for dynamic loading
+ */
+RulesKeysUpdater* DGCRulesKeysUpdaterRulesKeys_c_create(int intervalSeconds,
+		RulesKeysProvider* rulesKeysProvider, RulesStorage* rulesStorage,
+		KeysStorage* keysStorage, Logger* logger);
+typedef RulesKeysUpdater* (*pfDGCRulesKeysUpdaterRulesKeys_c_create)(int, RulesKeysProvider*,
+		RulesStorage*, KeysStorage*, Logger*);
 
 /**
  * DGCRulesKeysUpdater destructor interface for C and for dynamic loading
  */
-void DGCRulesKeysUpdater_c_release(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_release)(void*);
+void DGCRulesKeysUpdater_c_release(RulesKeysUpdater* dgcRulesKeysUpdater);
+typedef void (*pfDGCRulesKeysUpdater_c_release)(RulesKeysUpdater*);
 
 /**
  * DGCRulesKeysUpdater forceUpdateRules interface for C and for dynamic loading
  */
-void DGCRulesKeysUpdater_c_forceUpdateRules(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateRules)(void*);
+void DGCRulesKeysUpdater_c_forceUpdateRules(RulesKeysUpdater* dgcRulesKeysUpdater);
+typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateRules)(RulesKeysUpdater*);
 
 /**
  * DGCRulesKeysUpdater forceUpdateKeys interface for C and for dynamic loading
  */
-void DGCRulesKeysUpdater_c_forceUpdateKeys(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateKeys)(void*);
+void DGCRulesKeysUpdater_c_forceUpdateKeys(RulesKeysUpdater* dgcRulesKeysUpdater);
+typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateKeys)(RulesKeysUpdater*);
 
 /**
  * DGCRulesKeysUpdater forceUpdateAll interface for C and for dynamic loading
  */
-void DGCRulesKeysUpdater_c_forceUpdateAll(void* dgcRulesKeysUpdater);
-typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateAll)(void*);
+void DGCRulesKeysUpdater_c_forceUpdateAll(RulesKeysUpdater* dgcRulesKeysUpdater);
+typedef void (*pfDGCRulesKeysUpdater_c_forceUpdateAll)(RulesKeysUpdater*);
 
 
 /**
  * DGCRulesKeysUpdater isUpdated interface for C and for dynamic loading
  */
-bool DGCRulesKeysUpdater_c_isUpdated(void* dgcRulesKeysUpdater);
-typedef bool (*pfDGCRulesKeysUpdater_c_isUpdated)(void*);
+bool DGCRulesKeysUpdater_c_isUpdated(RulesKeysUpdater* dgcRulesKeysUpdater);
+typedef bool (*pfDGCRulesKeysUpdater_c_isUpdated)(RulesKeysUpdater*);
 
 #endif // #ifndef DGC_RULES_KEYS_UPDATER_H

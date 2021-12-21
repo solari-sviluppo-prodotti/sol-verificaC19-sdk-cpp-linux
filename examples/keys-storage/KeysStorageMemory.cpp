@@ -16,7 +16,7 @@ std::string KeysStorageMemory::getKey(const std::string& kid) const {
 
 void KeysStorageMemory::beginUpdatingKeys() {
 	m_updatingMode = true;
-	m_updatingKeys.clear();
+	m_updatingKeys = m_keys;
 }
 
 void KeysStorageMemory::storeKey(const std::string& kid, const std::string& ecx) {
@@ -43,16 +43,16 @@ void KeysStorageMemory::rollbackUpdatedKeys() {
 
 } // namespace verificaC19Sdk
 
-void* KeysStorageMemory_c_create() {
-	return new verificaC19Sdk::KeysStorageMemory();
+KeysStorage* KeysStorageMemory_c_create() {
+	return (KeysStorage*)new verificaC19Sdk::KeysStorageMemory();
 }
 
-void KeysStorageMemory_c_release(const void* keysStorageMemory) {
+void KeysStorageMemory_c_release(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	delete this_;
 }
 
-const char* KeysStorageMemory_c_getKey(const void* keysStorageMemory, const char* kid) {
+const char* KeysStorageMemory_c_getKey(const KeysStorage* keysStorageMemory, const char* kid) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	std::string ecx = this_->getKey(std::string(kid));
 	char* p = (char*)malloc(ecx.length() + 1);
@@ -60,43 +60,43 @@ const char* KeysStorageMemory_c_getKey(const void* keysStorageMemory, const char
 	return p;
 }
 
-void KeysStorageMemory_c_beginUpdatingKeys(const void* keysStorageMemory) {
+void KeysStorageMemory_c_beginUpdatingKeys(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	this_->beginUpdatingKeys();
 }
 
-void KeysStorageMemory_c_storeKey(const void* keysStorageMemory, const char* kid, const char* ecx) {
+void KeysStorageMemory_c_storeKey(const KeysStorage* keysStorageMemory, const char* kid, const char* ecx) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	this_->storeKey(std::string(kid), std::string(ecx));
 }
 
-void KeysStorageMemory_c_commitUpdatedKeys(const void* keysStorageMemory) {
+void KeysStorageMemory_c_commitUpdatedKeys(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	this_->commitUpdatedKeys();
 }
 
-void KeysStorageMemory_c_rollbackUpdatedKeys(const void* keysStorageMemory) {
+void KeysStorageMemory_c_rollbackUpdatedKeys(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	this_->rollbackUpdatedKeys();
 }
 
-bool KeysStorageMemory_c_isUpdating(const void* keysStorageMemory) {
+bool KeysStorageMemory_c_isUpdating(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	return this_->isUpdating();
 }
 
-time_t KeysStorageMemory_c_lastUpdate(const void* keysStorageMemory) {
+time_t KeysStorageMemory_c_lastUpdate(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	return this_->lastUpdate();
 }
 
-void KeysStorageMemory_c_setLastStoredKeyToken(const void* keysStorageMemory, const char* token) {
+void KeysStorageMemory_c_setLastStoredKeyToken(const KeysStorage* keysStorageMemory, const char* token) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	std::string stoken = std::string(token);
 	this_->setLastStoredKeyToken(stoken);
 }
 
-const char* KeysStorageMemory_c_getLastStoredKeyToken(const void* keysStorageMemory) {
+const char* KeysStorageMemory_c_getLastStoredKeyToken(const KeysStorage* keysStorageMemory) {
 	verificaC19Sdk::KeysStorageMemory* this_ = (verificaC19Sdk::KeysStorageMemory*)keysStorageMemory;
 	std::string token = this_->getLastStoredKeyToken();
 	char* p = (char*)malloc(token.length() + 1);

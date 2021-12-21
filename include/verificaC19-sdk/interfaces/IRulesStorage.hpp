@@ -34,14 +34,14 @@ namespace verificaC19Sdk {
 #define RULE_TYPE_black_list_uvci  "black_list_uvci"
 
 /**
- * Interface to implement Key Storage service to store and retreive keys from storage archive
+ * Interface to implement Key Storage service to store and retrieve keys from storage archive
  */
 class IRulesStorage {
 
 public:
 
 	/**
-	 * Retreive requested rule from storage archive
+	 * Retrieve requested rule from storage archive
 	 *
 	 * @param name Rule name
 	 *
@@ -69,12 +69,12 @@ public:
 	virtual void storeRule(const std::string& name, const std::string& type, const std::string& value) = 0;
 
 	/**
-	 * End transaction with Keys storage service
+	 * End transaction with Rules storage service
 	 */
 	virtual void commitUpdatedRules() = 0;
 
 	/**
-	 * End transaction with Keys storage service
+	 * End transaction with Rules storage service
 	 */
 	virtual void rollbackUpdatedRules() = 0;
 

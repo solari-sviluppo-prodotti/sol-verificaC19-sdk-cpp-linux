@@ -32,16 +32,16 @@ void KeysProviderTest::refreshKeys(IKeysStorage* keysStorage) const {
 
 } // namespace verificaC19Sdk
 
-void* KeysProviderTest_c_create(void* logger) {
-	return new verificaC19Sdk::KeysProviderTest((verificaC19Sdk::ILogger*)logger);
+KeysProvider* KeysProviderTest_c_create(Logger* logger) {
+	return (KeysProvider*)new verificaC19Sdk::KeysProviderTest((verificaC19Sdk::ILogger*)logger);
 }
 
-void KeysProviderTest_c_release(const void* keysProviderTest) {
+void KeysProviderTest_c_release(const KeysProvider* keysProviderTest) {
 	verificaC19Sdk::KeysProviderTest* this_ = (verificaC19Sdk::KeysProviderTest*)keysProviderTest;
 	delete this_;
 }
 
-void KeysProviderTest_c_refreshKeys(const void* keysProviderTest, void* keysStorage) {
+void KeysProviderTest_c_refreshKeys(const KeysProvider* keysProviderTest, KeysStorage* keysStorage) {
 	verificaC19Sdk::KeysProviderTest* this_ = (verificaC19Sdk::KeysProviderTest*)keysProviderTest;
 	this_->refreshKeys((verificaC19Sdk::IKeysStorage*)keysStorage);
 }

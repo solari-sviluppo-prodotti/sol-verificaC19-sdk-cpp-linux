@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['test_64',['test',['../classverificaC19Sdk_1_1CertificateModel.html#aca0bec1feacde03902c5a64af6b79420',1,'verificaC19Sdk::CertificateModel']]],
-  ['testingcentre_65',['testingCentre',['../classverificaC19Sdk_1_1TestModel.html#a2e47619b1fa1c9e29292c046bb093209',1,'verificaC19Sdk::TestModel']]],
-  ['testmanufacturer_66',['testManufacturer',['../classverificaC19Sdk_1_1TestModel.html#aef5126a4ca1571ca29319d6b13eeccc8',1,'verificaC19Sdk::TestModel']]],
-  ['testmodel_67',['TestModel',['../classverificaC19Sdk_1_1TestModel.html',1,'verificaC19Sdk']]],
-  ['testname_68',['testName',['../classverificaC19Sdk_1_1TestModel.html#a6b9ed1fb52450c8db4b2721e2e22d043',1,'verificaC19Sdk::TestModel']]],
-  ['testresult_69',['testResult',['../classverificaC19Sdk_1_1TestModel.html#a4dde0737bebbfe215570423e9fe303f9',1,'verificaC19Sdk::TestModel']]],
-  ['timestamp_70',['timeStamp',['../structCertificateSimple__c.html#a26bfe32dae02b33c4ecc44d059414c48',1,'CertificateSimple_c::timeStamp()'],['../classverificaC19Sdk_1_1CertificateSimple.html#ab2be1b822069c0f21da92ce2e750b358',1,'verificaC19Sdk::CertificateSimple::timeStamp()']]],
-  ['totalseriesofdoses_71',['totalSeriesOfDoses',['../classverificaC19Sdk_1_1VaccinationModel.html#af8e46ede58f914d08f1e1fbf13f73bcf',1,'verificaC19Sdk::VaccinationModel']]],
-  ['typeoftest_72',['typeOfTest',['../classverificaC19Sdk_1_1TestModel.html#a5db71b0311b37aff687cf6c5193ee16d',1,'verificaC19Sdk::TestModel']]]
+  ['setlaststoredkeytoken_63',['setLastStoredKeyToken',['../classverificaC19Sdk_1_1IKeysStorage.html#a303a09f000cbf820e3b78ed6adc01ab9',1,'verificaC19Sdk::IKeysStorage']]],
+  ['setscanmode_64',['setScanMode',['../classverificaC19Sdk_1_1DGCVerifier.html#a13bf7495ae61d9e7cab3ecae574975cc',1,'verificaC19Sdk::DGCVerifier']]],
+  ['simplepersonmodel_65',['SimplePersonModel',['../classverificaC19Sdk_1_1SimplePersonModel.html',1,'verificaC19Sdk']]],
+  ['sol_2dverificac19_2dcpp_2dlinux_66',['sol-verificaC19-cpp-linux',['../index.html',1,'']]],
+  ['standardisedfamilyname_67',['standardisedFamilyName',['../classverificaC19Sdk_1_1PersonModel.html#ad3b96349a3ea87fa1857474b39f1c171',1,'verificaC19Sdk::PersonModel::standardisedFamilyName()'],['../structCertificateSimple__c.html#a88ecc5afa17d199d42efe2b1f3747f88',1,'CertificateSimple_c::standardisedFamilyName()'],['../classverificaC19Sdk_1_1SimplePersonModel.html#aee9ae167989b73a836d739b29c7c5fec',1,'verificaC19Sdk::SimplePersonModel::standardisedFamilyName()']]],
+  ['standardisedgivenname_68',['standardisedGivenName',['../classverificaC19Sdk_1_1PersonModel.html#ab2d5fa40ce1152c11f7e6419797365a9',1,'verificaC19Sdk::PersonModel::standardisedGivenName()'],['../structCertificateSimple__c.html#a51b6c093abd796c78b7c75de3c6aab79',1,'CertificateSimple_c::standardisedGivenName()'],['../classverificaC19Sdk_1_1SimplePersonModel.html#a7da54ef2e421b35943a60fe4407f421a',1,'verificaC19Sdk::SimplePersonModel::standardisedGivenName()']]],
+  ['storekey_69',['storeKey',['../classverificaC19Sdk_1_1IKeysStorage.html#a3452f39a1ff50a986fde73ee1a49b982',1,'verificaC19Sdk::IKeysStorage']]],
+  ['storerule_70',['storeRule',['../classverificaC19Sdk_1_1IRulesStorage.html#ad6cb4f8a30068f35da6892182b5c150e',1,'verificaC19Sdk::IRulesStorage']]]
 ];

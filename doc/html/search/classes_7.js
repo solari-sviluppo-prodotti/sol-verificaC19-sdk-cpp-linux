@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vaccinationmodel_93',['VaccinationModel',['../classverificaC19Sdk_1_1VaccinationModel.html',1,'verificaC19Sdk']]]
+  ['simplepersonmodel_106',['SimplePersonModel',['../classverificaC19Sdk_1_1SimplePersonModel.html',1,'verificaC19Sdk']]]
 ];

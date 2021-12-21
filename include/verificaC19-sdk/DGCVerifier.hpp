@@ -11,7 +11,7 @@
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.0.4"
+#define DGCVerifier_SDK_Version "1.1.0"
 
 /**
  * Implements Digital Certificate verification
@@ -21,10 +21,10 @@ class DGCVerifier {
 public:
 
 	/**
-	 * @param keysStorage Implementation of Keys Storage service, used to retreive
+	 * @param keysStorage Implementation of Keys Storage service, used to retrieve
 	 *                    key needed to verify Digital Certificate validity
 	 *
-	 * @param rulesStorage Implementation of Rules Storage service, used to retreive
+	 * @param rulesStorage Implementation of Rules Storage service, used to retrieve
 	 *                     rules needed to verify Digital Certificate validity
 	 *
 	 * @param logger Optional implementation of Logger, if NULL no log will be done

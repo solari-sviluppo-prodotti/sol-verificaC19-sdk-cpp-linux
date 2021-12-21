@@ -29,16 +29,16 @@ public:
 	 *                        will be automatically corrected to 4 hours if lesser than 4 hours
 	 *                        or to 24 hours if greater than 24 hours
 	 *
-	 * @param rulesProvider Implementation of Rules Provider service, used to retreive
+	 * @param rulesProvider Implementation of Rules Provider service, used to retrieve
 	 *                     rules from backend provider
 	 *
 	 * @param rulesStorage Implementation of Rules Storage service, used to store
-	 *                     retreived rules
+	 *                     retrieved rules
 	 *
-	 * @param keysProvider Implementation of Keys Provider service, used to retreive
+	 * @param keysProvider Implementation of Keys Provider service, used to retrieve
 	 *                     keys from backend provider
 	 *
-	 * @param keysStorage Implementation of Keys Storage service, used to retreive
+	 * @param keysStorage Implementation of Keys Storage service, used to retrieve
 	 *                    key needed to verify Digital Certificate validity
 	 *
 	 * @param logger Optional implementation of Logger, if NULL no log will be done
@@ -53,12 +53,12 @@ public:
 	 *                        or to 24 hours if greater than 24 hours
 	 *
 	 * @param rulesKeysProvider Implementation of Rules and Keys Provider service,
-	 *                          used to retreive rules and keys from backend provider
+	 *                          used to retrieve rules and keys from backend provider
 	 *
 	 * @param rulesStorage Implementation of Rules Storage service, used to store
-	 *                     retreived rules
+	 *                     retrieved rules
 	 *
-	 * @param keysStorage Implementation of Keys Storage service, used to retreive
+	 * @param keysStorage Implementation of Keys Storage service, used to retrieve
 	 *                    key needed to verify Digital Certificate validity
 	 *
 	 * @param logger Optional implementation of Logger, if NULL no log will be done

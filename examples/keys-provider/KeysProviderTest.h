@@ -4,13 +4,17 @@
 #ifndef KEYS_PROVIDER_TEST_H
 #define KEYS_PROVIDER_TEST_H
 
-void* KeysProviderTest_c_create(void* logger);
-typedef void* (*pfKeysProviderTest_c_create)(void*);
+#include <verificaC19-sdk/interfaces/KeysProvider.h>
+#include <verificaC19-sdk/interfaces/KeysStorage.h>
+#include <verificaC19-sdk/interfaces/Logger.h>
 
-void KeysProviderTest_c_release(const void* keysProviderTest);
-typedef void (*pfKeysProviderTest_c_release)(const void*);
+KeysProvider* KeysProviderTest_c_create(Logger* logger);
+typedef KeysProvider* (*pfKeysProviderTest_c_create)(Logger*);
 
-void KeysProviderTest_c_refreshKeys(const void* keysProviderTest, void* keysStorage);
-typedef void (*pfKeysProviderTest_c_refreshKeys)(const void*, void*);
+void KeysProviderTest_c_release(const KeysProvider* keysProviderTest);
+typedef void (*pfKeysProviderTest_c_release)(const KeysProvider*);
+
+void KeysProviderTest_c_refreshKeys(const KeysProvider* keysProviderTest, KeysStorage* keysStorage);
+typedef void (*pfKeysProviderTest_c_refreshKeys)(const KeysProvider*, KeysStorage*);
 
 #endif // #ifndef KEYS_PROVIDER_TEST_H

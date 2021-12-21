@@ -47,16 +47,16 @@ void LoggerStdout::log(LogLevel level, const std::string& format, va_list ap) co
 
 } // namespace verificaC19Sdk
 
-void* LoggerStdout_c_create(LogLevel level) {
-	return new verificaC19Sdk::LoggerStdout(level);
+Logger* LoggerStdout_c_create(LogLevel level) {
+	return (Logger*)new verificaC19Sdk::LoggerStdout(level);
 }
 
-void LoggerStdout_c_release(const void* logger) {
+void LoggerStdout_c_release(const Logger* logger) {
 	verificaC19Sdk::LoggerStdout* this_ = (verificaC19Sdk::LoggerStdout*)logger;
 	delete this_;
 }
 
-void LoggerStdout_c_error(const void* logger, const char* format, ...) {
+void LoggerStdout_c_error(const Logger* logger, const char* format, ...) {
 	verificaC19Sdk::LoggerStdout* this_ = (verificaC19Sdk::LoggerStdout*)logger;
 	va_list args1;
 	va_start(args1, format);
@@ -64,7 +64,7 @@ void LoggerStdout_c_error(const void* logger, const char* format, ...) {
 	va_end(args1);
 }
 
-void LoggerStdout_c_info(const void* logger, const char* format, ...) {
+void LoggerStdout_c_info(const Logger* logger, const char* format, ...) {
 	verificaC19Sdk::LoggerStdout* this_ = (verificaC19Sdk::LoggerStdout*)logger;
 	va_list args1;
 	va_start(args1, format);
@@ -72,7 +72,7 @@ void LoggerStdout_c_info(const void* logger, const char* format, ...) {
 	va_end(args1);
 }
 
-void LoggerStdout_c_debug(const void* logger, const char* format, ...) {
+void LoggerStdout_c_debug(const Logger* logger, const char* format, ...) {
 	verificaC19Sdk::LoggerStdout* this_ = (verificaC19Sdk::LoggerStdout*)logger;
 	va_list args1;
 	va_start(args1, format);

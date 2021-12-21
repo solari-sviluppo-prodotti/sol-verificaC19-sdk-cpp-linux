@@ -44,16 +44,16 @@ void RulesStorageMemory::rollbackUpdatedRules() {
 
 } // namespace verificaC19Sdk
 
-void* RulesStorageMemory_c_create() {
-	return new verificaC19Sdk::RulesStorageMemory();
+RulesStorage* RulesStorageMemory_c_create() {
+	return (RulesStorage*)new verificaC19Sdk::RulesStorageMemory();
 }
 
-void RulesStorageMemory_c_release(const void* rulesStorageMemory) {
+void RulesStorageMemory_c_release(const RulesStorage* rulesStorageMemory) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	delete this_;
 }
 
-const char* RulesStorageMemory_c_getRule(const void* rulesStorageMemory, const char* name, const char* type) {
+const char* RulesStorageMemory_c_getRule(const RulesStorage* rulesStorageMemory, const char* name, const char* type) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	std::string value = this_->getRule(std::string(name), std::string(type));
 	char* p = (char*)malloc(value.length() + 1);
@@ -61,32 +61,32 @@ const char* RulesStorageMemory_c_getRule(const void* rulesStorageMemory, const c
 	return p;
 }
 
-void RulesStorageMemory_c_beginUpdatingRules(const void* rulesStorageMemory) {
+void RulesStorageMemory_c_beginUpdatingRules(const RulesStorage* rulesStorageMemory) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	this_->beginUpdatingRules();
 }
 
-void RulesStorageMemory_c_storeRule(const void* rulesStorageMemory, const char* name, const char* type, const char* value) {
+void RulesStorageMemory_c_storeRule(const RulesStorage* rulesStorageMemory, const char* name, const char* type, const char* value) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	this_->storeRule(std::string(name), std::string(type), std::string(value));
 }
 
-void RulesStorageMemory_c_commitUpdatedRules(const void* rulesStorageMemory) {
+void RulesStorageMemory_c_commitUpdatedRules(const RulesStorage* rulesStorageMemory) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	this_->commitUpdatedRules();
 }
 
-void RulesStorageMemory_c_rollbackUpdatedRules(const void* rulesStorageMemory) {
+void RulesStorageMemory_c_rollbackUpdatedRules(const RulesStorage* rulesStorageMemory) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	this_->rollbackUpdatedRules();
 }
 
-bool RulesStorageMemory_c_isUpdating(const void* rulesStorageMemory) {
+bool RulesStorageMemory_c_isUpdating(const RulesStorage* rulesStorageMemory) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	return this_->isUpdating();
 }
 
-time_t RulesStorageMemory_c_lastUpdate(const void* rulesStorageMemory) {
+time_t RulesStorageMemory_c_lastUpdate(const RulesStorage* rulesStorageMemory) {
 	verificaC19Sdk::RulesStorageMemory* this_ = (verificaC19Sdk::RulesStorageMemory*)rulesStorageMemory;
 	return this_->lastUpdate();
 }

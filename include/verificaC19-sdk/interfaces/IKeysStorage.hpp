@@ -9,14 +9,14 @@
 namespace verificaC19Sdk {
 
 /**
- * Interface to implement Key Storage service to store and retreive keys from storage archive
+ * Interface to implement Key Storage service to store and retrieve keys from storage archive
  */
 class IKeysStorage {
 
 public:
 
 	/**
-	 * Retreive requested key from storage archive
+	 * Retrieve requested key from storage archive
 	 *
 	 * @param kid Base64 encoded Key identifier
 	 *

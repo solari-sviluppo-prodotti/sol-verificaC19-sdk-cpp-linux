@@ -17,7 +17,7 @@
 #include <verificaC19-sdk/DGCVerifier.h>
 #include <verificaC19-sdk/DGCRulesKeysUpdater.h>
 
-static void logCertificate(const struct CertificateSimple_c* certificate, const void* logger) {
+static void logCertificate(const struct CertificateSimple_c* certificate, const Logger* logger) {
 	LoggerStdout_c_info(logger, "---------- Certificate log ----------");
 	char* certificateStatus = "";
 	switch (certificate->certificateStatus) {
@@ -36,7 +36,7 @@ static void logCertificate(const struct CertificateSimple_c* certificate, const 
 }
 
 int main (int argc, char** argv) {
-	void* logger = LoggerStdout_c_create(DEBUG);
+	Logger* logger = LoggerStdout_c_create(DEBUG);
 
 	if (argc < 2) {
 		LoggerStdout_c_error(logger, "Usage: verificaC19-c-client <qrfile> [mode]");
@@ -45,18 +45,18 @@ int main (int argc, char** argv) {
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr 2G");
 	} else {
 		LoggerStdout_c_info(logger, "---------- Test with command line ----------");
-		void* keysStorage = KeysStorageFile_c_create();
-		void* keysProvider = KeysProviderItaly_c_create(logger);
-		void* rulesStorage = RulesStorageFile_c_create();
-		void* rulesProvider = RulesProviderItaly_c_create(logger);
+		KeysStorage* keysStorage = KeysStorageFile_c_create();
+		KeysProvider* keysProvider = KeysProviderItaly_c_create(logger);
+		RulesStorage* rulesStorage = RulesStorageFile_c_create();
+		RulesProvider* rulesProvider = RulesProviderItaly_c_create(logger);
 
-		void* rulesKeyUpdater = DGCRulesKeysUpdaterRulesAndKeys_c_create(86400, rulesProvider, rulesStorage,
+		RulesKeysUpdater* rulesKeysUpdater = DGCRulesKeysUpdaterRulesAndKeys_c_create(86400, rulesProvider, rulesStorage,
 				keysProvider, keysStorage, logger);
 
 		// First, at startup, wait if updated
-		if (!DGCRulesKeysUpdater_c_isUpdated(rulesKeyUpdater)) {
+		if (!DGCRulesKeysUpdater_c_isUpdated(rulesKeysUpdater)) {
 			LoggerStdout_c_info(logger, "Rules or Keys are updating, waiting");
-			while (!DGCRulesKeysUpdater_c_isUpdated(rulesKeyUpdater)) {
+			while (!DGCRulesKeysUpdater_c_isUpdated(rulesKeysUpdater)) {
 				usleep(10000);
 			}
 		}
@@ -93,7 +93,7 @@ int main (int argc, char** argv) {
 			}
 		}
 		DGCVerifier_c_release(verifier);
-		DGCRulesKeysUpdater_c_release(rulesKeyUpdater);
+		DGCRulesKeysUpdater_c_release(rulesKeysUpdater);
 		RulesProviderItaly_c_release(rulesProvider);
 		RulesStorageFile_c_release(rulesStorage);
 		KeysProviderItaly_c_release(keysProvider);
