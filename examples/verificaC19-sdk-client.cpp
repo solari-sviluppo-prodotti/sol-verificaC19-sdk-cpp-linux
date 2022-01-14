@@ -27,6 +27,7 @@ static void logCertificate(const CertificateSimple& certificate, const ILogger& 
 		case NOT_VALID_YET: certificateStatus = "NOT_VALID_YET"; break;
 		case VALID: certificateStatus = "VALID"; break;
 		case NOT_EU_DCC: certificateStatus = "NOT_EU_DCC"; break;
+		case TEST_NEEDED: certificateStatus = "TEST_NEEDED"; break;
 	}
 	logger.info("Certificate status: %s", certificateStatus.c_str());
 	logger.info("Person standardisedFamilyName: %s", certificate.person.standardisedFamilyName.c_str());
@@ -42,9 +43,10 @@ int main (int argc, char** argv) {
 
 	if (argc < 2) {
 		logger.error("Usage: verificaC19-client <qrfile> [mode]");
-		logger.error("       where mode can be 2G for Super Green Pass, or empty for Standard Green Pass");
+		logger.error("       where mode can be 2G for Super Green Pass, BOOSTER for booster, or empty for Standard Green Pass");
 		logger.error("Example: verificaC19-client ./test.qr");
 		logger.error("Example: verificaC19-client ./test.qr 2G");
+		logger.error("Example: verificaC19-client ./test.qr BOOSTER");
 	} else {
 		logger.info("---------- Test with command line ----------");
 		KeysStorageFile keysStorage;
@@ -78,6 +80,9 @@ int main (int argc, char** argv) {
 				std::string qr = qrs.str();
 				if (argc > 2 && strcmp(argv[2], "2G") == 0) {
 					verifier.setScanMode(SCAN_MODE_2G);
+				}
+				if (argc > 2 && strcmp(argv[2], "BOOSTER") == 0) {
+					verifier.setScanMode(SCAN_MODE_BOOSTER);
 				}
 				CertificateSimple certificate = verifier.verify(qr);
 				logCertificate(certificate, logger);

@@ -11,7 +11,7 @@
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.1.0"
+#define DGCVerifier_SDK_Version "1.1.1"
 
 /**
  * Implements Digital Certificate verification
@@ -34,8 +34,10 @@ public:
 	/**
 	 * Set scan mode, default scan mode at object construction is SCAN_MODE_3G
 	 *
-	 * @param scanMode Scan mode, SCAN_MODE_2G accept only vaccination and recovery
-	 *                 certificates, SCAN_MODE_3G accept also test certificates
+	 * @param scanMode Scan mode, SCAN_MODE_STRENGTHENED accept only vaccination and recovery
+	 *                 certificates, SCAN_MODE_STANDARD accept also test certificates,
+	 *                 SCAN_MODE_BOOSTER signals test needed for complete vaccination (not booster)
+	 *                 or for recovery certificate
 	 */
 	void setScanMode(const std::string& scanMode);
 

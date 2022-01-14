@@ -16,12 +16,15 @@
 #include <cn-cbor/cn-cbor.h>
 
 #include <openssl/x509.h>
+#include <openssl/x509v3.h>
 #include <openssl/err.h>
 #include <openssl/bn.h>
 #include <openssl/ecdsa.h>
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
 #define ECDSA_SIG_set0(signature, r, s) signature->r = r; signature->s = s;
+#define X509_get_extension_flags(x) (x->ex_flags)
+#define X509_get_extended_key_usage(x)  (x->ex_xkusage)
 #endif
 
 #include <verificaC19-sdk/models/CertificateModel.hpp>
@@ -30,6 +33,7 @@
 namespace verificaC19Sdk {
 
 #define COUNTRY_SAN_MARINO        "SM"
+#define COUNTRY_ITALY             "IT"
 
 // BASE45
 static std::string decodeBase45(const std::string& src) {
@@ -539,6 +543,8 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 				unsigned char dataToBeVerified[2048];
 				ssize_t dataToBeVerifiedLen = cn_cbor_encoder_write(dataToBeVerified, 0, sizeof(dataToBeVerified), cbverify);
 
+				// SDK 1.1.1 apply different rules to italian recovery
+				bool keyUsageForRecovery = false;
 				const std::string& base64Ecx = m_keysStorage->getKey(base64Kid);
 				if (!base64Ecx.empty()) {
 					m_logger->debug("Loaded key %s", base64Kid.c_str());
@@ -551,6 +557,32 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					if (cert == NULL) {
 						m_logger->info("Error loading sign verify certificate");
 						break;
+					}
+
+					// find the extendedKeyUsage
+					int extIndex = X509_get_ext_by_NID(cert, NID_ext_key_usage, -1);
+					if (extIndex > 0) {
+						// get the correct X.509 extension
+						X509_EXTENSION *ext = X509_get_ext(cert, extIndex);
+						if (ext != NULL) {
+							// get the extendedKeyUsage
+							EXTENDED_KEY_USAGE *eku = static_cast<EXTENDED_KEY_USAGE*>(X509V3_EXT_d2i(ext));
+							if (eku != NULL) {
+								// print all OIDs
+								for (int i = 0; i < sk_ASN1_OBJECT_num(eku); i++) {
+									char buffer[100];
+									OBJ_obj2txt(buffer, sizeof(buffer), sk_ASN1_OBJECT_value(eku, i), 1); // get OID
+									// Private OID
+									// OID_RECOVERY("1.3.6.1.4.1.1847.2021.1.3")
+									// OID_ALT_RECOVERY("1.3.6.1.4.1.0.1847.2021.1.3")
+									if ((strcmp("1.3.6.1.4.1.1847.2021.1.3", buffer) == 0) ||
+											(strcmp("1.3.6.1.4.1.0.1847.2021.1.3", buffer) == 0)) {
+										keyUsageForRecovery = true;
+									}
+								}
+								EXTENDED_KEY_USAGE_free(eku);
+							}
+						}
 					}
 
 					EVP_PKEY* pkey = X509_get_pubkey(cert);
@@ -655,6 +687,13 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 							certificateSimple.certificateStatus = NOT_VALID;
 							break;
 						}
+						// SDK version 1.1.1 booster mode
+						if (m_scanMode == SCAN_MODE_BOOSTER) {
+							m_logger->info("Partial vaccine %s not valid for selected scan mode",
+									certificate.vaccination.medicinalProduct.c_str());
+							certificateSimple.certificateStatus = NOT_VALID;
+							break;
+						}
 						startDay = atoi(startDays.c_str());
 						endDay = atoi(endDays.c_str());
 					}
@@ -676,6 +715,11 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						//   and rule of completed vaccine has validity of 15 days after dose injection (but this is not true for recall)
 						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
 								certificate.vaccination.doseNumber > certificate.vaccination.totalSeriesOfDoses) {
+							startDay = 0;
+						}
+						// SDK version 1.1.1 start validity immediate for complete vaccination with at least 2 doses
+						if (certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
+								certificate.vaccination.totalSeriesOfDoses >= 2) {
 							startDay = 0;
 						}
 					}
@@ -721,6 +765,31 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						certificateSimple.certificateStatus = VALID;
 						break;
 					}
+					// SDK version 1.1.1 booster mode
+					if (m_scanMode == SCAN_MODE_BOOSTER) {
+						// - Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than two
+						//   respond that test is needed
+						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
+								certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
+								certificate.vaccination.doseNumber < 2) {
+							m_logger->info("Digital certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
+									certificate.vaccination.dateOfVaccination.c_str(),
+									days, startDay, endDay);
+							certificateSimple.certificateStatus = TEST_NEEDED;
+							break;
+						}
+						// - Not Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than three
+						//   respond that test is needed
+						if (certificate.vaccination.medicinalProduct != RULE_TYPE_EU_1_20_1525 &&
+								certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
+								certificate.vaccination.doseNumber < 3) {
+							m_logger->info("Digital certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
+									certificate.vaccination.dateOfVaccination.c_str(),
+									days, startDay, endDay);
+							certificateSimple.certificateStatus = TEST_NEEDED;
+							break;
+						}
+					}
 					certificateSimple.certificateStatus = VALID;
 					m_logger->info("Digital certificate of %s valid (%d: %d - %d)",
 							certificate.vaccination.dateOfVaccination.c_str(),
@@ -731,6 +800,13 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					// only for Italy apply extension days to end of recovery certificate validity
 					std::string startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day, RULE_TYPE_GENERIC);
 					std::string endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day, RULE_TYPE_GENERIC);
+
+					// SDK 1.1.1 use different rules for ITALIAN recovery certificate
+					if (certificate.country == COUNTRY_ITALY && keyUsageForRecovery) {
+						startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
+						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
+					}
+
 					if (startDays.empty() || endDays.empty()) {
 						m_logger->info("Recovery validity days not found (%s - %s)",
 								startDays.c_str(), endDays.c_str());
@@ -780,6 +856,14 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						certificateSimple.certificateStatus = NOT_VALID;
 						break;
 					}
+					// SDK version 1.1.1 booster mode
+					if (m_scanMode == SCAN_MODE_BOOSTER) {
+						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) valid but test needed for selected scan mode",
+								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
+								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
+						certificateSimple.certificateStatus = TEST_NEEDED;
+						break;
+					}
 					if (currentDay > recoveryUntilDay && currentDay <= recoveryFromDay + endDay) {
 						// certificate partially valid (only in italy)
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) partially valid",
@@ -795,7 +879,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 				}
 
 				if (certificate.isTest()) {
-					if (m_scanMode == SCAN_MODE_2G) {
+					if (m_scanMode != SCAN_MODE_3G) {
 						certificateSimple.certificateStatus = NOT_VALID;
 						m_logger->debug("Digital certificate of %s not valid for selected scan mode",
 								certificate.test.dateTimeOfCollection.c_str());

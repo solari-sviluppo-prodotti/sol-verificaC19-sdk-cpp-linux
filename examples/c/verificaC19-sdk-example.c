@@ -23,6 +23,7 @@ static void logCertificate(const struct CertificateSimple_c* certificate, const 
 		case NOT_VALID_YET: certificateStatus = "NOT_VALID_YET"; break;
 		case VALID: certificateStatus = "VALID"; break;
 		case NOT_EU_DCC: certificateStatus = "NOT_EU_DCC"; break;
+		case TEST_NEEDED: certificateStatus = "TEST_NEEDED"; break;
 	}
 	LoggerStdout_c_info(logger, "Certificate status: %s", certificateStatus);
 	LoggerStdout_c_info(logger, "Person standardisedFamilyName: %s", certificate->person.standardisedFamilyName);

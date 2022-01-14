@@ -29,6 +29,7 @@ static void logCertificate(const CertificateSimple& certificate, const ILogger& 
 		case NOT_VALID_YET: certificateStatus = "NOT_VALID_YET"; break;
 		case VALID: certificateStatus = "VALID"; break;
 		case NOT_EU_DCC: certificateStatus = "NOT_EU_DCC"; break;
+		case TEST_NEEDED: certificateStatus = "TEST_NEEDED"; break;
 	}
 	logger.info("Certificate status: %s", certificateStatus.c_str());
 	logger.info("Person standardisedFamilyName: %s", certificate.person.standardisedFamilyName.c_str());
