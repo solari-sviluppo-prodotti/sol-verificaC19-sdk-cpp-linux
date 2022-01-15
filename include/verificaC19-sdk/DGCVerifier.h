@@ -7,6 +7,7 @@
 #include <verificaC19-sdk/models/CertificateSimple.h>
 #include <verificaC19-sdk/interfaces/KeysStorage.h>
 #include <verificaC19-sdk/interfaces/RulesStorage.h>
+#include <verificaC19-sdk/interfaces/CRLStorage.h>
 #include <verificaC19-sdk/interfaces/Logger.h>
 
 typedef struct {} Verifier;
@@ -20,8 +21,8 @@ typedef struct {} Verifier;
 /**
  * DGCVerifier constructor interface for C and for dynamic loading
  */
-Verifier* DGCVerifier_c_create(KeysStorage* keysStorage, RulesStorage* rulesStorage, Logger* logger);
-typedef Verifier* (*pfDGCVerifier_c_create)(KeysStorage*, RulesStorage*, Logger*);
+Verifier* DGCVerifier_c_create(KeysStorage* keysStorage, RulesStorage* rulesStorage, CRLStorage* crlStorage, Logger* logger);
+typedef Verifier* (*pfDGCVerifier_c_create)(KeysStorage*, RulesStorage*, CRLStorage*, Logger*);
 
 /**
  * DGCVerifier destructor interface for C and for dynamic loading
@@ -36,16 +37,10 @@ bool DGCVerifier_c_verifyMinSdkVersion(Verifier* dgcVerifier);
 typedef bool (*pfDGCVerifier_c_verifyMinSdkVersion)(Verifier*);
 
 /**
- * DGCVerifier setScanMode interface for C and for dynamic loading
- */
-void DGCVerifier_c_setScanMode(Verifier* dgcVerifier, const char* scanMode);
-typedef void (*pfDGCVerifier_c_setScanMode)(Verifier*, const char*);
-
-/**
  * DGCVerifier verify interface for C and for dynamic loading
  */
-struct CertificateSimple_c* DGCVerifier_c_verify(Verifier* dgcVerifier, const char* dgcQr);
-typedef struct CertificateSimple_c* (*pfDGCVerifier_c_verify)(Verifier*, const char*);
+struct CertificateSimple_c* DGCVerifier_c_verify(Verifier* dgcVerifier, const char* dgcQr, const char* scanMode);
+typedef struct CertificateSimple_c* (*pfDGCVerifier_c_verify)(Verifier*, const char*, const char*);
 
 /**
  * Release object created by DGCVerifier_c_verify

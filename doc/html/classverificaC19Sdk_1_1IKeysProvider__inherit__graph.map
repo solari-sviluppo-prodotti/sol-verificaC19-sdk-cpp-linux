@@ -1,4 +1,6 @@
 <map id="verificaC19Sdk::IKeysProvider" name="verificaC19Sdk::IKeysProvider">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,216,32"/>
-<area shape="rect" id="node2" href="$classverificaC19Sdk_1_1IRulesKeysProvider.html" title=" " alt="" coords="13,80,208,121"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,64,216,91"/>
+<area shape="rect" id="node2" href="$classverificaC19Sdk_1_1IAllProvider.html" title=" " alt="" coords="281,5,480,32"/>
+<area shape="rect" id="node3" href="$classverificaC19Sdk_1_1KeysProviderItaly.html" title=" " alt="" coords="277,57,484,98"/>
+<area shape="rect" id="node4" href="$classverificaC19Sdk_1_1KeysProviderTest.html" title=" " alt="" coords="264,123,497,149"/>
 </map>

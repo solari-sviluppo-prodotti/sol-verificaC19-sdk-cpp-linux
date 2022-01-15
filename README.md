@@ -20,10 +20,29 @@ The following dependencies are used in the project by the examples:
 
 #### Build
 
-Once cloned, to build on your system you can use this command:
+Once cloned, to build on your system you can use this command, will compile and install libverificaC19-sdk.so:
 
 ```sh
 cmake .
+make
+make install # as root or sudoer
+```
+
+If you want to build also with examples and create also examples library you can use this command,
+will compile and install libverificaC19-sdk.so and libverificaC19-common-examples.so:
+
+```sh
+cmake . -DBUILD_EXAMPLES=ON
+make
+make install # as root or sudoer
+```
+
+
+If you want to build static libraries (with or without examples) you can use this command,
+will compile and install libverificaC19-sdk.a and (if enabled) libverificaC19-common-examples.a:
+
+```sh
+cmake . -DBUILD_STATIC=ON
 make
 make install # as root or sudoer
 ```
@@ -39,23 +58,25 @@ This SDK has been tested in these architectures:
 
 The main entry point of the library is the `DGCVerifier` class.
 
-This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage.
+This class needs a implementation of IKeysStorage, IRulesStorage and ICRLStorage interfaces to access to storage.
 
 Optionally you can use a implementation of ILogger interface to log operations.
 
 You can simply instantiate and configure it:
 
 ```cpp
-#include <examples/keys-storage/KeysStorageFile.hpp>
-#include <examples/rules-storage/RulesStorageFile.hpp>
-#include <examples/loggers/LoggerStdout.hpp>
+#include <verificaC19-sdk/examples/keys-storage/KeysStorageFile.hpp>
+#include <verificaC19-sdk/examples/rules-storage/RulesStorageFile.hpp>
+#include <verificaC19-sdk/examples/crl-storage/CRLStorageFile.hpp>
+#include <verificaC19-sdk/examples/loggers/LoggerStdout.hpp>
 #include <verificaC19-sdk/DGCVerifier.hpp>
 
 LoggerStdout logger(DEBUG);
 KeysStorageFile keysStorage;
 RulesStorageFile rulesStorage;
+CRLStorageFile crlStorage;
 
-DGCVerifier verifier(&keysStorage, &rulesStorage, &logger);
+DGCVerifier verifier(&keysStorage, &rulesStorage, &crlStorage, &logger);
 ```
 
 Once instantiated and configured with storage services, you can simply use it
@@ -81,41 +102,47 @@ enum CertificateStatus status = result.certificateStatus;
 
 ```
 
-The rules and keys updater process is managed by th `DGCRulesKeysUpdater` class.
+The rules, keys and CRL updater process is managed by th `DGCUpdater` class.
 
-This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage
-and IKeysProvider and IRulesProvider interfaces to access to providers.
+This class needs a implementation of IKeysStorage, IRulesStorage and ICRLStorage interfaces to access to storage
+and IKeysProvider, IRulesProvider and ICRLProvider interfaces to access to providers.
 
 Optionally you can use a implementation of ILogger interface to log operations.
 
 You can simply instantiate and configure it:
 
 ```cpp
-#include <examples/keys-storage/KeysStorageFile.hpp>
-#include <examples/keys-provider/KeysProviderItaly.hpp>
-#include <examples/rules-storage/RulesStorageFile.hpp>
-#include <examples/rules-provider/RulesProviderItaly.hpp>
-#include <examples/loggers/LoggerStdout.hpp>
-#include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
+#include <verificaC19-sdk/examples/keys-storage/KeysStorageFile.hpp>
+#include <verificaC19-sdk/examples/keys-provider/KeysProviderItaly.hpp>
+#include <verificaC19-sdk/examples/rules-storage/RulesStorageFile.hpp>
+#include <verificaC19-sdk/examples/rules-provider/RulesProviderItaly.hpp>
+#include <verificaC19-sdk/examples/crl-storage/CRLStorageFile.hpp>
+#include <verificaC19-sdk/examples/crl-provider/CRLProviderItaly.hpp>
+#include <verificaC19-sdk/examples/loggers/LoggerStdout.hpp>
+#include <verificaC19-sdk/DGCUpdater.hpp>
 
 LoggerStdout logger(DEBUG);
 KeysStorageFile keysStorage;
 RulesStorageFile rulesStorage;
-KeysProviderItaly(&logger);
-RulesProviderItaly(&logger);
+CRLStorageFile crlStorage;
+KeysProviderItaly keysProvider(&logger);
+RulesProviderItaly rulesProvider(&logger);
+CRLProviderItaly crlProvider(&logger);
 
-DGCRulesKeysUpdater rulesKeyUpdater(86400, &rulesProvider, &rulesStorage,
-		&keysProvider, &keysStorage, &logger);
+DGCUpdater updater(86400, &rulesProvider, &rulesStorage,
+		&keysProvider, &keysStorage, &crlProvider, &crlStorage, &logger);
 ```
 
 so the complete example with rules and keys update and DGC verify is:
 
 ```cpp
-#include <examples/keys-storage/KeysStorageFile.hpp>
-#include <examples/keys-provider/KeysProviderItaly.hpp>
-#include <examples/rules-storage/RulesStorageFile.hpp>
-#include <examples/rules-provider/RulesProviderItaly.hpp>
-#include <examples/loggers/LoggerStdout.hpp>
+#include <verificaC19-sdk/examples/keys-storage/KeysStorageFile.hpp>
+#include <verificaC19-sdk/examples/keys-provider/KeysProviderItaly.hpp>
+#include <verificaC19-sdk/examples/rules-storage/RulesStorageFile.hpp>
+#include <verificaC19-sdk/examples/rules-provider/RulesProviderItaly.hpp>
+#include <verificaC19-sdk/examples/crl-storage/CRLStorageFile.hpp>
+#include <verificaC19-sdk/examples/crl-provider/CRLProviderItaly.hpp>
+#include <verificaC19-sdk/examples/loggers/LoggerStdout.hpp>
 #include <verificaC19-sdk/DGCVerifier.hpp>
 #include <verificaC19-sdk/DGCRulesKeysUpdater.hpp>
 
@@ -124,27 +151,29 @@ so the complete example with rules and keys update and DGC verify is:
 LoggerStdout logger(DEBUG);
 KeysStorageFile keysStorage;
 RulesStorageFile rulesStorage;
+CRLStorageFile crlStorage;
 KeysProviderItaly keysProvider(&logger);
 RulesProviderItaly rulesProvider(&logger);
+CRLProviderItaly crlProvider(&logger);
 
-// This automatically updates rules and keys every 86400 seconds
-DGCRulesKeysUpdater rulesKeyUpdater(86400, &rulesProvider, &rulesStorage,
-		&keysProvider, &keysStorage, &logger);
+// This automatically updates rules, keys and CRL every 86400 seconds
+DGCUpdater updater(86400, &rulesProvider, &rulesStorage,
+		&keysProvider, &keysStorage, &crlProvider, &crlStorage, &logger);
 
-DGCVerifier verifier(&keysStorage, &rulesStorage, &logger);
+DGCVerifier verifier(&keysStorage, &rulesStorage, &crlStorage, &logger);
 
 // At startup wait to have a valid set of rules and keys, if this is
 // first application launch the storage cuold be empty
-if (!rulesKeyUpdater.isUpdated()) {
+if (!updater.isUpdated()) {
 	// Signal to user that rules and keys is updating
-	while (!rulesKeyUpdater.isUpdated()) {
+	while (!updater.isUpdated()) {
 		usleep(10000);
 	}
-	// Signal to user that rules and keys was updated
+	// Signal to user that rules, keys and CRL was updated
 }
 
 
-// Usage (for every readed Digital Certificate)
+// Usage (for every read Digital Certificate)
 
 if (!verifier.verifyMinSdkVersion()) {
   logger.error("Minimum SDK version does not match");
@@ -162,41 +191,44 @@ CertificateSimple result = verifier.verify(qrCode);
 enum CertificateStatus status = result.certificateStatus;
 ```
 
-#### Rules and Keys storage
+#### Rules, Keys and CRL storage
 
-Rules and Keys storage are mandatory services and must be implemented using
-IRulesStorage and IKeysStorage interfaces.
+Rules, Keys and CRL storage are mandatory services and must be implemented using
+IRulesStorage, IKeysStorage and ICRLStorage interfaces.
 
 SDK provide:
-- full working example implementations to store Rules and Keys in memory,
+- full working example implementations to store Rules, Keys and CRL in memory,
 (`examples/rules-storage/RulesStorageMemory.hpp /.cpp` and
- `examples/keys-storage/KeysStorageMemory.hpp /.cpp`)
-- full working example implementations to store Rules and Keys in json File,
+ `examples/keys-storage/KeysStorageMemory.hpp /.cpp` and
+ `examples/crl-storage/CRLStorageMemory.hpp /.cpp`)
+- full working example implementations to store Rules, Keys and CRL in json File,
 (`examples/rules-storage/RulesStorageFile.hpp /.cpp` and
- `examples/keys-storage/KeysStorageFile.hpp /.cpp`)
+ `examples/keys-storage/KeysStorageFile.hpp /.cpp` and
+ `examples/crl-storage/CRLStorageFile.hpp /.cpp`)
 
 but you can implement your storage in File or in Database.
 
 Interfaces declare methods to:
-- store Rule or Key without transaction
-- store Rules or Keys in transaction, to use "old" Rules or Keys until update is done
-- get info about Rules or Keys update in progress
-- get info about Rules or Keys last update time
+- store Rule, Key or CRL without transaction
+- store Rules, Keys or CRL in transaction, to use "old" Rules, Keys or CRL until update is done
+- get info about Rules, Keys or CRL update in progress
+- get info about Rules, Keys or CRL last update time
 - get info about last Key token stored
 
-#### Rules and Keys provider
+#### Rules, Keys and CRL provider
 
-Rules and Keys update provider are an optional services used to update Keys and Rules
-and can be implemented using IRulesProvider, IKeysProbider or IRulesKeysProvider interfaces.
+Rules, Keys and CRL update provider are an optional services used to update Rules, Keys and CRL
+and can be implemented using IRulesProvider, IKeysProbider, ICRLProvider or IAllProvider interfaces.
 
-SDK provide full working example implementations to update Rules and Keys from Italian provider,
+SDK provide full working example implementations to update Rules, Keys and CRL from Italian provider,
 (`examples/rules-provider/RulesProviderItaly.hpp /.cpp` and
- `examples/keys-provider/KeysProviderItaly.hpp /.cpp`) but you can implement provider
-to get Rules or Keys from other states or by your custom provider.
+ `examples/keys-provider/KeysProviderItaly.hpp /.cpp` and
+ `examples/crl-provider/CRLProviderItaly.hpp /.cpp`)
+but you can implement provider to get Rules, Keys or CRL from other states or by your custom provider.
 
-Interfaces declare methods to refresh Rules or Keys or All (IRulesKeysProvider).
+Interfaces declare methods to refresh Rules, Keys, CRL or All (IAllProvider).
 
-Interface methods request instance of Rules or Keys storage interface as described above.
+Interface methods request instance of Rules, Keys or CRL storage interface as described above.
 
 #### Logger
 
@@ -209,6 +241,9 @@ SDK provide example implementation of standard output logger (`examples/loggers/
 
 SDK provides also example of C++ (`examples/verificaC19-sdk-example.cpp`)
 and C (`examples/c/verificaC19-sdk-example.c`) applications.
+
+SDK provides also simple client of C++ (`examples/verificaC19-sdk-client.cpp`)
+and C (`examples/c/verificaC19-sdk-client.c`) applications.
 
 #### Disclaimer
 This library is **not** an official implementation, therefore its use may be subject to restrictions by some countries regulations.

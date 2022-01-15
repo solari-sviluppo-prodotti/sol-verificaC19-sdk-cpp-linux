@@ -54,7 +54,7 @@ public:
 	 *
 	 * @return true if transaction running, else false.
 	 */
-	virtual bool isUpdating() = 0;
+	virtual bool isUpdating() const = 0;
 
 	/**
 	 * Store to Keys storage service the token matched to last stored key
@@ -75,7 +75,7 @@ public:
 	 *
 	 * @return Seconds elapsed until last update
 	 */
-	virtual time_t lastUpdate() = 0;
+	virtual time_t lastUpdate() const = 0;
 
 };
 

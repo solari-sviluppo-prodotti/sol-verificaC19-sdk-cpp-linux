@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['vaccinationmodel_108',['VaccinationModel',['../classverificaC19Sdk_1_1VaccinationModel.html',1,'verificaC19Sdk']]],
-  ['verifier_109',['Verifier',['../structVerifier.html',1,'']]]
+  ['testmodel_150',['TestModel',['../classverificaC19Sdk_1_1TestModel.html',1,'verificaC19Sdk']]]
 ];

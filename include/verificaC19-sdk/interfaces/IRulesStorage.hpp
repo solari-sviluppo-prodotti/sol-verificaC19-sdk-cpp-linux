@@ -85,14 +85,14 @@ public:
 	 *
 	 * @return true if transaction running, else false.
 	 */
-	virtual bool isUpdating() = 0;
+	virtual bool isUpdating() const = 0;
 
 	/**
 	 * Get time in seconds elapsed until last update
 	 *
 	 * @return Seconds elapsed until last update
 	 */
-	virtual time_t lastUpdate() = 0;
+	virtual time_t lastUpdate() const = 0;
 
 };
 

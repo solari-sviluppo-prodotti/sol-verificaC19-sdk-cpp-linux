@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['getkey_26',['getKey',['../classverificaC19Sdk_1_1IKeysStorage.html#a9cde0e7b6cd229d4c7d3ff6fa5505e30',1,'verificaC19Sdk::IKeysStorage']]],
-  ['getlaststoredkeytoken_27',['getLastStoredKeyToken',['../classverificaC19Sdk_1_1IKeysStorage.html#a4715558e3005beb1b620c54dd8ee1eb0',1,'verificaC19Sdk::IKeysStorage']]],
-  ['getrule_28',['getRule',['../classverificaC19Sdk_1_1IRulesStorage.html#a1120beaa0026373f10321291202f60e4',1,'verificaC19Sdk::IRulesStorage']]],
-  ['givenname_29',['givenName',['../classverificaC19Sdk_1_1PersonModel.html#a986ef99a9265de9fc11eada2ebbf7d51',1,'verificaC19Sdk::PersonModel::givenName()'],['../structCertificateSimple__c.html#a9651ce780baa336ca5b3a4e47f96db20',1,'CertificateSimple_c::givenName()'],['../classverificaC19Sdk_1_1SimplePersonModel.html#aff52fadaa5405d6c0d806924180ddc8f',1,'verificaC19Sdk::SimplePersonModel::givenName()']]]
+  ['familyname_33',['familyName',['../classverificaC19Sdk_1_1PersonModel.html#a9f87abcb65849bc15e12f245a605417c',1,'verificaC19Sdk::PersonModel::familyName()'],['../structCertificateSimple__c.html#ae73b6d7935445c2265521bbcfc580917',1,'CertificateSimple_c::familyName()'],['../classverificaC19Sdk_1_1SimplePersonModel.html#a55e93bad9fddb0e5beece40e6f3ac1ca',1,'verificaC19Sdk::SimplePersonModel::familyName()']]],
+  ['forceupdateall_34',['forceUpdateAll',['../classverificaC19Sdk_1_1DGCUpdater.html#a6c9d46aba8bfd8e28f198a3ccf0944b2',1,'verificaC19Sdk::DGCUpdater']]],
+  ['forceupdatecrl_35',['forceUpdateCRL',['../classverificaC19Sdk_1_1DGCUpdater.html#a9835d67aa9b6a1ae500a443d1cd9334d',1,'verificaC19Sdk::DGCUpdater']]],
+  ['forceupdatekeys_36',['forceUpdateKeys',['../classverificaC19Sdk_1_1DGCUpdater.html#a33c5cf1b7086615c21629d53daffa421',1,'verificaC19Sdk::DGCUpdater']]],
+  ['forceupdaterules_37',['forceUpdateRules',['../classverificaC19Sdk_1_1DGCUpdater.html#a88f973bdd4d7866e2ae47ce059d45f66',1,'verificaC19Sdk::DGCUpdater']]]
 ];

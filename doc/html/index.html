@@ -84,8 +84,16 @@ Dependencies</h3>
 </ul>
 <h3><a class="anchor" id="autotoc_md4"></a>
 Build</h3>
-<p>Once cloned, to build on your system you can use this command:</p>
+<p>Once cloned, to build on your system you can use this command, will compile and install libverificaC19-sdk.so:</p>
 <div class="fragment"><div class="line">cmake .</div>
+<div class="line">make</div>
+<div class="line">make install # as root or sudoer</div>
+</div><!-- fragment --><p>If you want to build also with examples and create also examples library you can use this command, will compile and install libverificaC19-sdk.so and libverificaC19-common-examples.so:</p>
+<div class="fragment"><div class="line">cmake . -DBUILD_EXAMPLES=ON</div>
+<div class="line">make</div>
+<div class="line">make install # as root or sudoer</div>
+</div><!-- fragment --><p>If you want to build static libraries (with or without examples) you can use this command, will compile and install libverificaC19-sdk.a and (if enabled) libverificaC19-common-examples.a:</p>
+<div class="fragment"><div class="line">cmake . -DBUILD_STATIC=ON</div>
 <div class="line">make</div>
 <div class="line">make install # as root or sudoer</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md5"></a>
@@ -98,19 +106,21 @@ Tested architectures</h3>
 <h3><a class="anchor" id="autotoc_md6"></a>
 Usage</h3>
 <p>The main entry point of the library is the <code>DGCVerifier</code> class.</p>
-<p>This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage.</p>
+<p>This class needs a implementation of IKeysStorage, IRulesStorage and ICRLStorage interfaces to access to storage.</p>
 <p>Optionally you can use a implementation of ILogger interface to log operations.</p>
 <p>You can simply instantiate and configure it:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;examples/keys-storage/KeysStorageFile.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/rules-storage/RulesStorageFile.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/loggers/LoggerStdout.hpp&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/keys-storage/KeysStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/rules-storage/RulesStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/crl-storage/CRLStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/loggers/LoggerStdout.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line">LoggerStdout logger(DEBUG);</div>
 <div class="line">KeysStorageFile keysStorage;</div>
 <div class="line">RulesStorageFile rulesStorage;</div>
+<div class="line">CRLStorageFile crlStorage;</div>
 <div class="line"> </div>
-<div class="line">DGCVerifier verifier(&amp;keysStorage, &amp;rulesStorage, &amp;logger);</div>
+<div class="line">DGCVerifier verifier(&amp;keysStorage, &amp;rulesStorage, &amp;crlStorage, &amp;logger);</div>
 </div><!-- fragment --><p>Once instantiated and configured with storage services, you can simply use it calling the following methods:</p>
 <div class="fragment"><div class="line">...</div>
 <div class="line">if (!verifier.verifyMinSdkVersion()) {</div>
@@ -128,31 +138,37 @@ Usage</h3>
 <div class="line"> </div>
 <div class="line"><span class="keyword">enum</span> CertificateStatus status = result.certificateStatus;</div>
 <div class="line">...</div>
-</div><!-- fragment --><p>The rules and keys updater process is managed by th <code>DGCRulesKeysUpdater</code> class.</p>
-<p>This class needs a implementation of IKeysStorage and IRulesStorage interfaces to access to storage and IKeysProvider and IRulesProvider interfaces to access to providers.</p>
+</div><!-- fragment --><p>The rules, keys and CRL updater process is managed by th <code>DGCUpdater</code> class.</p>
+<p>This class needs a implementation of IKeysStorage, IRulesStorage and ICRLStorage interfaces to access to storage and IKeysProvider, IRulesProvider and ICRLProvider interfaces to access to providers.</p>
 <p>Optionally you can use a implementation of ILogger interface to log operations.</p>
 <p>You can simply instantiate and configure it:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;examples/keys-storage/KeysStorageFile.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/keys-provider/KeysProviderItaly.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/rules-storage/RulesStorageFile.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/rules-provider/RulesProviderItaly.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/loggers/LoggerStdout.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/keys-storage/KeysStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/keys-provider/KeysProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/rules-storage/RulesStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/rules-provider/RulesProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/crl-storage/CRLStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/crl-provider/CRLProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/loggers/LoggerStdout.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCUpdater.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line">LoggerStdout logger(DEBUG);</div>
 <div class="line">KeysStorageFile keysStorage;</div>
 <div class="line">RulesStorageFile rulesStorage;</div>
-<div class="line">KeysProviderItaly(&amp;logger);</div>
-<div class="line">RulesProviderItaly(&amp;logger);</div>
+<div class="line">CRLStorageFile crlStorage;</div>
+<div class="line">KeysProviderItaly keysProvider(&amp;logger);</div>
+<div class="line">RulesProviderItaly rulesProvider(&amp;logger);</div>
+<div class="line">CRLProviderItaly crlProvider(&amp;logger);</div>
 <div class="line"> </div>
-<div class="line">DGCRulesKeysUpdater rulesKeyUpdater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
-<div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;logger);</div>
+<div class="line">DGCUpdater updater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
+<div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;crlProvider, &amp;crlStorage, &amp;logger);</div>
 </div><!-- fragment --><p>so the complete example with rules and keys update and DGC verify is:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;examples/keys-storage/KeysStorageFile.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/keys-provider/KeysProviderItaly.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/rules-storage/RulesStorageFile.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/rules-provider/RulesProviderItaly.hpp&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;examples/loggers/LoggerStdout.hpp&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/keys-storage/KeysStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/keys-provider/KeysProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/rules-storage/RulesStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/rules-provider/RulesProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/crl-storage/CRLStorageFile.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/crl-provider/CRLProviderItaly.hpp&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/examples/loggers/LoggerStdout.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCVerifier.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;verificaC19-sdk/DGCRulesKeysUpdater.hpp&gt;</span></div>
 <div class="line"> </div>
@@ -161,27 +177,29 @@ Usage</h3>
 <div class="line">LoggerStdout logger(DEBUG);</div>
 <div class="line">KeysStorageFile keysStorage;</div>
 <div class="line">RulesStorageFile rulesStorage;</div>
+<div class="line">CRLStorageFile crlStorage;</div>
 <div class="line">KeysProviderItaly keysProvider(&amp;logger);</div>
 <div class="line">RulesProviderItaly rulesProvider(&amp;logger);</div>
+<div class="line">CRLProviderItaly crlProvider(&amp;logger);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// This automatically updates rules and keys every 86400 seconds</span></div>
-<div class="line">DGCRulesKeysUpdater rulesKeyUpdater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
-<div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;logger);</div>
+<div class="line"><span class="comment">// This automatically updates rules, keys and CRL every 86400 seconds</span></div>
+<div class="line">DGCUpdater updater(86400, &amp;rulesProvider, &amp;rulesStorage,</div>
+<div class="line">        &amp;keysProvider, &amp;keysStorage, &amp;crlProvider, &amp;crlStorage, &amp;logger);</div>
 <div class="line"> </div>
-<div class="line">DGCVerifier verifier(&amp;keysStorage, &amp;rulesStorage, &amp;logger);</div>
+<div class="line">DGCVerifier verifier(&amp;keysStorage, &amp;rulesStorage, &amp;crlStorage, &amp;logger);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// At startup wait to have a valid set of rules and keys, if this is</span></div>
 <div class="line"><span class="comment">// first application launch the storage cuold be empty</span></div>
-<div class="line"><span class="keywordflow">if</span> (!rulesKeyUpdater.isUpdated()) {</div>
+<div class="line"><span class="keywordflow">if</span> (!updater.isUpdated()) {</div>
 <div class="line">    <span class="comment">// Signal to user that rules and keys is updating</span></div>
-<div class="line">    <span class="keywordflow">while</span> (!rulesKeyUpdater.isUpdated()) {</div>
+<div class="line">    <span class="keywordflow">while</span> (!updater.isUpdated()) {</div>
 <div class="line">        usleep(10000);</div>
 <div class="line">    }</div>
-<div class="line">    <span class="comment">// Signal to user that rules and keys was updated</span></div>
+<div class="line">    <span class="comment">// Signal to user that rules, keys and CRL was updated</span></div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// Usage (for every readed Digital Certificate)</span></div>
+<div class="line"><span class="comment">// Usage (for every read Digital Certificate)</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordflow">if</span> (!verifier.verifyMinSdkVersion()) {</div>
 <div class="line">  logger.error(<span class="stringliteral">&quot;Minimum SDK version does not match&quot;</span>);</div>
@@ -198,33 +216,34 @@ Usage</h3>
 <div class="line"> </div>
 <div class="line"><span class="keyword">enum</span> CertificateStatus status = result.certificateStatus;</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
-Rules and Keys storage</h3>
-<p>Rules and Keys storage are mandatory services and must be implemented using IRulesStorage and IKeysStorage interfaces.</p>
+Rules, Keys and CRL storage</h3>
+<p>Rules, Keys and CRL storage are mandatory services and must be implemented using IRulesStorage, IKeysStorage and ICRLStorage interfaces.</p>
 <p>SDK provide:</p><ul>
-<li>full working example implementations to store Rules and Keys in memory, (<code>examples/rules-storage/RulesStorageMemory.hpp /.cpp</code> and <code>examples/keys-storage/KeysStorageMemory.hpp /.cpp</code>)</li>
-<li>full working example implementations to store Rules and Keys in json File, (<code>examples/rules-storage/RulesStorageFile.hpp /.cpp</code> and <code>examples/keys-storage/KeysStorageFile.hpp /.cpp</code>)</li>
+<li>full working example implementations to store Rules, Keys and CRL in memory, (<code><a class="el" href="RulesStorageMemory_8hpp_source.html">examples/rules-storage/RulesStorageMemory.hpp</a> /.cpp</code> and <code><a class="el" href="KeysStorageMemory_8hpp_source.html">examples/keys-storage/KeysStorageMemory.hpp</a> /.cpp</code> and <code><a class="el" href="CRLStorageMemory_8hpp_source.html">examples/crl-storage/CRLStorageMemory.hpp</a> /.cpp</code>)</li>
+<li>full working example implementations to store Rules, Keys and CRL in json File, (<code><a class="el" href="RulesStorageFile_8hpp_source.html">examples/rules-storage/RulesStorageFile.hpp</a> /.cpp</code> and <code><a class="el" href="KeysStorageFile_8hpp_source.html">examples/keys-storage/KeysStorageFile.hpp</a> /.cpp</code> and <code><a class="el" href="CRLStorageFile_8hpp_source.html">examples/crl-storage/CRLStorageFile.hpp</a> /.cpp</code>)</li>
 </ul>
 <p>but you can implement your storage in File or in Database.</p>
 <p>Interfaces declare methods to:</p><ul>
-<li>store Rule or Key without transaction</li>
-<li>store Rules or Keys in transaction, to use "old" Rules or Keys until update is done</li>
-<li>get info about Rules or Keys update in progress</li>
-<li>get info about Rules or Keys last update time</li>
+<li>store Rule, Key or CRL without transaction</li>
+<li>store Rules, Keys or CRL in transaction, to use "old" Rules, Keys or CRL until update is done</li>
+<li>get info about Rules, Keys or CRL update in progress</li>
+<li>get info about Rules, Keys or CRL last update time</li>
 <li>get info about last Key token stored</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md8"></a>
-Rules and Keys provider</h3>
-<p>Rules and Keys update provider are an optional services used to update Keys and Rules and can be implemented using IRulesProvider, IKeysProbider or IRulesKeysProvider interfaces.</p>
-<p>SDK provide full working example implementations to update Rules and Keys from Italian provider, (<code>examples/rules-provider/RulesProviderItaly.hpp /.cpp</code> and <code>examples/keys-provider/KeysProviderItaly.hpp /.cpp</code>) but you can implement provider to get Rules or Keys from other states or by your custom provider.</p>
-<p>Interfaces declare methods to refresh Rules or Keys or All (IRulesKeysProvider).</p>
-<p>Interface methods request instance of Rules or Keys storage interface as described above.</p>
+Rules, Keys and CRL provider</h3>
+<p>Rules, Keys and CRL update provider are an optional services used to update Rules, Keys and CRL and can be implemented using IRulesProvider, IKeysProbider, ICRLProvider or IAllProvider interfaces.</p>
+<p>SDK provide full working example implementations to update Rules, Keys and CRL from Italian provider, (<code><a class="el" href="RulesProviderItaly_8hpp_source.html">examples/rules-provider/RulesProviderItaly.hpp</a> /.cpp</code> and <code><a class="el" href="KeysProviderItaly_8hpp_source.html">examples/keys-provider/KeysProviderItaly.hpp</a> /.cpp</code> and <code><a class="el" href="CRLProviderItaly_8hpp_source.html">examples/crl-provider/CRLProviderItaly.hpp</a> /.cpp</code>) but you can implement provider to get Rules, Keys or CRL from other states or by your custom provider.</p>
+<p>Interfaces declare methods to refresh Rules, Keys, CRL or All (IAllProvider).</p>
+<p>Interface methods request instance of Rules, Keys or CRL storage interface as described above.</p>
 <h3><a class="anchor" id="autotoc_md9"></a>
 Logger</h3>
 <p>SDK contemplate use of logger with interface ILogger, but you can easily set a NULL pointer to this to not have log or implement you logger.</p>
-<p>SDK provide example implementation of standard output logger (<code>examples/loggers/LoggerStdout.hpp / .cpp</code>).</p>
+<p>SDK provide example implementation of standard output logger (<code><a class="el" href="LoggerStdout_8hpp_source.html">examples/loggers/LoggerStdout.hpp</a> / .cpp</code>).</p>
 <h2><a class="anchor" id="autotoc_md10"></a>
 Application examples</h2>
 <p>SDK provides also example of C++ (<code>examples/verificaC19-sdk-example.cpp</code>) and C (<code>examples/c/verificaC19-sdk-example.c</code>) applications.</p>
+<p>SDK provides also simple client of C++ (<code>examples/verificaC19-sdk-client.cpp</code>) and C (<code>examples/c/verificaC19-sdk-client.c</code>) applications.</p>
 <h3><a class="anchor" id="autotoc_md11"></a>
 Disclaimer</h3>
 <p>This library is <b>not</b> an official implementation, therefore its use may be subject to restrictions by some countries regulations. The author assumes no responsibility for any unauthorized use of the library and no warranties about the correctness of the implementation, as better stated in the License.</p>

@@ -8,14 +8,16 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <examples/keys-storage/KeysStorageFile.h>
-#include <examples/keys-provider/KeysProviderItaly.h>
-#include <examples/rules-storage/RulesStorageFile.h>
-#include <examples/rules-provider/RulesProviderItaly.h>
-#include <examples/loggers/LoggerStdout.h>
+#include <verificaC19-sdk/examples/keys-storage/KeysStorageFile.h>
+#include <verificaC19-sdk/examples/keys-provider/KeysProviderItaly.h>
+#include <verificaC19-sdk/examples/rules-storage/RulesStorageFile.h>
+#include <verificaC19-sdk/examples/rules-provider/RulesProviderItaly.h>
+#include <verificaC19-sdk/examples/crl-storage/CRLStorageFile.h>
+#include <verificaC19-sdk/examples/crl-provider/CRLProviderItaly.h>
+#include <verificaC19-sdk/examples/loggers/LoggerStdout.h>
 
 #include <verificaC19-sdk/DGCVerifier.h>
-#include <verificaC19-sdk/DGCRulesKeysUpdater.h>
+#include <verificaC19-sdk/DGCUpdater.h>
 
 static void logCertificate(const struct CertificateSimple_c* certificate, const Logger* logger) {
 	LoggerStdout_c_info(logger, "---------- Certificate log ----------");
@@ -51,19 +53,24 @@ int main (int argc, char** argv) {
 		KeysProvider* keysProvider = KeysProviderItaly_c_create(logger);
 		RulesStorage* rulesStorage = RulesStorageFile_c_create();
 		RulesProvider* rulesProvider = RulesProviderItaly_c_create(logger);
+		CRLStorage* crlStorage = CRLStorageFile_c_create();
+		CRLProvider* crlProvider = CRLProviderItaly_c_create(logger);
 
-		RulesKeysUpdater* rulesKeysUpdater = DGCRulesKeysUpdaterRulesAndKeys_c_create(86400, rulesProvider, rulesStorage,
-				keysProvider, keysStorage, logger);
+		Updater* updater = DGCUpdater_c_create(86400, rulesProvider, rulesStorage,
+				keysProvider, keysStorage, crlProvider, crlStorage, logger);
+
+		// Force update
+		DGCUpdater_c_forceUpdateAll(updater);
 
 		// First, at startup, wait if updated
-		if (!DGCRulesKeysUpdater_c_isUpdated(rulesKeysUpdater)) {
-			LoggerStdout_c_info(logger, "Rules or Keys are updating, waiting");
-			while (!DGCRulesKeysUpdater_c_isUpdated(rulesKeysUpdater)) {
+		if (!DGCUpdater_c_isUpdated(updater)) {
+			LoggerStdout_c_info(logger, "Rules, Keys or CRL are updating, waiting");
+			while (!DGCUpdater_c_isUpdated(updater)) {
 				usleep(10000);
 			}
 		}
 
-		void* verifier = DGCVerifier_c_create(keysStorage, rulesStorage, logger);
+		void* verifier = DGCVerifier_c_create(keysStorage, rulesStorage, crlStorage, logger);
 		if (!DGCVerifier_c_verifyMinSdkVersion(verifier)) {
 			LoggerStdout_c_error(logger, "Minimum SDK version does not match");
 		} else {
@@ -83,13 +90,14 @@ int main (int argc, char** argv) {
 						free(qr);
 					} else {
 						close(fcertificate);
+						const char* scanMode = SCAN_MODE_3G;
 						if (argc > 2 && strcmp(argv[2], "2G") == 0) {
-							DGCVerifier_c_setScanMode(verifier, SCAN_MODE_2G);
+							scanMode = SCAN_MODE_2G;
 						}
 						if (argc > 2 && strcmp(argv[2], "BOOSTER") == 0) {
-							DGCVerifier_c_setScanMode(verifier, SCAN_MODE_BOOSTER);
+							scanMode = SCAN_MODE_BOOSTER;
 						}
-						struct CertificateSimple_c* certificate = DGCVerifier_c_verify(verifier, qr);
+						struct CertificateSimple_c* certificate = DGCVerifier_c_verify(verifier, qr, scanMode);
 						free(qr);
 						logCertificate(certificate, logger);
 						CertificateSimple_c_release(certificate);
@@ -98,10 +106,10 @@ int main (int argc, char** argv) {
 			}
 		}
 		DGCVerifier_c_release(verifier);
-		DGCRulesKeysUpdater_c_release(rulesKeysUpdater);
-		RulesProviderItaly_c_release(rulesProvider);
-		RulesStorageFile_c_release(rulesStorage);
-		KeysProviderItaly_c_release(keysProvider);
-		KeysStorageFile_c_release(keysStorage);
+		DGCUpdater_c_release(updater);
+		RulesProvider_c_release(rulesProvider);
+		RulesStorage_c_release(rulesStorage);
+		KeysProvider_c_release(keysProvider);
+		KeysStorage_c_release(keysStorage);
 	}
 }

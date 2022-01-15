@@ -74,6 +74,16 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="IRulesStorage_8hpp_source.html">IRulesStorage.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for verificaC19Sdk::IRulesStorage:</div>
+<div class="dyncontent">
+<div class="center"><img src="classverificaC19Sdk_1_1IRulesStorage__inherit__graph.png" border="0" usemap="#averificaC19Sdk_1_1IRulesStorage_inherit__map" alt="Inheritance graph"/></div>
+<map name="averificaC19Sdk_1_1IRulesStorage_inherit__map" id="averificaC19Sdk_1_1IRulesStorage_inherit__map">
+<area shape="rect" title=" " alt="" coords="137,5,347,32"/>
+<area shape="rect" href="classverificaC19Sdk_1_1RulesStorageFile.html" title=" " alt="" coords="5,87,236,114"/>
+<area shape="rect" href="classverificaC19Sdk_1_1RulesStorageMemory.html" title=" " alt="" coords="260,80,467,121"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -87,10 +97,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a81a897e7bb401b8477f90176c33ae0bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1b2c296567284f19a0273525a1fbc1b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html#ac1b2c296567284f19a0273525a1fbc1b">rollbackUpdatedRules</a> ()=0</td></tr>
 <tr class="separator:ac1b2c296567284f19a0273525a1fbc1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa35984dcf68f90df5044965ab3b2662a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html#aa35984dcf68f90df5044965ab3b2662a">isUpdating</a> ()=0</td></tr>
-<tr class="separator:aa35984dcf68f90df5044965ab3b2662a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36ca5ca5ba29e0ad611bdf555085e03d"><td class="memItemLeft" align="right" valign="top">virtual time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html#a36ca5ca5ba29e0ad611bdf555085e03d">lastUpdate</a> ()=0</td></tr>
-<tr class="separator:a36ca5ca5ba29e0ad611bdf555085e03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b3aa75ba0683ceba565a8e3196bf203"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html#a3b3aa75ba0683ceba565a8e3196bf203">isUpdating</a> () const =0</td></tr>
+<tr class="separator:a3b3aa75ba0683ceba565a8e3196bf203"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a528bbee2c3602ece9337f77d2b5ac54e"><td class="memItemLeft" align="right" valign="top">virtual time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html#a528bbee2c3602ece9337f77d2b5ac54e">lastUpdate</a> () const =0</td></tr>
+<tr class="separator:a528bbee2c3602ece9337f77d2b5ac54e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface to implement Key Storage service to store and retrieve keys from storage archive </p>
@@ -119,6 +129,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Start transaction with Rules storage archive </p>
 
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#a0f634e1b485f9ab0bb58d071cd6a0ecd">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#a16cf2cf6d398ac2122217025dfbf97b9">verificaC19Sdk::RulesStorageFile</a>.</p>
+
 </div>
 </div>
 <a id="a81a897e7bb401b8477f90176c33ae0bd"></a>
@@ -144,6 +156,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>End transaction with Rules storage service </p>
+
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#af7011e47b680a1f04a3fbfe7a2274d73">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#a24c65520947ebdda9fad91a9e91364d7">verificaC19Sdk::RulesStorageFile</a>.</p>
 
 </div>
 </div>
@@ -190,10 +204,12 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Rule value </dd></dl>
 
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#ad6e52004d3462d3fbc52618f055204c5">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#adbd1ec5e981745fe7cc707d88c034fa1">verificaC19Sdk::RulesStorageFile</a>.</p>
+
 </div>
 </div>
-<a id="aa35984dcf68f90df5044965ab3b2662a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa35984dcf68f90df5044965ab3b2662a">&#9670;&nbsp;</a></span>isUpdating()</h2>
+<a id="a3b3aa75ba0683ceba565a8e3196bf203"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b3aa75ba0683ceba565a8e3196bf203">&#9670;&nbsp;</a></span>isUpdating()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,7 +221,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual bool verificaC19Sdk::IRulesStorage::isUpdating </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -217,10 +233,12 @@ Public Member Functions</h2></td></tr>
 <p>Request to Rules storage service if update transaction is running</p>
 <dl class="section return"><dt>Returns</dt><dd>true if transaction running, else false. </dd></dl>
 
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#ac5afc9d489af72a2083a45ea3b8131a3">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#ae5b07e9557fa7e51562ea1bab554cd2f">verificaC19Sdk::RulesStorageFile</a>.</p>
+
 </div>
 </div>
-<a id="a36ca5ca5ba29e0ad611bdf555085e03d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36ca5ca5ba29e0ad611bdf555085e03d">&#9670;&nbsp;</a></span>lastUpdate()</h2>
+<a id="a528bbee2c3602ece9337f77d2b5ac54e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a528bbee2c3602ece9337f77d2b5ac54e">&#9670;&nbsp;</a></span>lastUpdate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,7 +250,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual time_t verificaC19Sdk::IRulesStorage::lastUpdate </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -243,6 +261,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Get time in seconds elapsed until last update</p>
 <dl class="section return"><dt>Returns</dt><dd>Seconds elapsed until last update </dd></dl>
+
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#aea917575d5c3e24440f33d4f57f17546">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#a960214ad091ed7e0a864c09cd5a05ef9">verificaC19Sdk::RulesStorageFile</a>.</p>
 
 </div>
 </div>
@@ -269,6 +289,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>End transaction with Rules storage service </p>
+
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#a34396fcd671222035dd324b261fbc272">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#a0efaecb0b05f4a1dd80a6aaec7fef488">verificaC19Sdk::RulesStorageFile</a>.</p>
 
 </div>
 </div>
@@ -320,6 +342,8 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Implemented in <a class="el" href="classverificaC19Sdk_1_1RulesStorageMemory.html#aa5f22c504e68ba6b7fe9389269a5e802">verificaC19Sdk::RulesStorageMemory</a>, and <a class="el" href="classverificaC19Sdk_1_1RulesStorageFile.html#a2b2cd1fa124596b23df63123ba68431a">verificaC19Sdk::RulesStorageFile</a>.</p>
 
 </div>
 </div>

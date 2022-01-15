@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['forceupdateall_118',['forceUpdateAll',['../classverificaC19Sdk_1_1DGCRulesKeysUpdater.html#a942922098a5ed6080ca1918d6b45a412',1,'verificaC19Sdk::DGCRulesKeysUpdater']]],
-  ['forceupdatekeys_119',['forceUpdateKeys',['../classverificaC19Sdk_1_1DGCRulesKeysUpdater.html#abf03f903c61b8caa1c2e3fb92c016c56',1,'verificaC19Sdk::DGCRulesKeysUpdater']]],
-  ['forceupdaterules_120',['forceUpdateRules',['../classverificaC19Sdk_1_1DGCRulesKeysUpdater.html#a2dea65f7781877ee0133321ad810d7e2',1,'verificaC19Sdk::DGCRulesKeysUpdater']]]
+  ['forceupdateall_168',['forceUpdateAll',['../classverificaC19Sdk_1_1DGCUpdater.html#a6c9d46aba8bfd8e28f198a3ccf0944b2',1,'verificaC19Sdk::DGCUpdater']]],
+  ['forceupdatecrl_169',['forceUpdateCRL',['../classverificaC19Sdk_1_1DGCUpdater.html#a9835d67aa9b6a1ae500a443d1cd9334d',1,'verificaC19Sdk::DGCUpdater']]],
+  ['forceupdatekeys_170',['forceUpdateKeys',['../classverificaC19Sdk_1_1DGCUpdater.html#a33c5cf1b7086615c21629d53daffa421',1,'verificaC19Sdk::DGCUpdater']]],
+  ['forceupdaterules_171',['forceUpdateRules',['../classverificaC19Sdk_1_1DGCUpdater.html#a88f973bdd4d7866e2ae47ce059d45f66',1,'verificaC19Sdk::DGCUpdater']]]
 ];

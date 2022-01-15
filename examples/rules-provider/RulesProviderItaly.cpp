@@ -8,7 +8,7 @@
 #include <string>
 
 #include <verificaC19-sdk/DGCVerifier.hpp>
-#include <RulesProviderItaly.hpp>
+#include <rules-provider/RulesProviderItaly.hpp>
 
 namespace verificaC19Sdk {
 
@@ -92,17 +92,3 @@ void RulesProviderItaly::refreshRules(IRulesStorage* rulesStorage) const {
 }
 
 } // namespace verificaC19Sdk
-
-RulesProvider* RulesProviderItaly_c_create(Logger* logger) {
-	return (RulesProvider*)new verificaC19Sdk::RulesProviderItaly((verificaC19Sdk::ILogger*)logger);
-}
-
-void RulesProviderItaly_c_release(const RulesProvider* rulesProviderItaly) {
-	verificaC19Sdk::RulesProviderItaly* this_ = (verificaC19Sdk::RulesProviderItaly*)rulesProviderItaly;
-	delete this_;
-}
-
-void RulesProviderItaly_c_refreshKeys(const RulesProvider* rulesProviderItaly, RulesStorage* rulesStorage) {
-	verificaC19Sdk::RulesProviderItaly* this_ = (verificaC19Sdk::RulesProviderItaly*)rulesProviderItaly;
-	this_->refreshRules((verificaC19Sdk::IRulesStorage*)rulesStorage);
-}

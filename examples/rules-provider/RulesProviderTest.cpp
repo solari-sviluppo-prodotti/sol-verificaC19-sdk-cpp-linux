@@ -1,7 +1,7 @@
 // Copyright (c) 2021 Solari di Udine S.p.A
 // Licensed under the Apache License, Version 2.0
 
-#include <RulesProviderTest.hpp>
+#include <rules-provider/RulesProviderTest.hpp>
 
 namespace verificaC19Sdk {
 
@@ -37,17 +37,3 @@ void RulesProviderTest::refreshRules(IRulesStorage* rulesStorage) const {
 }
 
 } // namespace verificaC19Sdk
-
-RulesProvider* RulesProviderTest_c_create(Logger* logger) {
-	return (RulesProvider*)new verificaC19Sdk::RulesProviderTest((verificaC19Sdk::ILogger*)logger);
-}
-
-void RulesProviderTest_c_release(const RulesProvider* rulesProviderTest) {
-	verificaC19Sdk::RulesProviderTest* this_ = (verificaC19Sdk::RulesProviderTest*)rulesProviderTest;
-	delete this_;
-}
-
-void RulesProviderTest_c_refreshRules(const RulesProvider* rulesProviderTest, RulesStorage* rulesStorage) {
-	verificaC19Sdk::RulesProviderTest* this_ = (verificaC19Sdk::RulesProviderTest*)rulesProviderTest;
-	this_->refreshRules((verificaC19Sdk::IRulesStorage*)rulesStorage);
-}

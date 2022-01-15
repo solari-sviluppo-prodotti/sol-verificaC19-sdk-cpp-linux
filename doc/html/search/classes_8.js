@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['testmodel_107',['TestModel',['../classverificaC19Sdk_1_1TestModel.html',1,'verificaC19Sdk']]]
+  ['simplepersonmodel_149',['SimplePersonModel',['../classverificaC19Sdk_1_1SimplePersonModel.html',1,'verificaC19Sdk']]]
 ];

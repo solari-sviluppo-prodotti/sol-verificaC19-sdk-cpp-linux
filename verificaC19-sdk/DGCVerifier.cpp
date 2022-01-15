@@ -189,8 +189,8 @@ public:
 
 };
 
-DGCVerifier::DGCVerifier(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger) :
-		m_scanMode(SCAN_MODE_3G), m_keysStorage(keysStorage), m_rulesStorage(rulesStorage), m_logger(logger) {
+DGCVerifier::DGCVerifier(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ICRLStorage* crlStorage, ILogger* logger) :
+		m_keysStorage(keysStorage), m_rulesStorage(rulesStorage), m_crlStorage(crlStorage), m_logger(logger) {
 	if (m_logger == NULL) {
 		m_logger = new LoggerNull();
 	}
@@ -216,11 +216,7 @@ bool DGCVerifier::verifyMinSdkVersion() const {
 	return true;
 }
 
-void DGCVerifier::setScanMode(const std::string& scanMode) {
-	m_scanMode = scanMode;
-}
-
-CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
+CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::string& scanMode) const {
 
 	CertificateSimple certificateSimple;
 
@@ -531,6 +527,22 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 					break;
 				}
 
+				// CRL validation----------------------------------------
+				// check if Green Pass is in CRL
+				if (m_crlStorage != NULL) {
+					unsigned char hash[SHA256_DIGEST_LENGTH];
+					SHA256_CTX sha256;
+					SHA256_Init(&sha256);
+					SHA256_Update(&sha256, certificate.identifier.c_str(), certificate.identifier.length());
+					SHA256_Final(hash, &sha256);
+					std::string certificateHash = encodeBase64(hash, SHA256_DIGEST_LENGTH);
+					if (m_crlStorage->hasCertificateHash(certificateHash)) {
+						m_logger->info("Certificate %s in CRL", certificate.identifier.c_str());
+						certificateSimple.certificateStatus = NOT_VALID;
+						break;
+					}
+				}
+
 				// Signature verification --------------------------------------
 				std::string base64Kid = encodeBase64(cborkid->v.bytes, cborkid->length);
 
@@ -624,7 +636,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						if (EVP_DigestVerifyInit(ctx, &pkey_ctx, EVP_sha256(), NULL, pkey) > 0 ) {
 							if (EVP_PKEY_CTX_set_rsa_padding(pkey_ctx, RSA_PKCS1_PSS_PADDING) > 0) {
 								if (EVP_DigestVerifyUpdate(ctx, dataToBeVerified, dataToBeVerifiedLen) > 0) {
-									int verify = EVP_DigestVerifyFinal(ctx, cborsign->v.bytes, cborsign->length);
+									int verify = EVP_DigestVerifyFinal(ctx, (unsigned char*)cborsign->v.bytes, cborsign->length);
 									m_logger->info("EVP verify result: %d", verify);
 									X509_free(cert);
 									EVP_MD_CTX_destroy(ctx);
@@ -688,7 +700,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 							break;
 						}
 						// SDK version 1.1.1 booster mode
-						if (m_scanMode == SCAN_MODE_BOOSTER) {
+						if (scanMode == SCAN_MODE_BOOSTER) {
 							m_logger->info("Partial vaccine %s not valid for selected scan mode",
 									certificate.vaccination.medicinalProduct.c_str());
 							certificateSimple.certificateStatus = NOT_VALID;
@@ -717,8 +729,9 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 								certificate.vaccination.doseNumber > certificate.vaccination.totalSeriesOfDoses) {
 							startDay = 0;
 						}
-						// SDK version 1.1.1 start validity immediate for complete vaccination with at least 2 doses
-						if (certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
+						// SDK version 1.1.1 start validity immediate for Janssen complete vaccination with at least 2 doses
+						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
+								certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
 								certificate.vaccination.totalSeriesOfDoses >= 2) {
 							startDay = 0;
 						}
@@ -766,7 +779,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						break;
 					}
 					// SDK version 1.1.1 booster mode
-					if (m_scanMode == SCAN_MODE_BOOSTER) {
+					if (scanMode == SCAN_MODE_BOOSTER) {
 						// - Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than two
 						//   respond that test is needed
 						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
@@ -857,7 +870,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 						break;
 					}
 					// SDK version 1.1.1 booster mode
-					if (m_scanMode == SCAN_MODE_BOOSTER) {
+					if (scanMode == SCAN_MODE_BOOSTER) {
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) valid but test needed for selected scan mode",
 								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
 								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
@@ -879,7 +892,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 				}
 
 				if (certificate.isTest()) {
-					if (m_scanMode != SCAN_MODE_3G) {
+					if (scanMode != SCAN_MODE_3G) {
 						certificateSimple.certificateStatus = NOT_VALID;
 						m_logger->debug("Digital certificate of %s not valid for selected scan mode",
 								certificate.test.dateTimeOfCollection.c_str());
@@ -986,8 +999,8 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr) const {
 	return certificateSimple;
 }
 
-DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ILogger* logger) {
-	return new DGCVerifier(keysStorage, rulesStorage, logger);
+DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ICRLStorage* crlStorage, ILogger* logger) {
+	return new DGCVerifier(keysStorage, rulesStorage, crlStorage, logger);
 }
 
 void DGCVerifier_release(DGCVerifier* dgcVerifier) {
@@ -998,60 +1011,9 @@ bool DGCVerifier_verifyMinSdkVersion(DGCVerifier* dgcVerifier) {
 	return dgcVerifier->verifyMinSdkVersion();
 }
 
-void DGCVerifier_setScanMode(DGCVerifier* dgcVerifier, const std::string& scanMode) {
-	return dgcVerifier->setScanMode(scanMode);
-}
-
-CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string& dgcQr) {
-	return dgcVerifier->verify(dgcQr);
+CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string& dgcQr, const std::string& scanMode) {
+	return dgcVerifier->verify(dgcQr, scanMode);
 }
 
 } // namespace verificaC19Sdk
 
-Verifier* DGCVerifier_c_create(KeysStorage* keysStorage, RulesStorage* rulesStorage, Logger* logger) {
-	return (Verifier*)DGCVerifier_create((verificaC19Sdk::IKeysStorage*)keysStorage, (verificaC19Sdk::IRulesStorage*)rulesStorage, (verificaC19Sdk::ILogger*)logger);
-}
-
-void DGCVerifier_c_release(Verifier* dgcVerifier) {
-	DGCVerifier_release((verificaC19Sdk::DGCVerifier*)dgcVerifier);
-}
-
-bool DGCVerifier_c_verifyMinSdkVersion(Verifier* dgcVerifier) {
-	return DGCVerifier_verifyMinSdkVersion((verificaC19Sdk::DGCVerifier*)dgcVerifier);
-}
-
-void DGCVerifier_c_setScanMode(Verifier* dgcVerifier, const char* scanMode) {
-	DGCVerifier_setScanMode((verificaC19Sdk::DGCVerifier*)dgcVerifier, std::string(scanMode));
-}
-
-struct CertificateSimple_c* DGCVerifier_c_verify(Verifier* dgcVerifier, const char* dgcQr) {
-	verificaC19Sdk::CertificateSimple certificate = DGCVerifier_verify((verificaC19Sdk::DGCVerifier*)dgcVerifier, std::string(dgcQr));
-	struct CertificateSimple_c* certificate_c = (struct CertificateSimple_c*)calloc(1, sizeof(struct CertificateSimple_c));
-	certificate_c->person.standardisedFamilyName = (char*)calloc(1, certificate.person.standardisedFamilyName.length() + 1);
-	strcpy(certificate_c->person.standardisedFamilyName, certificate.person.standardisedFamilyName.c_str());
-	certificate_c->person.familyName = (char*)calloc(1, certificate.person.familyName.length() + 1);
-	strcpy(certificate_c->person.familyName, certificate.person.familyName.c_str());
-	certificate_c->person.standardisedGivenName = (char*)calloc(1, certificate.person.standardisedGivenName.length() + 1);
-	strcpy(certificate_c->person.standardisedGivenName, certificate.person.standardisedGivenName.c_str());
-	certificate_c->person.givenName = (char*)calloc(1, certificate.person.givenName.length() + 1);
-	strcpy(certificate_c->person.givenName, certificate.person.givenName.c_str());
-	certificate_c->dateOfBirth = (char*)calloc(1, certificate.dateOfBirth.length() + 1);
-	strcpy(certificate_c->dateOfBirth, certificate.dateOfBirth.c_str());
-	certificate_c->certificateStatus = certificate.certificateStatus;
-	certificate_c->identifier = (char*)calloc(1, certificate.identifier.length() + 1);
-	strcpy(certificate_c->identifier, certificate.identifier.c_str());
-	certificate_c->timeStamp = (char*)calloc(1, certificate.timeStamp.length() + 1);
-	strcpy(certificate_c->timeStamp, certificate.timeStamp.c_str());
-	return certificate_c;
-}
-
-void CertificateSimple_c_release(struct CertificateSimple_c* certificate) {
-	free(certificate->timeStamp);
-	free(certificate->identifier);
-	free(certificate->dateOfBirth);
-	free(certificate->person.givenName);
-	free(certificate->person.standardisedGivenName);
-	free(certificate->person.familyName);
-	free(certificate->person.standardisedFamilyName);
-	free(certificate);
-}

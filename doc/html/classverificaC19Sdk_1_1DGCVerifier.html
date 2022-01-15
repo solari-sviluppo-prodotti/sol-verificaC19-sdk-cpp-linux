@@ -77,20 +77,18 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0b9ba363015d882b6e2c4d5f599612c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a0b9ba363015d882b6e2c4d5f599612c3">DGCVerifier</a> (<a class="el" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a> *keysStorage, <a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a> *rulesStorage, <a class="el" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> *logger)</td></tr>
-<tr class="separator:a0b9ba363015d882b6e2c4d5f599612c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13bf7495ae61d9e7cab3ecae574975cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a13bf7495ae61d9e7cab3ecae574975cc">setScanMode</a> (const std::string &amp;scanMode)</td></tr>
-<tr class="separator:a13bf7495ae61d9e7cab3ecae574975cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bab5af513598bc6dc518d820e0353a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a0bab5af513598bc6dc518d820e0353a1">DGCVerifier</a> (<a class="el" href="classverificaC19Sdk_1_1IKeysStorage.html">IKeysStorage</a> *keysStorage, <a class="el" href="classverificaC19Sdk_1_1IRulesStorage.html">IRulesStorage</a> *rulesStorage, <a class="el" href="classverificaC19Sdk_1_1ICRLStorage.html">ICRLStorage</a> *crlStorage, <a class="el" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> *logger)</td></tr>
+<tr class="separator:a0bab5af513598bc6dc518d820e0353a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51cb722a15d4f92e9658fda9a00c87e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a51cb722a15d4f92e9658fda9a00c87e7">verifyMinSdkVersion</a> () const</td></tr>
 <tr class="separator:a51cb722a15d4f92e9658fda9a00c87e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a807a55900ed4a05d5c0cc3f119d79617"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a807a55900ed4a05d5c0cc3f119d79617">verify</a> (const std::string &amp;dgcQr) const</td></tr>
-<tr class="separator:a807a55900ed4a05d5c0cc3f119d79617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb6df35f8876f84df1f9c1d0abd5ace"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classverificaC19Sdk_1_1DGCVerifier.html#a0fb6df35f8876f84df1f9c1d0abd5ace">verify</a> (const std::string &amp;dgcQr, const std::string &amp;scanMode) const</td></tr>
+<tr class="separator:a0fb6df35f8876f84df1f9c1d0abd5ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements Digital Certificate verification </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0b9ba363015d882b6e2c4d5f599612c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b9ba363015d882b6e2c4d5f599612c3">&#9670;&nbsp;</a></span>DGCVerifier()</h2>
+<a id="a0bab5af513598bc6dc518d820e0353a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bab5af513598bc6dc518d820e0353a1">&#9670;&nbsp;</a></span>DGCVerifier()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -110,6 +108,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classverificaC19Sdk_1_1ICRLStorage.html">ICRLStorage</a> *&#160;</td>
+          <td class="paramname"><em>crlStorage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> *&#160;</td>
           <td class="paramname"><em>logger</em>&#160;</td>
         </tr>
@@ -124,6 +128,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">keysStorage</td><td>Implementation of Keys Storage service, used to retrieve key needed to verify Digital Certificate validity</td></tr>
     <tr><td class="paramname">rulesStorage</td><td>Implementation of Rules Storage service, used to retrieve rules needed to verify Digital Certificate validity</td></tr>
+    <tr><td class="paramname">crlStorage</td><td>Implementation of CRL Storage service, used to retrieve crl needed to verify Digital Certificate validity</td></tr>
     <tr><td class="paramname">logger</td><td>Optional implementation of <a class="el" href="structLogger.html">Logger</a>, if NULL no log will be done </td></tr>
   </table>
   </dd>
@@ -132,33 +137,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a13bf7495ae61d9e7cab3ecae574975cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13bf7495ae61d9e7cab3ecae574975cc">&#9670;&nbsp;</a></span>setScanMode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void verificaC19Sdk::DGCVerifier::setScanMode </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>scanMode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Set scan mode, default scan mode at object construction is SCAN_MODE_3G</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">scanMode</td><td>Scan mode, SCAN_MODE_STRENGTHENED accept only vaccination and recovery certificates, SCAN_MODE_STANDARD accept also test certificates, SCAN_MODE_BOOSTER signals test needed for complete vaccination (not booster) or for recovery certificate </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a807a55900ed4a05d5c0cc3f119d79617"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a807a55900ed4a05d5c0cc3f119d79617">&#9670;&nbsp;</a></span>verify()</h2>
+<a id="a0fb6df35f8876f84df1f9c1d0abd5ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb6df35f8876f84df1f9c1d0abd5ace">&#9670;&nbsp;</a></span>verify()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,8 +147,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname"><a class="el" href="classverificaC19Sdk_1_1CertificateSimple.html">CertificateSimple</a> verificaC19Sdk::DGCVerifier::verify </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>dgcQr</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramname"><em>dgcQr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>scanMode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -176,6 +166,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dgcQr</td><td>Digital Certificate to verify (raw qr code data starting with HC1:)</td></tr>
+    <tr><td class="paramname">scanMode</td><td>Scan mode, SCAN_MODE_STRENGTHENED accept only vaccination and recovery certificates, SCAN_MODE_STANDARD accept also test certificates, SCAN_MODE_BOOSTER signals test needed for complete vaccination (not booster) or for recovery certificate</td></tr>
   </table>
   </dd>
 </dl>

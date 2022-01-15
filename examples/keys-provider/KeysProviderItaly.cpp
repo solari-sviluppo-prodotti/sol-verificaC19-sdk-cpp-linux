@@ -9,7 +9,7 @@
 #include <string>
 
 #include <verificaC19-sdk/DGCVerifier.hpp>
-#include <KeysProviderItaly.hpp>
+#include <keys-provider/KeysProviderItaly.hpp>
 
 namespace verificaC19Sdk {
 
@@ -77,7 +77,7 @@ void KeysProviderItaly::refreshKeys(IKeysStorage* keysStorage) const {
 		std::string status;
 		long httpCode = curlRequest(URL_STATUS, status);
 		if (httpCode != 200) {
-			m_logger->error("Error %d requesting status", httpCode);
+			m_logger->error("Error %d requesting keys status", httpCode);
 			if (++retries > 3) {
 				break;
 			} else {
@@ -158,17 +158,3 @@ void KeysProviderItaly::refreshKeys(IKeysStorage* keysStorage) const {
 }
 
 } // namespace verificaC19Sdk
-
-KeysProvider* KeysProviderItaly_c_create(Logger* logger) {
-	return (KeysProvider*)new verificaC19Sdk::KeysProviderItaly((verificaC19Sdk::ILogger*)logger);
-}
-
-void KeysProviderItaly_c_release(const KeysProvider* keysProviderItaly) {
-	verificaC19Sdk::KeysProviderItaly* this_ = (verificaC19Sdk::KeysProviderItaly*)keysProviderItaly;
-	delete this_;
-}
-
-void KeysProviderItaly_c_refreshKeys(const KeysProvider* keysProviderItaly, KeysStorage* keysStorage) {
-	verificaC19Sdk::KeysProviderItaly* this_ = (verificaC19Sdk::KeysProviderItaly*)keysProviderItaly;
-	this_->refreshKeys((verificaC19Sdk::IKeysStorage*)keysStorage);
-}
