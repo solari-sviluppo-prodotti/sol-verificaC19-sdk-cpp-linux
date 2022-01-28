@@ -1,7 +1,8 @@
 <map id="verificaC19Sdk::CertificateModel" name="verificaC19Sdk::CertificateModel">
-<area shape="rect" id="node1" title=" " alt="" coords="379,86,565,127"/>
+<area shape="rect" id="node1" title=" " alt="" coords="379,122,565,163"/>
 <area shape="rect" id="node2" href="$classverificaC19Sdk_1_1PersonModel.html" title=" " alt="" coords="5,5,211,32"/>
 <area shape="rect" id="node3" href="$classverificaC19Sdk_1_1RecoveryModel.html" title=" " alt="" coords="17,57,199,98"/>
-<area shape="rect" id="node4" href="$classverificaC19Sdk_1_1TestModel.html" title=" " alt="" coords="15,123,201,149"/>
-<area shape="rect" id="node5" href="$classverificaC19Sdk_1_1VaccinationModel.html" title=" " alt="" coords="10,174,206,215"/>
+<area shape="rect" id="node4" href="$classverificaC19Sdk_1_1ExemptionModel.html" title=" " alt="" coords="13,122,203,163"/>
+<area shape="rect" id="node5" href="$classverificaC19Sdk_1_1TestModel.html" title=" " alt="" coords="15,188,201,215"/>
+<area shape="rect" id="node6" href="$classverificaC19Sdk_1_1VaccinationModel.html" title=" " alt="" coords="10,239,206,281"/>
 </map>

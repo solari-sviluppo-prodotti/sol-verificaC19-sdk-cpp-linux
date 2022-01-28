@@ -45,10 +45,12 @@ int main (int argc, char** argv) {
 
 	if (argc < 2) {
 		logger.error("Usage: verificaC19-client <qrfile> [mode]");
-		logger.error("       where mode can be 2G for Super Green Pass, BOOSTER for booster, or empty for Standard Green Pass");
+		logger.error("       where mode can be 2G for Super Green Pass, BOOSTER for booster, WORK for work, SCHOOL for school, or empty for Standard Green Pass");
 		logger.error("Example: verificaC19-client ./test.qr");
 		logger.error("Example: verificaC19-client ./test.qr 2G");
 		logger.error("Example: verificaC19-client ./test.qr BOOSTER");
+		logger.error("Example: verificaC19-client ./test.qr WORK");
+		logger.error("Example: verificaC19-client ./test.qr SCHOOL");
 	} else {
 		logger.info("---------- Test with command line ----------");
 		KeysStorageFile keysStorage;
@@ -91,6 +93,12 @@ int main (int argc, char** argv) {
 				}
 				if (argc > 2 && strcmp(argv[2], "BOOSTER") == 0) {
 					scanMode = SCAN_MODE_BOOSTER;
+				}
+				if (argc > 2 && strcmp(argv[2], "WORK") == 0) {
+					scanMode = SCAN_MODE_WORK;
+				}
+				if (argc > 2 && strcmp(argv[2], "SCHOOL") == 0) {
+					scanMode = SCAN_MODE_SCHOOL;
 				}
 				CertificateSimple certificate = verifier.verify(qr, scanMode);
 				logCertificate(certificate, logger);

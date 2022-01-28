@@ -11,6 +11,22 @@
 namespace verificaC19Sdk {
 
 /**
+ * Represent Exemption data
+ */
+class ExemptionModel {
+public:
+	std::string dateOfFirstPositiveTest;
+	/**
+	 * ISO8601 Date of certificate validity start
+	 */
+	std::string certificateValidFrom;
+	/**
+	 * ISO8601 Date of certificate validity end
+	 */
+	std::string certificateValidUntil;
+};
+
+/**
  * Represent Recovery data
  */
 class RecoveryModel {
@@ -151,6 +167,12 @@ public:
 	 */
 	bool isRecovery() const { return !recoveryStatement.certificateValidFrom.empty(); }
 	/**
+	 * Check if is a Digital Certificate of Exemption
+	 *
+	 * @return true if is a Digital Certificate of Exemption, else false
+	 */
+	bool isExemption() const { return !exemption.certificateValidFrom.empty(); }
+	/**
 	 * Person informations
 	 */
 	PersonModel person;
@@ -171,6 +193,10 @@ public:
 	 */
 	RecoveryModel recoveryStatement;
 	/**
+	 * Exemption informations
+	 */
+	ExemptionModel exemption;
+	/**
 	 * Disease type (840539006 - COVID-19)
 	 */
 	std::string disease;
@@ -186,6 +212,22 @@ public:
 	 * Digital Certificate identifier
 	 */
 	std::string identifier;
+	/**
+	 * Digital Certificate version
+	 */
+	std::string version;
+	/**
+	 * Digital Certificate country issuer
+	 */
+	std::string countryIssuer;
+	/**
+	 * Digital Certificate generation date
+	 */
+	std::string dateTimeOfGeneration;
+	/**
+	 * Digital Certificate expiration date
+	 */
+	std::string dateTimeOfExpiration;
 };
 
 } // namespace verificaC19Sdk

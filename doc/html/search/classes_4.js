@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['keysprovider_133',['KeysProvider',['../structKeysProvider.html',1,'']]],
-  ['keysprovideritaly_134',['KeysProviderItaly',['../classverificaC19Sdk_1_1KeysProviderItaly.html',1,'verificaC19Sdk']]],
-  ['keysprovidertest_135',['KeysProviderTest',['../classverificaC19Sdk_1_1KeysProviderTest.html',1,'verificaC19Sdk']]],
-  ['keysstorage_136',['KeysStorage',['../structKeysStorage.html',1,'']]],
-  ['keysstoragefile_137',['KeysStorageFile',['../classverificaC19Sdk_1_1KeysStorageFile.html',1,'verificaC19Sdk']]],
-  ['keysstoragememory_138',['KeysStorageMemory',['../classverificaC19Sdk_1_1KeysStorageMemory.html',1,'verificaC19Sdk']]]
+  ['iallprovider_132',['IAllProvider',['../classverificaC19Sdk_1_1IAllProvider.html',1,'verificaC19Sdk']]],
+  ['icrlprovider_133',['ICRLProvider',['../classverificaC19Sdk_1_1ICRLProvider.html',1,'verificaC19Sdk']]],
+  ['icrlstorage_134',['ICRLStorage',['../classverificaC19Sdk_1_1ICRLStorage.html',1,'verificaC19Sdk']]],
+  ['ikeysprovider_135',['IKeysProvider',['../classverificaC19Sdk_1_1IKeysProvider.html',1,'verificaC19Sdk']]],
+  ['ikeysstorage_136',['IKeysStorage',['../classverificaC19Sdk_1_1IKeysStorage.html',1,'verificaC19Sdk']]],
+  ['ilogger_137',['ILogger',['../classverificaC19Sdk_1_1ILogger.html',1,'verificaC19Sdk']]],
+  ['irulesprovider_138',['IRulesProvider',['../classverificaC19Sdk_1_1IRulesProvider.html',1,'verificaC19Sdk']]],
+  ['irulesstorage_139',['IRulesStorage',['../classverificaC19Sdk_1_1IRulesStorage.html',1,'verificaC19Sdk']]]
 ];

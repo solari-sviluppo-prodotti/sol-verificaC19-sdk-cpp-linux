@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['updater_151',['Updater',['../structUpdater.html',1,'']]]
+  ['testmodel_157',['TestModel',['../classverificaC19Sdk_1_1TestModel.html',1,'verificaC19Sdk']]]
 ];

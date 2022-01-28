@@ -15,10 +15,12 @@
 #define SCAN_MODE_STANDARD      SCAN_MODE_3G
 #define SCAN_MODE_STRENGTHENED  SCAN_MODE_2G
 #define SCAN_MODE_BOOSTER       "BOOSTED"
+#define SCAN_MODE_WORK          "WORK"
+#define SCAN_MODE_SCHOOL        "SCHOOL"
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.1.1"
+#define DGCVerifier_SDK_Version "1.1.2"
 
 /**
  * Implements Digital Certificate verification
@@ -57,7 +59,9 @@ public:
 	 * @param scanMode Scan mode, SCAN_MODE_STRENGTHENED accept only vaccination and recovery
 	 *                 certificates, SCAN_MODE_STANDARD accept also test certificates,
 	 *                 SCAN_MODE_BOOSTER signals test needed for complete vaccination (not booster)
-	 *                 or for recovery certificate
+	 *                 or for recovery certificate, SCAN_MODE_WORK does not accept test for
+	 *                 people aged 50 and over, but only starting from 15 february 2022,
+	 *                 SCAN_MODE_SCHOOL
 	 *
 	 * @return CertificateSimple Result of Digital Certification verify
 	 */

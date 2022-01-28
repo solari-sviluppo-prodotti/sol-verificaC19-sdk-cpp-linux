@@ -75,37 +75,39 @@ $(function() {
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#ifndef LOGGER_STDOUT_HPP</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#define LOGGER_STDOUT_HPP</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;verificaC19-sdk/interfaces/ILogger.hpp&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;stdarg.h&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;verificaC19-sdk/interfaces/ILogger.hpp&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html">LoggerStdout</a> : <span class="keyword">public</span> <a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>verificaC19Sdk {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html">LoggerStdout</a> : <span class="keyword">public</span> <a class="code" href="classverificaC19Sdk_1_1ILogger.html">ILogger</a> {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a3ab7097f99133e13d0960e5da16ce184">   21</a></span>&#160;    <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a3ab7097f99133e13d0960e5da16ce184">LoggerStdout</a>(LogLevel level) { m_level = level; }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a1d9595d6f4fbed0673a9b3ba1c881bee">   23</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a1d9595d6f4fbed0673a9b3ba1c881bee">error</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a0274ba9f577976cb1a2deb4a34323f6c">   24</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a0274ba9f577976cb1a2deb4a34323f6c">info</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a0b5773a6b2449609d9bb2f0cf754448f">   25</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a0b5773a6b2449609d9bb2f0cf754448f">debug</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a8f9aa75f52bc321db410ecc3815f1fc2">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a8f9aa75f52bc321db410ecc3815f1fc2">log</a>(LogLevel level, <span class="keyword">const</span> std::string&amp; format, va_list ap) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a3ab7097f99133e13d0960e5da16ce184">   23</a></span>&#160;    <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a3ab7097f99133e13d0960e5da16ce184">LoggerStdout</a>(LogLevel level) { m_level = level; }</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a1d9595d6f4fbed0673a9b3ba1c881bee">   25</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a1d9595d6f4fbed0673a9b3ba1c881bee">error</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a0274ba9f577976cb1a2deb4a34323f6c">   26</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a0274ba9f577976cb1a2deb4a34323f6c">info</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a0b5773a6b2449609d9bb2f0cf754448f">   27</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a0b5773a6b2449609d9bb2f0cf754448f">debug</a>(<span class="keyword">const</span> std::string&amp; format, ...) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classverificaC19Sdk_1_1LoggerStdout.html#a8f9aa75f52bc321db410ecc3815f1fc2">   38</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classverificaC19Sdk_1_1LoggerStdout.html#a8f9aa75f52bc321db410ecc3815f1fc2">log</a>(LogLevel level, <span class="keyword">const</span> std::string&amp; format, va_list ap) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    LogLevel m_level;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;};</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    LogLevel m_level;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef LOGGER_STDOUT_HPP</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;} <span class="comment">// namespace verificaC19Sdk</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// #ifndef LOGGER_STDOUT_HPP</span></div>
 <div class="ttc" id="aclassverificaC19Sdk_1_1ILogger_html"><div class="ttname"><a href="classverificaC19Sdk_1_1ILogger.html">verificaC19Sdk::ILogger</a></div><div class="ttdef"><b>Definition:</b> ILogger.hpp:18</div></div>
-<div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html">verificaC19Sdk::LoggerStdout</a></div><div class="ttdef"><b>Definition:</b> LoggerStdout.hpp:14</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html">verificaC19Sdk::LoggerStdout</a></div><div class="ttdef"><b>Definition:</b> LoggerStdout.hpp:16</div></div>
 <div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html_a0274ba9f577976cb1a2deb4a34323f6c"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html#a0274ba9f577976cb1a2deb4a34323f6c">verificaC19Sdk::LoggerStdout::info</a></div><div class="ttdeci">void info(const std::string &amp;format,...) const</div></div>
 <div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html_a0b5773a6b2449609d9bb2f0cf754448f"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html#a0b5773a6b2449609d9bb2f0cf754448f">verificaC19Sdk::LoggerStdout::debug</a></div><div class="ttdeci">void debug(const std::string &amp;format,...) const</div></div>
 <div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html_a1d9595d6f4fbed0673a9b3ba1c881bee"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html#a1d9595d6f4fbed0673a9b3ba1c881bee">verificaC19Sdk::LoggerStdout::error</a></div><div class="ttdeci">void error(const std::string &amp;format,...) const</div></div>
-<div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html_a3ab7097f99133e13d0960e5da16ce184"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html#a3ab7097f99133e13d0960e5da16ce184">verificaC19Sdk::LoggerStdout::LoggerStdout</a></div><div class="ttdeci">LoggerStdout(LogLevel level)</div><div class="ttdef"><b>Definition:</b> LoggerStdout.hpp:21</div></div>
+<div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html_a3ab7097f99133e13d0960e5da16ce184"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html#a3ab7097f99133e13d0960e5da16ce184">verificaC19Sdk::LoggerStdout::LoggerStdout</a></div><div class="ttdeci">LoggerStdout(LogLevel level)</div><div class="ttdef"><b>Definition:</b> LoggerStdout.hpp:23</div></div>
 <div class="ttc" id="aclassverificaC19Sdk_1_1LoggerStdout_html_a8f9aa75f52bc321db410ecc3815f1fc2"><div class="ttname"><a href="classverificaC19Sdk_1_1LoggerStdout.html#a8f9aa75f52bc321db410ecc3815f1fc2">verificaC19Sdk::LoggerStdout::log</a></div><div class="ttdeci">void log(LogLevel level, const std::string &amp;format, va_list ap) const</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

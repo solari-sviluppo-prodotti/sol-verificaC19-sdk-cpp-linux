@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['givenname_215',['givenName',['../classverificaC19Sdk_1_1PersonModel.html#a986ef99a9265de9fc11eada2ebbf7d51',1,'verificaC19Sdk::PersonModel::givenName()'],['../structCertificateSimple__c.html#a9651ce780baa336ca5b3a4e47f96db20',1,'CertificateSimple_c::givenName()'],['../classverificaC19Sdk_1_1SimplePersonModel.html#aff52fadaa5405d6c0d806924180ddc8f',1,'verificaC19Sdk::SimplePersonModel::givenName()']]]
+  ['familyname_226',['familyName',['../classverificaC19Sdk_1_1PersonModel.html#a9f87abcb65849bc15e12f245a605417c',1,'verificaC19Sdk::PersonModel::familyName()'],['../structCertificateSimple__c.html#ae73b6d7935445c2265521bbcfc580917',1,'CertificateSimple_c::familyName()'],['../classverificaC19Sdk_1_1SimplePersonModel.html#a55e93bad9fddb0e5beece40e6f3ac1ca',1,'verificaC19Sdk::SimplePersonModel::familyName()']]]
 ];

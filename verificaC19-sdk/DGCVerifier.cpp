@@ -35,6 +35,8 @@ namespace verificaC19Sdk {
 #define COUNTRY_SAN_MARINO        "SM"
 #define COUNTRY_ITALY             "IT"
 
+#define WORK_VACCINE_MANDATORY_AGE  50
+
 // BASE45
 static std::string decodeBase45(const std::string& src) {
 	// map used to get real value for every input character and also to validate
@@ -383,8 +385,9 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				cn_cbor* gpv = cn_cbor_mapget_string(gpdata2, "v"); // vaccined
 				cn_cbor* gpr = cn_cbor_mapget_string(gpdata2, "r"); // recovered
 				cn_cbor* gpt = cn_cbor_mapget_string(gpdata2, "t"); // tested
+				cn_cbor* gpe = cn_cbor_mapget_string(gpdata2, "e"); // exemption
 
-				cn_cbor* gpvtr;
+				cn_cbor* gpvtr = NULL;
 				std::string typevtr;
 				if (gpv != NULL) {
 					typevtr = "v";
@@ -397,6 +400,10 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				if (gpt != NULL) {
 					typevtr = "t";
 					gpvtr = cn_cbor_index(gpt, 0);
+				}
+				if (gpe != NULL) {
+					typevtr = "e";
+					gpvtr = cn_cbor_index(gpe, 0);
 				}
 				if (gpvtr == NULL) {
 					m_logger->info("Error gpvtr");
@@ -415,9 +422,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					break;
 				}
 
-				// gp.qrIssuer = std::string(gpissuer->v.str, gpissuer->length);
-				// gp.qrExpiryDate = gpexpiry->v.uint;
-				// gp.qrGeneratedDate = gpgenerated->v.uint;
 				for (cn_cbor* cp = gpnam->first_child; cp; cp = cp->next) {
 					std::string name = std::string(cp->v.str, cp->length);
 					std::string value;
@@ -511,11 +515,60 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						} else if (name == "tt") {
 							certificate.test.typeOfTest = value;
 						}
+					} else if (typevtr == "e") {
+						if (name == "ci") {
+							certificate.identifier = value;
+							certificateSimple.identifier = value;
+						} else if (name == "co") {
+							certificate.country = value;
+						} else if (name == "is") {
+							certificate.issuer = value;
+						} else if (name == "tg") {
+							certificate.disease = value;
+						} else if (name == "df") {
+							certificate.exemption.certificateValidFrom = value;
+						} else if (name == "du") {
+							certificate.exemption.certificateValidUntil = value;
+						}
 					}
 				}
-				// gp.version = std::string(gpver->v.str, gpver->length);
 				certificate.dateOfBirth = std::string(gpdob->v.str, gpdob->length);
 				certificateSimple.dateOfBirth = certificate.dateOfBirth;
+
+				certificate.version = std::string(gpver->v.str, gpver->length);
+				certificate.countryIssuer = std::string(gpissuer->v.str, gpissuer->length);
+
+				// Certificate validity dates ---------------------------------
+				std::time_t expiry = gpexpiry->v.uint;
+				std::time_t generated = gpgenerated->v.uint;
+
+				{
+					char mbstr[100];
+					std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", std::localtime(&expiry));
+					certificate.dateTimeOfExpiration = std::string(mbstr);
+				}
+
+				{
+					char mbstr[100];
+					std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", std::localtime(&generated));
+					certificate.dateTimeOfGeneration = std::string(mbstr);
+				}
+
+				// Certificate validity dates ---------------------------------
+				std::time_t now = time(NULL);
+				if (now < generated) {
+					m_logger->info("Certificate of %s not valid yet",
+							certificate.dateTimeOfGeneration.c_str());
+					certificateSimple.certificateStatus = NOT_VALID_YET;
+					break;
+				}
+
+				if (now > expiry) {
+					m_logger->info("Certificate expired at %s",
+							certificate.dateTimeOfExpiration.c_str());
+					certificateSimple.certificateStatus = NOT_VALID;
+					break;
+				}
 
 				// Black list validation----------------------------------------
 				// check if Green Pass is in blackList
@@ -567,6 +620,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					free(x509buf);
 
 					if (cert == NULL) {
+						certificateSimple.certificateStatus = NOT_VALID;
 						m_logger->info("Error loading sign verify certificate");
 						break;
 					}
@@ -599,6 +653,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 					EVP_PKEY* pkey = X509_get_pubkey(cert);
 					if (pkey == NULL) {
+						certificateSimple.certificateStatus = NOT_VALID;
 						X509_free(cert);
 						m_logger->info("Error get public key");
 						break;
@@ -608,6 +663,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						// ECDSA_256
 						EC_KEY* eckey = EVP_PKEY_get1_EC_KEY(pkey);
 						if (eckey == NULL) {
+							certificateSimple.certificateStatus = NOT_VALID;
 							X509_free(cert);
 							m_logger->info("Error get elliptic curve key");
 							break;
@@ -699,8 +755,8 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 							certificateSimple.certificateStatus = NOT_VALID;
 							break;
 						}
-						// SDK version 1.1.1 booster mode
-						if (scanMode == SCAN_MODE_BOOSTER) {
+						// SDK version 1.1.1 booster mode (and school)
+						if (scanMode == SCAN_MODE_BOOSTER || scanMode == SCAN_MODE_SCHOOL) {
 							m_logger->info("Partial vaccine %s not valid for selected scan mode",
 									certificate.vaccination.medicinalProduct.c_str());
 							certificateSimple.certificateStatus = NOT_VALID;
@@ -712,7 +768,31 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					else if (certificate.vaccination.doseNumber >= certificate.vaccination.totalSeriesOfDoses) {
 						// complete vaccine
 						std::string startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete, certificate.vaccination.medicinalProduct);
-						std::string endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
+						std::string endDays;
+						if (scanMode == SCAN_MODE_SCHOOL) {
+							// - Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than two
+							//   respond that test is needed
+							if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
+									certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
+									certificate.vaccination.doseNumber < 2) {
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, certificate.vaccination.medicinalProduct);
+								if (endDays.empty()) endDays = "120";
+							}
+							// - Not Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than three
+							//   respond that test is needed
+							else if (certificate.vaccination.medicinalProduct != RULE_TYPE_EU_1_20_1525 &&
+									certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
+									certificate.vaccination.doseNumber < 3) {
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, certificate.vaccination.medicinalProduct);
+								if (endDays.empty()) endDays = "120";
+							}
+							// Booster vaccine, use standard days
+							else {
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
+							}
+						} else {
+							endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
+						}
 						if (startDays.empty() || endDays.empty()) {
 							m_logger->info("Complete vaccine %s validity days not found  (%s - %s)",
 									certificate.vaccination.medicinalProduct.c_str(),
@@ -756,7 +836,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					long days = currentDay - vaccineDay;
 					if (days < startDay) {
 						// digital certificate not valid
-						m_logger->info("Digital certificate of %s not valid yet (%d: %d - %d)",
+						m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d)",
 								certificate.vaccination.dateOfVaccination.c_str(),
 								days, startDay, endDay);
 						certificateSimple.certificateStatus = NOT_VALID_YET;
@@ -764,7 +844,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					}
 					if (days > endDay) {
 						// digital certificate not valid
-						m_logger->info("Digital certificate of %s not valid (%d: %d - %d)",
+						m_logger->info("Vaccine certificate of %s not valid (%d: %d - %d)",
 								certificate.vaccination.dateOfVaccination.c_str(),
 								days, startDay, endDay);
 						certificateSimple.certificateStatus = NOT_VALID;
@@ -772,7 +852,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					}
 					if (certificate.vaccination.doseNumber < certificate.vaccination.totalSeriesOfDoses) {
 						// digital certificate partially valid (only in Italy)
-						m_logger->info("Digital certificate of %s partially valid (%d: %d - %d)",
+						m_logger->info("Vaccine certificate of %s partially valid (%d: %d - %d)",
 								certificate.vaccination.dateOfVaccination.c_str(),
 								days, startDay, endDay);
 						certificateSimple.certificateStatus = VALID;
@@ -785,7 +865,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
 								certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
 								certificate.vaccination.doseNumber < 2) {
-							m_logger->info("Digital certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
+							m_logger->info("Vaccine certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
 									certificate.vaccination.dateOfVaccination.c_str(),
 									days, startDay, endDay);
 							certificateSimple.certificateStatus = TEST_NEEDED;
@@ -796,7 +876,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						if (certificate.vaccination.medicinalProduct != RULE_TYPE_EU_1_20_1525 &&
 								certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
 								certificate.vaccination.doseNumber < 3) {
-							m_logger->info("Digital certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
+							m_logger->info("Vaccine certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
 									certificate.vaccination.dateOfVaccination.c_str(),
 									days, startDay, endDay);
 							certificateSimple.certificateStatus = TEST_NEEDED;
@@ -804,7 +884,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						}
 					}
 					certificateSimple.certificateStatus = VALID;
-					m_logger->info("Digital certificate of %s valid (%d: %d - %d)",
+					m_logger->info("Vaccine certificate of %s valid (%d: %d - %d)",
 							certificate.vaccination.dateOfVaccination.c_str(),
 							days, startDay, endDay);
 				}
@@ -812,12 +892,20 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				if (certificate.isRecovery()) {
 					// only for Italy apply extension days to end of recovery certificate validity
 					std::string startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day, RULE_TYPE_GENERIC);
-					std::string endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day, RULE_TYPE_GENERIC);
+					std::string endDays;
+					if (scanMode == SCAN_MODE_SCHOOL) {
+						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+						if (endDays.empty()) endDays = "120";
+					} else {
+						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day, RULE_TYPE_GENERIC);
+					}
 
 					// SDK 1.1.1 use different rules for ITALIAN recovery certificate
 					if (certificate.country == COUNTRY_ITALY && keyUsageForRecovery) {
 						startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
-						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
+						if (scanMode != SCAN_MODE_SCHOOL) {
+							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
+						}
 					}
 
 					if (startDays.empty() || endDays.empty()) {
@@ -861,7 +949,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = NOT_VALID_YET;
 						break;
 					}
-					if (currentDay > recoveryUntilDay && currentDay > recoveryFromDay + endDay) {
+					if (/*currentDay > recoveryUntilDay &&*/ currentDay > recoveryFromDay + endDay) {
 						// certificate not valid
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) not valid",
 								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
@@ -877,6 +965,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = TEST_NEEDED;
 						break;
 					}
+					/*
 					if (currentDay > recoveryUntilDay && currentDay <= recoveryFromDay + endDay) {
 						// certificate partially valid (only in italy)
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) partially valid",
@@ -885,6 +974,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = VALID;
 						break;
 					}
+					*/
 					certificateSimple.certificateStatus = VALID;
 					m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) valid",
 							certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
@@ -892,9 +982,9 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				if (certificate.isTest()) {
-					if (scanMode != SCAN_MODE_3G) {
+					if (scanMode == SCAN_MODE_2G || scanMode == SCAN_MODE_BOOSTER || scanMode == SCAN_MODE_SCHOOL) {
 						certificateSimple.certificateStatus = NOT_VALID;
-						m_logger->debug("Digital certificate of %s not valid for selected scan mode",
+						m_logger->debug("Test certificate of %s not valid for selected scan mode",
 								certificate.test.dateTimeOfCollection.c_str());
 					} else {
 						int startHour = -1;
@@ -961,7 +1051,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						hours--; // for daylinght saving
 						if (hours < startHour) {
 							// digital certificate not valid
-							m_logger->info("Digital certificate of %s not valid yet (%d: %d - %d)",
+							m_logger->info("Test certificate of %s not valid yet (%d: %d - %d)",
 									certificate.test.dateTimeOfCollection.c_str(),
 									hours, startHour, endHour);
 							certificateSimple.certificateStatus = NOT_VALID_YET;
@@ -969,16 +1059,105 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						}
 						if (hours > endHour) {
 							// digital certificate not valid
-							m_logger->info("Digital certificate of %s not valid (%d: %d - %d)",
+							m_logger->info("Test certificate of %s not valid (%d: %d - %d)",
 									certificate.test.dateTimeOfCollection.c_str(),
 									hours, startHour, endHour);
 							certificateSimple.certificateStatus = NOT_VALID;
 							break;
 						}
+						if (scanMode == SCAN_MODE_WORK) {
+							// get limit date
+							time_t t = time(NULL);
+							struct tm limitDate;
+							localtime_r(&t, &limitDate);
+							limitDate.tm_year = limitDate.tm_year - WORK_VACCINE_MANDATORY_AGE;
+
+							// get limit day
+							time_t limitDay = (mktime(&limitDate) + limitDate.tm_gmtoff) / 3600 / 24;
+
+							// get birth date
+							struct tm birthDate;
+							memset(&birthDate, 0, sizeof(birthDate));
+							strptime(certificate.dateOfBirth.c_str(), "%Y-%m-%d", &birthDate);
+
+							// get birth day
+							time_t birthDay = (mktime(&birthDate) + 43200) / 3600 / 24;
+
+							if (birthDay <= limitDay) {
+								// digital certificate not valid
+								m_logger->info("Test certificate of %s not valid (%d: %d - %d) for selected scan mode",
+										certificate.test.dateTimeOfCollection.c_str(),
+										hours, startHour, endHour);
+								certificateSimple.certificateStatus = NOT_VALID;
+								break;
+							}
+						}
 						certificateSimple.certificateStatus = VALID;
-						m_logger->debug("Digital certificate of %s valid (%d: %d - %d)",
+						m_logger->debug("Test certificate of %s valid (%d: %d - %d)",
 								certificate.test.dateTimeOfCollection.c_str(),
 								hours, startHour, endHour);
+					}
+				}
+
+				if (certificate.isExemption()) {
+					if (scanMode == SCAN_MODE_SCHOOL) {
+						certificateSimple.certificateStatus = NOT_VALID;
+						m_logger->debug("Exemption certificate of %s - %s not valid for selected scan mode",
+								certificate.exemption.certificateValidFrom.c_str(),
+								certificate.exemption.certificateValidUntil.c_str());
+					} else {
+						// get current date
+						time_t t = time(NULL);
+						struct tm currentDate;
+						localtime_r(&t, &currentDate);
+
+						// get current day
+						time_t currentDay = (t + currentDate.tm_gmtoff) / 3600 / 24;
+
+						// get exemption from date
+						struct tm exemptionFromDate;
+						memset(&exemptionFromDate, 0, sizeof(exemptionFromDate));
+						strptime(certificate.exemption.certificateValidFrom.c_str(), "%Y-%m-%d", &exemptionFromDate);
+
+						// get exemption from day
+						time_t exemptionFromDay = (mktime(&exemptionFromDate) + 43200) / 3600 / 24;
+
+						// get exemption until date
+						struct tm exemptionUntilDate;
+						memset(&exemptionUntilDate, 0, sizeof(exemptionUntilDate));
+						strptime(certificate.exemption.certificateValidUntil.c_str(), "%Y-%m-%d", &exemptionUntilDate);
+
+						// get exemption to day
+						time_t exemptionUntilDay = (mktime(&exemptionUntilDate) + 43200) / 3600 / 24;
+
+						if (currentDay < exemptionFromDay) {
+							// certificate not valid yet
+							m_logger->info("Exemption certificate of %s - %s not valid yet",
+									certificate.exemption.certificateValidFrom.c_str(),
+									certificate.exemption.certificateValidUntil.c_str());
+							certificateSimple.certificateStatus = NOT_VALID_YET;
+							break;
+						}
+						if (currentDay > exemptionUntilDay) {
+							// certificate not valid
+							m_logger->info("Exemption certificate of %s - %s not valid",
+									certificate.exemption.certificateValidFrom.c_str(),
+									certificate.exemption.certificateValidUntil.c_str());
+							certificateSimple.certificateStatus = NOT_VALID;
+							break;
+						}
+						// SDK version 1.1.1 booster mode
+						if (scanMode == SCAN_MODE_BOOSTER) {
+							m_logger->info("Exemption certificate of %s - %s valid but test needed for selected scan mode",
+									certificate.exemption.certificateValidFrom.c_str(),
+									certificate.exemption.certificateValidUntil.c_str());
+							certificateSimple.certificateStatus = TEST_NEEDED;
+							break;
+						}
+						certificateSimple.certificateStatus = VALID;
+						m_logger->info("Exemption certificate of %s - %s valid",
+								certificate.exemption.certificateValidFrom.c_str(),
+								certificate.exemption.certificateValidUntil.c_str());
 					}
 				}
 			} while (false);
@@ -1016,4 +1195,3 @@ CertificateSimple DGCVerifier_verify(DGCVerifier* dgcVerifier, const std::string
 }
 
 } // namespace verificaC19Sdk
-

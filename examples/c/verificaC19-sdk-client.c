@@ -43,10 +43,12 @@ int main (int argc, char** argv) {
 
 	if (argc < 2) {
 		LoggerStdout_c_error(logger, "Usage: verificaC19-c-client <qrfile> [mode]");
-		LoggerStdout_c_error(logger, "       where mode can be 2G for Super Green Pass, BOOSTER for booster, or empty for Standard Green Pass");
+		LoggerStdout_c_error(logger, "       where mode can be 2G for Super Green Pass, BOOSTER for booster, WORK for work, SCHOOL for school, or empty for Standard Green Pass");
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr");
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr 2G");
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr BOOSTER");
+		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr WORK");
+		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr SCHOOL");
 	} else {
 		LoggerStdout_c_info(logger, "---------- Test with command line ----------");
 		KeysStorage* keysStorage = KeysStorageFile_c_create();
@@ -96,6 +98,12 @@ int main (int argc, char** argv) {
 						}
 						if (argc > 2 && strcmp(argv[2], "BOOSTER") == 0) {
 							scanMode = SCAN_MODE_BOOSTER;
+						}
+						if (argc > 2 && strcmp(argv[2], "WORK") == 0) {
+							scanMode = SCAN_MODE_WORK;
+						}
+						if (argc > 2 && strcmp(argv[2], "SCHOOL") == 0) {
+							scanMode = SCAN_MODE_SCHOOL;
 						}
 						struct CertificateSimple_c* certificate = DGCVerifier_c_verify(verifier, qr, scanMode);
 						free(qr);
