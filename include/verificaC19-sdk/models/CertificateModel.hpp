@@ -15,7 +15,6 @@ namespace verificaC19Sdk {
  */
 class ExemptionModel {
 public:
-	std::string dateOfFirstPositiveTest;
 	/**
 	 * ISO8601 Date of certificate validity start
 	 */

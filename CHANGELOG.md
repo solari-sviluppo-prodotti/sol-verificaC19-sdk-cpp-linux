@@ -1,6 +1,15 @@
 # Changelog
 
+## [1.1.4] - 31/01/2022
+
+- Align to official Android SDK 1.1.3
+
+### Added
+- New medical rules for vaccine, booster and recovery certificates
+
 ## [1.1.3] - 26/01/2022
+
+- Align to official Android SDK 1.1.2 for exemption certificates
 
 See https://github.com/rawmain/it-dgc-documentation/blob/feat/scanmode-work-school-exemption/SCANMODE.md
 or https://github.com/rawmain/it-dgc-documentation/blob/master/SCANMODE.md for detailed info
@@ -12,12 +21,16 @@ or https://github.com/rawmain/it-dgc-documentation/blob/master/SCANMODE.md for d
 
 ## [1.1.2] - 03/01/2022
 
+- Align to official Android SDK 1.1.1
+
 This version has uncompatible constructors and methods with previous version for DRL implementation.
 
 ### Added
 - DRL (DGC Revocation List)
 
 ## [1.1.1] - 03/01/2022
+
+- Align to official Android SDK 1.1.0
 
 ### Added
 - Booster mode, valid only booster vaccine, for complete vaccine or recovery will
@@ -29,6 +42,8 @@ request additional test
 - Removed `PARTIALLY_VALID` status
 
 ## [1.0.4] - 10/12/2021
+
+- Aligned to official Android SDK 1.0.4
 
 ### Added
 - Super Green Pass mode (does not accept tests)

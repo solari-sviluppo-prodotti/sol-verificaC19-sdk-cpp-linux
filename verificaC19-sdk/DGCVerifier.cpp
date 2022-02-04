@@ -730,6 +730,15 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 				// Rules validation--------------------------------------------
 				if (certificate.isVaccination()) {
+					// Check if vaccine is present in setting list; otherwise, return not valid
+					std::string checkDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
+					if (checkDays.empty()) {
+						m_logger->info("Unknown or not managed vaccine %s ",
+								certificate.vaccination.medicinalProduct.c_str());
+						certificateSimple.certificateStatus = NOT_VALID;
+						break;
+					}
+
 					// In Italy, Sputnik is accepted only for San Marino republic
 					if (certificate.vaccination.medicinalProduct == RULE_TYPE_Sputnik_V) {
 						if (certificate.country != COUNTRY_SAN_MARINO) {
@@ -764,35 +773,62 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						}
 						startDay = atoi(startDays.c_str());
 						endDay = atoi(endDays.c_str());
-					}
-					else if (certificate.vaccination.doseNumber >= certificate.vaccination.totalSeriesOfDoses) {
+					} else if (certificate.vaccination.doseNumber >= certificate.vaccination.totalSeriesOfDoses) {
 						// complete vaccine
-						std::string startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete, certificate.vaccination.medicinalProduct);
+						std::string startDays;
 						std::string endDays;
-						if (scanMode == SCAN_MODE_SCHOOL) {
-							// - Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than two
-							//   respond that test is needed
-							if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
-									certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
-									certificate.vaccination.doseNumber < 2) {
-								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, certificate.vaccination.medicinalProduct);
-								if (endDays.empty()) endDays = "120";
-							}
-							// - Not Janssen TYPE_EU_1_20_1525 complete with doseNumber lesser than three
-							//   respond that test is needed
-							else if (certificate.vaccination.medicinalProduct != RULE_TYPE_EU_1_20_1525 &&
-									certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
-									certificate.vaccination.doseNumber < 3) {
-								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, certificate.vaccination.medicinalProduct);
-								if (endDays.empty()) endDays = "120";
-							}
-							// Booster vaccine, use standard days
-							else {
-								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
+						std::string  countryCode;
+						if (scanMode == SCAN_MODE_STANDARD) {
+							countryCode = certificate.country;
+						} else {
+							countryCode = COUNTRY_ITALY;
+						}
+
+						if (
+							(certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 && certificate.vaccination.doseNumber >= 2)
+							||
+							(certificate.vaccination.medicinalProduct != RULE_TYPE_EU_1_20_1525 && (certificate.vaccination.doseNumber >= 3 || certificate.vaccination.doseNumber > certificate.vaccination.totalSeriesOfDoses))
+						) {
+							// booster
+							if (countryCode == COUNTRY_ITALY) {
+								startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_booster_IT, RULE_TYPE_GENERIC);
+								if (startDays.empty()) startDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_booster_IT, RULE_TYPE_GENERIC);
+								if (endDays.empty()) endDays = "180";
+							} else {
+								startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_booster_NOT_IT, RULE_TYPE_GENERIC);
+								if (startDays.empty()) startDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_booster_NOT_IT, RULE_TYPE_GENERIC);
+								if (endDays.empty()) endDays = "270";
 							}
 						} else {
-							endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
+							if (scanMode == SCAN_MODE_SCHOOL) {
+								if (countryCode == COUNTRY_ITALY) {
+									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
+									if (startDays.empty()) startDays = "0";
+									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC);
+									if (endDays.empty()) endDays = "120";
+								} else {
+									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+									if (startDays.empty()) startDays = "0";
+									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC);
+									if (endDays.empty()) endDays = "120";
+								}
+							} else {
+								if (countryCode == COUNTRY_ITALY) {
+									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
+									if (startDays.empty()) startDays = "0";
+									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC);
+									if (endDays.empty()) endDays = "180";
+								} else {
+									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+									if (startDays.empty()) startDays = "0";
+									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+									if (endDays.empty()) endDays = "270";
+								}
+							}
 						}
+
 						if (startDays.empty() || endDays.empty()) {
 							m_logger->info("Complete vaccine %s validity days not found  (%s - %s)",
 									certificate.vaccination.medicinalProduct.c_str(),
@@ -890,21 +926,53 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				if (certificate.isRecovery()) {
-					// only for Italy apply extension days to end of recovery certificate validity
-					std::string startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day, RULE_TYPE_GENERIC);
+					std::string startDays;
 					std::string endDays;
-					if (scanMode == SCAN_MODE_SCHOOL) {
-						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
-						if (endDays.empty()) endDays = "120";
+					std::string  countryCode;
+					if (scanMode == SCAN_MODE_STANDARD) {
+						countryCode = certificate.country;
 					} else {
-						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day, RULE_TYPE_GENERIC);
+						countryCode = COUNTRY_ITALY;
 					}
 
-					// SDK 1.1.1 use different rules for ITALIAN recovery certificate
 					if (certificate.country == COUNTRY_ITALY && keyUsageForRecovery) {
-						startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
-						if (scanMode != SCAN_MODE_SCHOOL) {
+						// recovery bis
+						if (scanMode == SCAN_MODE_SCHOOL) {
+							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
+							if (startDays.empty()) endDays = "0";
+							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+							if (endDays.empty()) endDays = "120";
+						} else {
+							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
+							if (startDays.empty()) endDays = "0";
 							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
+							if (endDays.empty()) endDays = "270";
+						}
+					} else {
+						if (scanMode == SCAN_MODE_SCHOOL) {
+							if (countryCode == COUNTRY_ITALY) {
+								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
+								if (startDays.empty()) endDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+								if (endDays.empty()) endDays = "120";
+							} else {
+								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
+								if (startDays.empty()) startDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+								if (endDays.empty()) endDays = "120";
+							}
+						} else {
+							if (countryCode == COUNTRY_ITALY) {
+								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
+								if (startDays.empty()) endDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC);
+								if (endDays.empty()) endDays = "180";
+							} else {
+								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
+								if (startDays.empty()) startDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC);
+								if (endDays.empty()) endDays = "270";
+							}
 						}
 					}
 
@@ -965,16 +1033,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = TEST_NEEDED;
 						break;
 					}
-					/*
-					if (currentDay > recoveryUntilDay && currentDay <= recoveryFromDay + endDay) {
-						// certificate partially valid (only in italy)
-						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) partially valid",
-								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
-								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
-						certificateSimple.certificateStatus = VALID;
-						break;
-					}
-					*/
 					certificateSimple.certificateStatus = VALID;
 					m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) valid",
 							certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
@@ -1100,12 +1158,15 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				if (certificate.isExemption()) {
+					/*
+					 * Exemption certificate valid for school
 					if (scanMode == SCAN_MODE_SCHOOL) {
 						certificateSimple.certificateStatus = NOT_VALID;
 						m_logger->debug("Exemption certificate of %s - %s not valid for selected scan mode",
 								certificate.exemption.certificateValidFrom.c_str(),
 								certificate.exemption.certificateValidUntil.c_str());
 					} else {
+					*/
 						// get current date
 						time_t t = time(NULL);
 						struct tm currentDate;
@@ -1158,7 +1219,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						m_logger->info("Exemption certificate of %s - %s valid",
 								certificate.exemption.certificateValidFrom.c_str(),
 								certificate.exemption.certificateValidUntil.c_str());
-					}
+					//}
 				}
 			} while (false);
 

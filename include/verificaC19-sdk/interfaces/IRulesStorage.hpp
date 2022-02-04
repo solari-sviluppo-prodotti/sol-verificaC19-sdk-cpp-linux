@@ -27,6 +27,22 @@ namespace verificaC19Sdk {
 #define RULE_NAME_android                         "android"
 #define RULE_NAME_sdk                             "sdk"
 
+#define RULE_NAME_vaccine_start_day_complete_IT      "vaccine_start_day_complete_IT"
+#define RULE_NAME_vaccine_end_day_complete_IT        "vaccine_end_day_complete_IT"
+#define RULE_NAME_vaccine_start_day_booster_IT       "vaccine_start_day_booster_IT"
+#define RULE_NAME_vaccine_end_day_booster_IT         "vaccine_end_day_booster_IT"
+
+#define RULE_NAME_vaccine_start_day_complete_NOT_IT  "vaccine_start_day_complete_NOT_IT"
+#define RULE_NAME_vaccine_end_day_complete_NOT_IT    "vaccine_end_day_complete_NOT_IT"
+#define RULE_NAME_vaccine_start_day_booster_NOT_IT   "vaccine_start_day_booster_NOT_IT"
+#define RULE_NAME_vaccine_end_day_booster_NOT_IT     "vaccine_end_day_booster_NOT_IT"
+
+#define RULE_NAME_recovery_cert_start_day_IT         "recovery_cert_start_day_IT"
+#define RULE_NAME_recovery_cert_end_day_IT           "recovery_cert_end_day_IT"
+#define RULE_NAME_recovery_cert_start_day_NOT_IT     "recovery_cert_start_day_NOT_IT"
+#define RULE_NAME_recovery_cert_end_day_NOT_IT       "recovery_cert_end_day_NOT_IT"
+
+
 #define RULE_TYPE_EU_1_20_1525     "EU/1/20/1525" // Janssen
 #define RULE_TYPE_EU_1_21_1529     "EU/1/21/1529" // Vaxzevria (Astrazeneca)
 #define RULE_TYPE_EU_1_20_1507     "EU/1/20/1507" // Spikevax (Moderna)

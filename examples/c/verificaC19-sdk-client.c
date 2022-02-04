@@ -62,7 +62,7 @@ int main (int argc, char** argv) {
 				keysProvider, keysStorage, crlProvider, crlStorage, logger);
 
 		// Force update
-		DGCUpdater_c_forceUpdateAll(updater);
+		// DGCUpdater_c_forceUpdateAll(updater);
 
 		// First, at startup, wait if updated
 		if (!DGCUpdater_c_isUpdated(updater)) {

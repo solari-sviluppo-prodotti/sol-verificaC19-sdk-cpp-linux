@@ -64,7 +64,7 @@ int main (int argc, char** argv) {
 				&keysProvider, &keysStorage, &crlProvider, &crlStorage, &logger);
 
 		// Force update
-		updater.forceUpdateAll();
+		// updater.forceUpdateAll();
 
 		// First, at startup, wait if updated
 		if (!updater.isUpdated()) {
