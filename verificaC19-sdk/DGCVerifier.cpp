@@ -224,7 +224,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 	do {
 		if (dgcQr.substr(0, 4) != "HC1:") {
-			m_logger->info("No Green Pass QR code detected");
+			m_logger->error("No Green Pass QR code detected");
 			break;
 		}
 
@@ -238,7 +238,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				// Data decode -------------------------------------------------
 				std::string comprbuf = decodeBase45(dgcQr.substr(4));
 				if (comprbuf.empty()) {
-					m_logger->info("Error decoding Green Pass base45");
+					m_logger->error("Error decoding Green Pass base45");
 					break;
 				}
 				m_logger->info("Decoded Green Pass to %d bytes", comprbuf.length());
@@ -257,17 +257,17 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				infstream.next_out = decbuf;
 
 				if (inflateInit(&infstream) != Z_OK) {
-					m_logger->info("Error inflateInit");
+					m_logger->error("Error inflateInit");
 					break;
 				}
 
 				if (inflate(&infstream, Z_NO_FLUSH) != Z_STREAM_END) {
-					m_logger->info("Error inflate");
+					m_logger->error("Error inflate");
 					break;
 				}
 
 				if (inflateEnd(&infstream) != Z_OK) {
-					m_logger->info("Error inflateEnd");
+					m_logger->error("Error inflateEnd");
 					break;
 				}
 
@@ -279,13 +279,13 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				struct cn_cbor_errback back;
 				cbordata = cn_cbor_decode(decbuf, declen, &back);
 				if (cbordata == NULL) {
-					m_logger->info("Error cbordata");
+					m_logger->error("Error cbordata");
 					break;
 				}
 
 				cn_cbor* cborarray = cn_cbor_index(cbordata, 0);
 				if (cborarray == NULL) {
-					m_logger->info("Error cborarray");
+					m_logger->error("Error cborarray");
 					break;
 				}
 
@@ -294,19 +294,19 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 				cn_cbor* cborprotected = cn_cbor_index(cborarray, 0);
 				if (cborprotected == NULL) {
-					m_logger->info("Error cborprotected");
+					m_logger->error("Error cborprotected");
 					break;
 				}
 
 				cn_cbor* cborunprotected = cn_cbor_index(cborarray, 1);
 				if (cborunprotected == NULL) {
-					m_logger->info("Error cborunprotected");
+					m_logger->error("Error cborunprotected");
 					break;
 				}
 
 				cn_cbor* cborsign = cn_cbor_index(cborarray, 3);
 				if (cborsign == NULL) {
-					m_logger->info("Error cborsign");
+					m_logger->error("Error cborsign");
 					break;
 				}
 
@@ -322,7 +322,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					cborkid = cn_cbor_mapget_int(cborunprotected, 4);
 				}
 				if (cborkid == NULL) {
-					m_logger->info("Error cborkid");
+					m_logger->error("Error cborkid");
 					break;
 				}
 
@@ -330,55 +330,55 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					cboralgo = cn_cbor_mapget_int(cborunprotected, 1);
 				}
 				if (cboralgo == NULL) {
-					m_logger->info("Error cboralgo");
+					m_logger->error("Error cboralgo");
 					break;
 				}
 
 				cn_cbor* cborpayload = cn_cbor_index(cborarray, 2);
 				if (cborpayload == NULL) {
-					m_logger->info("Error cborpayload");
+					m_logger->error("Error cborpayload");
 					break;
 				}
 
 				cn_cbor* cborpayloaddec = cn_cbor_decode(cborpayload->v.bytes, cborpayload->length, &back);
 				if (cborpayloaddec == NULL) {
-					m_logger->info("Error cborpayloaddec");
+					m_logger->error("Error cborpayloaddec");
 					break;
 				}
 
 				cn_cbor* gpissuer = cn_cbor_mapget_int(cborpayloaddec, 1);
 				if (gpissuer == NULL) {
-					m_logger->info("Error gpissuer");
+					m_logger->error("Error gpissuer");
 					break;
 				}
 
 				cn_cbor* gpexpiry = cn_cbor_mapget_int(cborpayloaddec, 4);
 				if (gpexpiry == NULL) {
-					m_logger->info("Error gpexpiry");
+					m_logger->error("Error gpexpiry");
 					break;
 				}
 
 				cn_cbor* gpgenerated = cn_cbor_mapget_int(cborpayloaddec, 6);
 				if (gpgenerated == NULL) {
-					m_logger->info("Error gpgenerated");
+					m_logger->error("Error gpgenerated");
 					break;
 				}
 
 				cn_cbor* gpdata = cn_cbor_mapget_int(cborpayloaddec, -260);
 				if (gpdata == NULL) {
-					m_logger->info("Error gpdata");
+					m_logger->error("Error gpdata");
 					break;
 				}
 
 				cn_cbor* gpdata2 = cn_cbor_mapget_int(gpdata, 1);
 				if (gpdata2 == NULL) {
-					m_logger->info("Error gpdata2");
+					m_logger->error("Error gpdata2");
 					break;
 				}
 
 				cn_cbor* gpnam = cn_cbor_mapget_string(gpdata2, "nam");
 				if (gpnam == NULL) {
-					m_logger->info("Error gpnam");
+					m_logger->error("Error gpnam");
 					break;
 				}
 
@@ -406,19 +406,19 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					gpvtr = cn_cbor_index(gpe, 0);
 				}
 				if (gpvtr == NULL) {
-					m_logger->info("Error gpvtr");
+					m_logger->error("Error gpvtr");
 					break;
 				}
 
 				cn_cbor* gpver = cn_cbor_mapget_string(gpdata2, "ver");
 				if (gpver == NULL) {
-					m_logger->info("Error gpver");
+					m_logger->error("Error gpver");
 					break;
 				}
 
 				cn_cbor* gpdob = cn_cbor_mapget_string(gpdata2, "dob");
 				if (gpdob == NULL) {
-					m_logger->info("Error gpdob");
+					m_logger->error("Error gpdob");
 					break;
 				}
 
@@ -543,15 +543,21 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				std::time_t generated = gpgenerated->v.uint;
 
 				{
-					char mbstr[100];
-					std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", std::localtime(&expiry));
-					certificate.dateTimeOfExpiration = std::string(mbstr);
+					std::tm* lt = std::localtime(&expiry);
+					if (lt != NULL) {
+						char mbstr[100];
+						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", lt);
+						certificate.dateTimeOfExpiration = std::string(mbstr);
+					}
 				}
 
 				{
-					char mbstr[100];
-					std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", std::localtime(&generated));
-					certificate.dateTimeOfGeneration = std::string(mbstr);
+					std::tm* lt = std::localtime(&generated);
+					if (lt != NULL) {
+						char mbstr[100];
+						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", lt);
+						certificate.dateTimeOfGeneration = std::string(mbstr);
+					}
 				}
 
 				// Certificate validity dates ---------------------------------
@@ -621,7 +627,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 					if (cert == NULL) {
 						certificateSimple.certificateStatus = NOT_VALID;
-						m_logger->info("Error loading sign verify certificate");
+						m_logger->error("Error loading sign verify certificate");
 						break;
 					}
 
@@ -655,7 +661,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					if (pkey == NULL) {
 						certificateSimple.certificateStatus = NOT_VALID;
 						X509_free(cert);
-						m_logger->info("Error get public key");
+						m_logger->error("Error get public key");
 						break;
 					}
 
@@ -757,6 +763,8 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						// partial vaccine
 						std::string startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_not_complete, certificate.vaccination.medicinalProduct);
 						std::string endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_not_complete, certificate.vaccination.medicinalProduct);
+						m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_not_complete, certificate.vaccination.medicinalProduct.c_str(), startDays.c_str());
+						m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_not_complete, certificate.vaccination.medicinalProduct.c_str(), endDays.c_str());
 						if (startDays.empty() || endDays.empty()) {
 							m_logger->info("Partial vaccine %s validity days not found (%s - %s)",
 									certificate.vaccination.medicinalProduct.c_str(),
@@ -792,38 +800,50 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 							// booster
 							if (countryCode == COUNTRY_ITALY) {
 								startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_booster_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_booster_IT, RULE_TYPE_GENERIC, startDays.c_str());
 								if (startDays.empty()) startDays = "0";
 								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_booster_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_booster_IT, RULE_TYPE_GENERIC, endDays.c_str());
 								if (endDays.empty()) endDays = "180";
 							} else {
 								startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_booster_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_booster_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
 								if (startDays.empty()) startDays = "0";
 								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_booster_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_booster_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
 								if (endDays.empty()) endDays = "270";
 							}
 						} else {
 							if (scanMode == SCAN_MODE_SCHOOL) {
 								if (countryCode == COUNTRY_ITALY) {
 									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC, startDays.c_str());
 									if (startDays.empty()) startDays = "0";
 									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
 									if (endDays.empty()) endDays = "120";
 								} else {
 									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
 									if (startDays.empty()) startDays = "0";
 									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
 									if (endDays.empty()) endDays = "120";
 								}
 							} else {
 								if (countryCode == COUNTRY_ITALY) {
 									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC, startDays.c_str());
 									if (startDays.empty()) startDays = "0";
 									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC, endDays.c_str());
 									if (endDays.empty()) endDays = "180";
 								} else {
 									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
 									if (startDays.empty()) startDays = "0";
 									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
 									if (endDays.empty()) endDays = "270";
 								}
 							}
@@ -843,12 +863,14 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						//   and rule of completed vaccine has validity of 15 days after dose injection (but this is not true for recall)
 						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
 								certificate.vaccination.doseNumber > certificate.vaccination.totalSeriesOfDoses) {
+							m_logger->debug("Janssen complete or booster: %d/%d", certificate.vaccination.doseNumber, certificate.vaccination.totalSeriesOfDoses);
 							startDay = 0;
 						}
 						// SDK version 1.1.1 start validity immediate for Janssen complete vaccination with at least 2 doses
 						if (certificate.vaccination.medicinalProduct == RULE_TYPE_EU_1_20_1525 &&
 								certificate.vaccination.doseNumber == certificate.vaccination.totalSeriesOfDoses &&
 								certificate.vaccination.totalSeriesOfDoses >= 2) {
+							m_logger->debug("Janssen complete or booster: %d/%d", certificate.vaccination.doseNumber, certificate.vaccination.totalSeriesOfDoses);
 							startDay = 0;
 						}
 					}
@@ -939,38 +961,50 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						// recovery bis
 						if (scanMode == SCAN_MODE_SCHOOL) {
 							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC, startDays.c_str());
 							if (startDays.empty()) endDays = "0";
 							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
 							if (endDays.empty()) endDays = "120";
 						} else {
 							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC, startDays.c_str());
 							if (startDays.empty()) endDays = "0";
 							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC, endDays.c_str());
 							if (endDays.empty()) endDays = "270";
 						}
 					} else {
 						if (scanMode == SCAN_MODE_SCHOOL) {
 							if (countryCode == COUNTRY_ITALY) {
 								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC, startDays.c_str());
 								if (startDays.empty()) endDays = "0";
 								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
 								if (endDays.empty()) endDays = "120";
 							} else {
 								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
 								if (startDays.empty()) startDays = "0";
 								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
 								if (endDays.empty()) endDays = "120";
 							}
 						} else {
 							if (countryCode == COUNTRY_ITALY) {
 								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC, startDays.c_str());
 								if (startDays.empty()) endDays = "0";
 								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC, endDays.c_str());
 								if (endDays.empty()) endDays = "180";
 							} else {
 								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
 								if (startDays.empty()) startDays = "0";
 								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
 								if (endDays.empty()) endDays = "270";
 							}
 						}
@@ -1009,6 +1043,24 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					// get recovery to day
 					time_t recoveryUntilDay = (mktime(&recoveryUntilDate) + 43200) / 3600 / 24;
 
+					// get recovery to day
+					time_t recoveryToDay = recoveryFromDay + endDay;
+					if (scanMode == SCAN_MODE_SCHOOL) {
+						// get first positive test date
+						struct tm firstPositiveTestDate;
+						memset(&firstPositiveTestDate, 0, sizeof(firstPositiveTestDate));
+						strptime(certificate.recoveryStatement.dateOfFirstPositiveTest.c_str(), "%Y-%m-%d", &firstPositiveTestDate);
+
+						// get  first positive test day
+						time_t firstPositiveTestDay = (mktime(&firstPositiveTestDate) + 43200) / 3600 / 24;
+
+						if (recoveryUntilDay < firstPositiveTestDay + endDay) {
+							recoveryToDay = recoveryUntilDay;
+						} else {
+							recoveryToDay = firstPositiveTestDay + endDay;
+						}
+					}
+
 					if (currentDay < recoveryFromDay) {
 						// certificate not valid yet
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) not valid yet",
@@ -1017,7 +1069,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = NOT_VALID_YET;
 						break;
 					}
-					if (/*currentDay > recoveryUntilDay &&*/ currentDay > recoveryFromDay + endDay) {
+					if (currentDay > recoveryToDay) {
 						// certificate not valid
 						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) not valid",
 								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
