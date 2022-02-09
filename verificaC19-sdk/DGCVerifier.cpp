@@ -391,19 +391,19 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				std::string typevtr;
 				if (gpv != NULL) {
 					typevtr = "v";
-					gpvtr = cn_cbor_index(gpv, 0);
+					gpvtr = gpv->last_child;
 				}
 				if (gpr != NULL) {
 					typevtr = "r";
-					gpvtr = cn_cbor_index(gpr, 0);
+					gpvtr = gpr->last_child;
 				}
 				if (gpt != NULL) {
 					typevtr = "t";
-					gpvtr = cn_cbor_index(gpt, 0);
+					gpvtr = gpt->last_child;
 				}
 				if (gpe != NULL) {
 					typevtr = "e";
-					gpvtr = cn_cbor_index(gpe, 0);
+					gpvtr = gpe->last_child;
 				}
 				if (gpvtr == NULL) {
 					m_logger->error("Error gpvtr");
@@ -423,11 +423,20 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				for (cn_cbor* cp = gpnam->first_child; cp; cp = cp->next) {
-					std::string name = std::string(cp->v.str, cp->length);
+					std::string name;
+					if (cp->v.str != NULL && cp->length > 0) {
+						name = std::string(cp->v.str, cp->length);
+					} else {
+						name = "";
+					}
 					std::string value;
 					if (cp->next) {
 						cp = cp->next;
-						value = std::string(cp->v.str, cp->length);
+						if (cp->v.str != NULL && cp->length > 0) {
+							value = std::string(cp->v.str, cp->length);
+						} else {
+							value = "";
+						}
 					}
 					if (name == "fn") {
 						certificate.person.familyName = value; // Replace(value, '\'', '`');
@@ -444,11 +453,20 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				certificateSimple.person.givenName = certificate.person.givenName;
 				certificateSimple.person.standardisedGivenName = certificate.person.standardisedGivenName;
 				for (cn_cbor* cp = gpvtr->first_child; cp; cp = cp->next) {
-					std::string name = std::string(cp->v.str, cp->length);
+					std::string name;
+					if (cp->v.str != NULL && cp->length > 0) {
+						name = std::string(cp->v.str, cp->length);
+					} else {
+						name = "";
+					}
 					std::string value;
 					if (cp->next) {
 						cp = cp->next;
-						value = std::string(cp->v.str, cp->length);
+						if (cp->v.str != NULL && cp->length > 0) {
+							value = std::string(cp->v.str, cp->length);
+						} else {
+							value = "";
+						}
 					}
 					if (typevtr == "v") {
 						if (name == "ci") {
@@ -548,6 +566,9 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						char mbstr[100];
 						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", lt);
 						certificate.dateTimeOfExpiration = std::string(mbstr);
+					} else {
+						// set for invalid value
+						expiry = 0;
 					}
 				}
 
@@ -557,19 +578,22 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						char mbstr[100];
 						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", lt);
 						certificate.dateTimeOfGeneration = std::string(mbstr);
+					} else {
+						// set for invalid value
+						generated = 0;
 					}
 				}
 
 				// Certificate validity dates ---------------------------------
 				std::time_t now = time(NULL);
-				if (now < generated) {
+				if (generated > 0 && now < generated) {
 					m_logger->info("Certificate of %s not valid yet",
 							certificate.dateTimeOfGeneration.c_str());
 					certificateSimple.certificateStatus = NOT_VALID_YET;
 					break;
 				}
 
-				if (now > expiry) {
+				if (expiry > 0 && now > expiry) {
 					m_logger->info("Certificate expired at %s",
 							certificate.dateTimeOfExpiration.c_str());
 					certificateSimple.certificateStatus = NOT_VALID;
@@ -735,7 +759,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				// Rules validation--------------------------------------------
-				if (certificate.isVaccination()) {
+				if (typevtr == "v") {
 					// Check if vaccine is present in setting list; otherwise, return not valid
 					std::string checkDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete, certificate.vaccination.medicinalProduct);
 					if (checkDays.empty()) {
@@ -947,7 +971,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 							days, startDay, endDay);
 				}
 
-				if (certificate.isRecovery()) {
+				if (typevtr == "r") {
 					std::string startDays;
 					std::string endDays;
 					std::string  countryCode;
@@ -1091,7 +1115,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 							certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
 				}
 
-				if (certificate.isTest()) {
+				if (typevtr == "t") {
 					if (scanMode == SCAN_MODE_2G || scanMode == SCAN_MODE_BOOSTER || scanMode == SCAN_MODE_SCHOOL) {
 						certificateSimple.certificateStatus = NOT_VALID;
 						m_logger->debug("Test certificate of %s not valid for selected scan mode",
@@ -1209,7 +1233,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 					}
 				}
 
-				if (certificate.isExemption()) {
+				if (typevtr == "e") {
 					/*
 					 * Exemption certificate valid for school
 					if (scanMode == SCAN_MODE_SCHOOL) {

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.6] - 09/02/2022
+
+- Fix checks for certificate with multiple records
+
 ## [1.1.5] - 07/02/2022
 
 - Fix recovery certificate end validity for school mode

@@ -148,30 +148,6 @@ class CertificateModel {
 public:
 	CertificateModel() {}
 	/**
-	 * Check if is a Digital Certificate of Vaccination
-	 *
-	 * @return true if is a Digital Certificate of Vaccination, else false
-	 */
-	bool isVaccination() const { return !vaccination.dateOfVaccination.empty(); }
-	/**
-	 * Check if is a Digital Certificate of Test
-	 *
-	 * @return true if is a Digital Certificate of Test, else false
-	 */
-	bool isTest() const { return !test.dateTimeOfCollection.empty(); }
-	/**
-	 * Check if is a Digital Certificate of Recovery
-	 *
-	 * @return true if is a Digital Certificate of Recovery, else false
-	 */
-	bool isRecovery() const { return !recoveryStatement.certificateValidFrom.empty(); }
-	/**
-	 * Check if is a Digital Certificate of Exemption
-	 *
-	 * @return true if is a Digital Certificate of Exemption, else false
-	 */
-	bool isExemption() const { return !exemption.certificateValidFrom.empty(); }
-	/**
 	 * Person informations
 	 */
 	PersonModel person;
