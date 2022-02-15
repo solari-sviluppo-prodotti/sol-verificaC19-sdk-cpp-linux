@@ -97,9 +97,6 @@ int main (int argc, char** argv) {
 				if (argc > 2 && strcmp(argv[2], "WORK") == 0) {
 					scanMode = SCAN_MODE_WORK;
 				}
-				if (argc > 2 && strcmp(argv[2], "SCHOOL") == 0) {
-					scanMode = SCAN_MODE_SCHOOL;
-				}
 				CertificateSimple certificate = verifier.verify(qr, scanMode);
 				logCertificate(certificate, logger);
 			}

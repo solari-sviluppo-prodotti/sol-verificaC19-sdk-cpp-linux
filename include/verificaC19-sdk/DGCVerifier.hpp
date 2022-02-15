@@ -16,11 +16,10 @@
 #define SCAN_MODE_STRENGTHENED  SCAN_MODE_2G
 #define SCAN_MODE_BOOSTER       "BOOSTED"
 #define SCAN_MODE_WORK          "WORK"
-#define SCAN_MODE_SCHOOL        "SCHOOL"
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.1.4"
+#define DGCVerifier_SDK_Version "1.1.5"
 
 /**
  * Implements Digital Certificate verification

@@ -797,7 +797,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 							break;
 						}
 						// SDK version 1.1.1 booster mode (and school)
-						if (scanMode == SCAN_MODE_BOOSTER || scanMode == SCAN_MODE_SCHOOL) {
+						if (scanMode == SCAN_MODE_BOOSTER) {
 							m_logger->info("Partial vaccine %s not valid for selected scan mode",
 									certificate.vaccination.medicinalProduct.c_str());
 							certificateSimple.certificateStatus = NOT_VALID;
@@ -838,38 +838,20 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 								if (endDays.empty()) endDays = "270";
 							}
 						} else {
-							if (scanMode == SCAN_MODE_SCHOOL) {
-								if (countryCode == COUNTRY_ITALY) {
-									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC, startDays.c_str());
-									if (startDays.empty()) startDays = "0";
-									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
-									if (endDays.empty()) endDays = "120";
-								} else {
-									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
-									if (startDays.empty()) startDays = "0";
-									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
-									if (endDays.empty()) endDays = "120";
-								}
+							if (countryCode == COUNTRY_ITALY) {
+								startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC, startDays.c_str());
+								if (startDays.empty()) startDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC, endDays.c_str());
+								if (endDays.empty()) endDays = "180";
 							} else {
-								if (countryCode == COUNTRY_ITALY) {
-									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_IT, RULE_TYPE_GENERIC, startDays.c_str());
-									if (startDays.empty()) startDays = "0";
-									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_complete_IT, RULE_TYPE_GENERIC, endDays.c_str());
-									if (endDays.empty()) endDays = "180";
-								} else {
-									startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
-									if (startDays.empty()) startDays = "0";
-									endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC);
-									m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
-									if (endDays.empty()) endDays = "270";
-								}
+								startDays = m_rulesStorage->getRule(RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_start_day_complete_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
+								if (startDays.empty()) startDays = "0";
+								endDays = m_rulesStorage->getRule(RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC);
+								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_vaccine_end_day_complete_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
+								if (endDays.empty()) endDays = "270";
 							}
 						}
 
@@ -983,54 +965,27 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 					if (certificate.country == COUNTRY_ITALY && keyUsageForRecovery) {
 						// recovery bis
-						if (scanMode == SCAN_MODE_SCHOOL) {
-							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
-							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC, startDays.c_str());
-							if (startDays.empty()) endDays = "0";
-							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
-							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
-							if (endDays.empty()) endDays = "120";
-						} else {
-							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
-							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC, startDays.c_str());
-							if (startDays.empty()) endDays = "0";
-							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
-							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC, endDays.c_str());
-							if (endDays.empty()) endDays = "270";
-						}
+						startDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC);
+						m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_start_day, RULE_TYPE_GENERIC, startDays.c_str());
+						if (startDays.empty()) endDays = "0";
+						endDays = m_rulesStorage->getRule(RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC);
+						m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_pv_cert_end_day, RULE_TYPE_GENERIC, endDays.c_str());
+						if (endDays.empty()) endDays = "270";
 					} else {
-						if (scanMode == SCAN_MODE_SCHOOL) {
-							if (countryCode == COUNTRY_ITALY) {
-								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC, startDays.c_str());
-								if (startDays.empty()) endDays = "0";
-								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
-								if (endDays.empty()) endDays = "120";
-							} else {
-								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
-								if (startDays.empty()) startDays = "0";
-								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_school, RULE_TYPE_GENERIC, endDays.c_str());
-								if (endDays.empty()) endDays = "120";
-							}
+						if (countryCode == COUNTRY_ITALY) {
+							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC, startDays.c_str());
+							if (startDays.empty()) endDays = "0";
+							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC, endDays.c_str());
+							if (endDays.empty()) endDays = "180";
 						} else {
-							if (countryCode == COUNTRY_ITALY) {
-								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_IT, RULE_TYPE_GENERIC, startDays.c_str());
-								if (startDays.empty()) endDays = "0";
-								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_IT, RULE_TYPE_GENERIC, endDays.c_str());
-								if (endDays.empty()) endDays = "180";
-							} else {
-								startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
-								if (startDays.empty()) startDays = "0";
-								endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC);
-								m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
-								if (endDays.empty()) endDays = "270";
-							}
+							startDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_start_day_NOT_IT, RULE_TYPE_GENERIC, startDays.c_str());
+							if (startDays.empty()) startDays = "0";
+							endDays = m_rulesStorage->getRule(RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC);
+							m_logger->debug("Loaded rule %s, %s: %s", RULE_NAME_recovery_cert_end_day_NOT_IT, RULE_TYPE_GENERIC, endDays.c_str());
+							if (endDays.empty()) endDays = "270";
 						}
 					}
 
@@ -1069,21 +1024,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 					// get recovery to day
 					time_t recoveryToDay = recoveryFromDay + endDay;
-					if (scanMode == SCAN_MODE_SCHOOL) {
-						// get first positive test date
-						struct tm firstPositiveTestDate;
-						memset(&firstPositiveTestDate, 0, sizeof(firstPositiveTestDate));
-						strptime(certificate.recoveryStatement.dateOfFirstPositiveTest.c_str(), "%Y-%m-%d", &firstPositiveTestDate);
-
-						// get  first positive test day
-						time_t firstPositiveTestDay = (mktime(&firstPositiveTestDate) + 43200) / 3600 / 24;
-
-						if (recoveryUntilDay < firstPositiveTestDay + endDay) {
-							recoveryToDay = recoveryUntilDay;
-						} else {
-							recoveryToDay = firstPositiveTestDay + endDay;
-						}
-					}
 
 					if (currentDay < recoveryFromDay) {
 						// certificate not valid yet
@@ -1116,7 +1056,7 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				if (typevtr == "t") {
-					if (scanMode == SCAN_MODE_2G || scanMode == SCAN_MODE_BOOSTER || scanMode == SCAN_MODE_SCHOOL) {
+					if (scanMode == SCAN_MODE_2G || scanMode == SCAN_MODE_BOOSTER) {
 						certificateSimple.certificateStatus = NOT_VALID;
 						m_logger->debug("Test certificate of %s not valid for selected scan mode",
 								certificate.test.dateTimeOfCollection.c_str());
