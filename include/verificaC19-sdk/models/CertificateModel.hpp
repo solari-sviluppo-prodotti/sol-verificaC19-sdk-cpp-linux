@@ -50,6 +50,7 @@ static const TestType MOLECULAR("LP6464-4");
 
 typedef std::string TestResult;
 static const TestResult NOT_DETECTED("260415000");
+static const TestResult DETECTED("260373001");
 
 /**
  * Represent Test data

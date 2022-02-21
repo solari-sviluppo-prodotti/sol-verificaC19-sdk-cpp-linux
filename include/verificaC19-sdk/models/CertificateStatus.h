@@ -14,7 +14,8 @@ enum CertificateStatus {
 	NOT_VALID_YET = 1,
 	VALID = 2,
 	NOT_EU_DCC = 4,
-	TEST_NEEDED = 5
+	TEST_NEEDED = 5,
+	EXPIRED = 6
 };
 
 typedef enum CertificateStatus CertificateStatus;

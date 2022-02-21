@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-set(CMAKE_PROJECT_VERSION 1.1.6)
+set(CMAKE_PROJECT_VERSION 1.1.7)
 
 option(BUILD_EXAMPLES "Build example library and applications" OFF)
 option(BUILD_STATIC "Build static library" OFF)

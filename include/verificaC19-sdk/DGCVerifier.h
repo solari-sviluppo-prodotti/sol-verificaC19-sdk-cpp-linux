@@ -18,6 +18,7 @@ typedef struct {} Verifier;
 #define SCAN_MODE_STRENGTHENED  SCAN_MODE_2G
 #define SCAN_MODE_BOOSTER       "BOOSTED"
 #define SCAN_MODE_WORK          "WORK"
+#define SCAN_MODE_ENTRY_ITALY   "ENTRY_ITALY"
 
 /**
  * DGCVerifier constructor interface for C and for dynamic loading

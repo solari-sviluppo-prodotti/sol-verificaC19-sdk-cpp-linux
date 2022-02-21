@@ -28,6 +28,7 @@ static void logCertificate(const struct CertificateSimple_c* certificate, const 
 		case VALID: certificateStatus = "VALID"; break;
 		case NOT_EU_DCC: certificateStatus = "NOT_EU_DCC"; break;
 		case TEST_NEEDED: certificateStatus = "TEST_NEEDED"; break;
+		case EXPIRED: certificateStatus = "EXPIRED"; break;
 	}
 	LoggerStdout_c_info(logger, "Certificate status: %s", certificateStatus);
 	LoggerStdout_c_info(logger, "Person standardisedFamilyName: %s", certificate->person.standardisedFamilyName);
@@ -43,7 +44,7 @@ int main (int argc, char** argv) {
 
 	if (argc < 2) {
 		LoggerStdout_c_error(logger, "Usage: verificaC19-c-client <qrfile> [mode]");
-		LoggerStdout_c_error(logger, "       where mode can be 2G for Super Green Pass, BOOSTER for booster, WORK for work, SCHOOL for school, or empty for Standard Green Pass");
+		LoggerStdout_c_error(logger, "       where mode can be 2G for Super Green Pass, BOOSTER for booster, WORK for work, ENTRY_ITALY for entry italy, or empty for Standard Green Pass");
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr");
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr 2G");
 		LoggerStdout_c_error(logger, "Example: verificaC19-c-client ./test.qr BOOSTER");
@@ -101,6 +102,9 @@ int main (int argc, char** argv) {
 						}
 						if (argc > 2 && strcmp(argv[2], "WORK") == 0) {
 							scanMode = SCAN_MODE_WORK;
+						}
+						if (argc > 2 && strcmp(argv[2], "ENTRY_ITALY") == 0) {
+							scanMode = SCAN_MODE_ENTRY_ITALY;
 						}
 						struct CertificateSimple_c* certificate = DGCVerifier_c_verify(verifier, qr, scanMode);
 						free(qr);

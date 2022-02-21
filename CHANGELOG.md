@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.7] - 16/02/2022
+
+- Align to official Android SDK 1.1.5
+
+### Added
+
+- Added entry to italy scan mode
+- Align with new medical rules for italian DL 4 february
+
+### Removed
+
+- Removed school scan mode
+
 ## [1.1.6] - 09/02/2022
 
 - Fix checks for certificate with multiple records
