@@ -33,7 +33,7 @@ long KeysProviderItaly::curlRequest(std::string url, std::string header, std::st
 	curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, writeCallback);
 	curl_easy_setopt(curl, CURLOPT_HEADERDATA, &rxheader);
 	struct curl_slist *hs = NULL;
-	hs = curl_slist_append(hs, std::string(std::string("SDK-VERSION: ") + std::string(DGCVerifier_SDK_Version)).c_str());
+	hs = curl_slist_append(hs, std::string(std::string("User-Agent: verificac19-sdk-cpp/") + std::string(DGCVerifier_Local_Version)).c_str());
 	if (!header.empty()) {
 		hs = curl_slist_append(hs, header.c_str());
 	}

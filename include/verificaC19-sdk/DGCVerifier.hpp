@@ -22,6 +22,7 @@
 namespace verificaC19Sdk {
 
 #define DGCVerifier_SDK_Version "1.1.5"
+#define DGCVerifier_Local_Version "1.1.8"
 
 /**
  * Implements Digital Certificate verification

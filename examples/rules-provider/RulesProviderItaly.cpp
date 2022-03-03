@@ -29,7 +29,7 @@ long RulesProviderItaly::curlRequest(std::string url, std::string& response) con
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 	struct curl_slist *hs = NULL;
-	hs = curl_slist_append(hs, std::string(std::string("SDK-VERSION: ") + std::string(DGCVerifier_SDK_Version)).c_str());
+	hs = curl_slist_append(hs, std::string(std::string("User-Agent: verificac19-sdk-cpp/") + std::string(DGCVerifier_Local_Version)).c_str());
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, hs);
 	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
 	CURLcode res = curl_easy_perform(curl);

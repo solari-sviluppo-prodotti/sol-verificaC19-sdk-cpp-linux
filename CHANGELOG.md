@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.8] - 03/01/2022
+
+- Added User-Agent:  verificac19-sdk-cpp/<version> to requests to API
+
 ## [1.1.7] - 16/02/2022
 
 - Align to official Android SDK 1.1.5
