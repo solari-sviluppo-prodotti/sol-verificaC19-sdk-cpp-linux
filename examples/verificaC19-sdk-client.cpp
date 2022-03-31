@@ -103,12 +103,11 @@ int main (int argc, char** argv) {
 
 	if (argc < 2) {
 		logger.error("Usage: verificaC19-client <qrfile> [mode]");
-		logger.error("       where mode can be 2G for Super Green Pass, BOOSTER for booster, WORK for work, ENTRY_ITALY for entry italy, or empty for Standard Green Pass");
+		logger.error("       where mode can be 2G for Super Green Pass, BOOSTER for booster, ENTRY_ITALY for entry italy, or empty for Standard Green Pass");
 		logger.error("Example: verificaC19-client ./test.qr");
 		logger.error("Example: verificaC19-client ./test.qr 2G");
 		logger.error("Example: verificaC19-client ./test.qr BOOSTER");
-		logger.error("Example: verificaC19-client ./test.qr WORK");
-		logger.error("Example: verificaC19-client ./test.qr SCHOOL");
+		logger.error("Example: verificaC19-client ./test.qr ENTRY_ITALY");
 	} else {
 		logger.info("---------- Test with command line ----------");
 		KeysStorageFile keysStorage;
@@ -166,8 +165,6 @@ int main (int argc, char** argv) {
 						scanMode = SCAN_MODE_2G;
 					} else if (scanMode == "BOOSTER") {
 						scanMode = SCAN_MODE_BOOSTER;
-					} else if (scanMode == "WORK") {
-						scanMode = SCAN_MODE_WORK;
 					} else if (scanMode == "ENTRY_ITALY") {
 						scanMode = SCAN_MODE_ENTRY_ITALY;
 					}
@@ -191,9 +188,6 @@ int main (int argc, char** argv) {
 					}
 					if (argc > 2 && strcmp(argv[2], "BOOSTER") == 0) {
 						scanMode = SCAN_MODE_BOOSTER;
-					}
-					if (argc > 2 && strcmp(argv[2], "WORK") == 0) {
-						scanMode = SCAN_MODE_WORK;
 					}
 					if (argc > 2 && strcmp(argv[2], "ENTRY_ITALY") == 0) {
 						scanMode = SCAN_MODE_ENTRY_ITALY;

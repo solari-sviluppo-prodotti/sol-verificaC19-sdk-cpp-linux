@@ -16,13 +16,12 @@
 #define SCAN_MODE_STANDARD      SCAN_MODE_3G
 #define SCAN_MODE_STRENGTHENED  SCAN_MODE_2G
 #define SCAN_MODE_BOOSTER       "BOOSTED"
-#define SCAN_MODE_WORK          "WORK"
 #define SCAN_MODE_ENTRY_ITALY   "ENTRY_ITALY"
 
 namespace verificaC19Sdk {
 
 #define DGCVerifier_SDK_Version "1.1.5"
-#define DGCVerifier_Local_Version "1.1.8"
+#define DGCVerifier_Local_Version "1.1.9"
 
 /**
  * Implements Digital Certificate verification
@@ -61,9 +60,7 @@ public:
 	 * @param scanMode Scan mode, SCAN_MODE_STRENGTHENED accept only vaccination and recovery
 	 *                 certificates, SCAN_MODE_STANDARD accept also test certificates,
 	 *                 SCAN_MODE_BOOSTER signals test needed for complete vaccination (not booster)
-	 *                 or for recovery certificate, SCAN_MODE_WORK does not accept test for
-	 *                 people aged 50 and over, but only starting from 15 february 2022,
-	 *                 SCAN_MODE_SCHOOL
+	 *                 or for recovery certificate
 	 *
 	 * @return CertificateSimple Result of Digital Certification verify
 	 */
@@ -87,7 +84,6 @@ private:
 	CertificateStatus vaccineStandardStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineStrengthenedStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineBoosterStrategy(const CertificateModel& certificate) const;
-	CertificateStatus vaccineWorkStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineEntryItalyStrategy(const CertificateModel& certificate) const;
 
 	IKeysStorage* m_keysStorage;
