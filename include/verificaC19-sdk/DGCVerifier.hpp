@@ -20,8 +20,8 @@
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.1.5"
-#define DGCVerifier_Local_Version "1.1.9"
+#define DGCVerifier_SDK_Version "1.1.6"
+#define DGCVerifier_Local_Version "1.1.10"
 
 /**
  * Implements Digital Certificate verification
@@ -81,6 +81,8 @@ private:
 	int getVaccineStartDayBoosterUnified(const std::string& countryCode) const;
 	int getVaccineEndDayBoosterUnified(const std::string& countryCode) const;
 	int getVaccineEndDayCompleteExtendedEMA() const;
+	int getVaccineEndDayCompleteUnder18() const;
+	int getVaccineCompleteUnder18Offset() const;
 	CertificateStatus vaccineStandardStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineStrengthenedStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineBoosterStrategy(const CertificateModel& certificate) const;
