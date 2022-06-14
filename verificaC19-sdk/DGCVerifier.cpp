@@ -36,8 +36,6 @@ namespace verificaC19Sdk {
 #define COUNTRY_ITALY             "IT"
 #define COUNTRY_NOT_ITALY         "NOT_IT"
 
-#define VACCINE_UNDERAGE_AGE      18
-
 // BASE45
 static std::string decodeBase45(const std::string& src) {
 	// map used to get real value for every input character and also to validate
@@ -828,8 +826,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = vaccineStrengthenedStrategy(certificate);
 					} else if (scanMode == SCAN_MODE_BOOSTER) {
 						certificateSimple.certificateStatus = vaccineBoosterStrategy(certificate);
-					} else if (scanMode == SCAN_MODE_ENTRY_ITALY) {
-						certificateSimple.certificateStatus = vaccineEntryItalyStrategy(certificate);
 					} else {
 						m_logger->info("Unknown scan mode %s ",
 								scanMode.c_str());
@@ -1079,14 +1075,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 								certificate.exemption.certificateValidFrom.c_str(),
 								certificate.exemption.certificateValidUntil.c_str());
 						certificateSimple.certificateStatus = TEST_NEEDED;
-						break;
-					}
-					// Exemption certificate not valid for entry italy
-					if (scanMode == SCAN_MODE_ENTRY_ITALY) {
-						m_logger->debug("Exemption certificate of %s - %s not valid for selected scan mode",
-								certificate.exemption.certificateValidFrom.c_str(),
-								certificate.exemption.certificateValidUntil.c_str());
-						certificateSimple.certificateStatus = NOT_VALID;
 						break;
 					}
 					certificateSimple.certificateStatus = VALID;
@@ -1481,104 +1469,6 @@ CertificateStatus DGCVerifier::vaccineBoosterStrategy(const CertificateModel& ce
 				days, startDay, endDay);
 		return NOT_VALID;
 	}
-}
-
-CertificateStatus DGCVerifier::vaccineEntryItalyStrategy(const CertificateModel& certificate) const {
-	int startDay = 0;
-	int endDay = 0;
-
-	// get limit date
-	time_t t = time(NULL);
-	struct tm limitDate;
-	localtime_r(&t, &limitDate);
-	limitDate.tm_year = limitDate.tm_year - VACCINE_UNDERAGE_AGE;
-
-	// get limit day
-	time_t limitDay = (mktime(&limitDate) + limitDate.tm_gmtoff) / 3600 / 24;
-
-	// get birth date
-	struct tm birthDate;
-	memset(&birthDate, 0, sizeof(birthDate));
-	if (certificate.dateOfBirth.length() == 4) {
-		strptime(certificate.dateOfBirth.c_str(), "%Y", &birthDate);
-	} else if (certificate.dateOfBirth.length() == 7) {
-		strptime(certificate.dateOfBirth.c_str(), "%Y-%m", &birthDate);
-	} else {
-		strptime(certificate.dateOfBirth.c_str(), "%Y-%m-%d", &birthDate);
-	}
-
-	// get birth day
-	time_t birthDay = (mktime(&birthDate) + 43200) / 3600 / 24;
-
-	// apply offset
-	birthDay += getVaccineCompleteUnder18Offset();
-
-	bool isUnderAge = false;
-	if (birthDay > limitDay) {
-		isUnderAge = true;
-	}
-
-	if (isNotCompleteVaccine(certificate)) {
-		startDay = getVaccineStartDayNotComplete(certificate.vaccination.medicinalProduct);
-		endDay = getVaccineEndDayNotComplete(certificate.vaccination.medicinalProduct);
-	} else if (isCompleteVaccine(certificate)) {
-		if (isBoosterVaccine(certificate)) {
-			startDay = getVaccineStartDayBoosterUnified(COUNTRY_NOT_ITALY);
-			endDay = getVaccineEndDayBoosterUnified(COUNTRY_NOT_ITALY);
-		} else {
-			startDay = getVaccineStartDayCompleteUnified(COUNTRY_NOT_ITALY, certificate.vaccination.medicinalProduct);
-			if (isUnderAge) {
-				endDay = getVaccineEndDayCompleteUnder18();
-			} else {
-				endDay = getVaccineEndDayCompleteUnified(COUNTRY_NOT_ITALY);
-			}
-		}
-	}
-
-	// get current date
-	struct tm currentDate;
-	localtime_r(&t, &currentDate);
-
-	// get current day
-	time_t currentDay = (t + currentDate.tm_gmtoff) / 3600 / 24;
-
-	// get vaccine date
-	struct tm vaccineDate;
-	memset(&vaccineDate, 0, sizeof(vaccineDate));
-	strptime(certificate.vaccination.dateOfVaccination.c_str(), "%Y-%m-%d", &vaccineDate);
-
-	// get vaccine day
-	time_t vaccineDay = (mktime(&vaccineDate) + 43200) / 3600 / 24;
-
-	long days = currentDay - vaccineDay;
-	if (days < startDay) {
-		m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d)",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return NOT_VALID_YET;
-	}
-	if (days > endDay) {
-		m_logger->info("Vaccine certificate of %s not valid (%d: %d - %d)",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return EXPIRED;
-	}
-	if (!isEMAVaccine(certificate)) {
-		m_logger->info("Vaccine certificate of %s valid (%d: %d - %d) but not valid for selected scan mode",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return NOT_VALID;
-	}
-	if (isNotCompleteVaccine(certificate)) {
-		m_logger->info("Partial vaccine certificate of %s valid (%d: %d - %d) but not valid for selected scan mode",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return NOT_VALID;
-	}
-	m_logger->info("Vaccine certificate of %s valid (%d: %d - %d)",
-			certificate.vaccination.dateOfVaccination.c_str(),
-			days, startDay, endDay);
-	return VALID;
 }
 
 DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ICRLStorage* crlStorage, ILogger* logger) {

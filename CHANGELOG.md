@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.11] - 14/07/2022
+
+- Removed IT entry mode
+
 ## [1.1.10] - 07/04/2022
 
 - New rules for IT entry for Under 18

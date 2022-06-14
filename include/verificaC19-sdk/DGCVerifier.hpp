@@ -16,12 +16,11 @@
 #define SCAN_MODE_STANDARD      SCAN_MODE_3G
 #define SCAN_MODE_STRENGTHENED  SCAN_MODE_2G
 #define SCAN_MODE_BOOSTER       "BOOSTED"
-#define SCAN_MODE_ENTRY_ITALY   "ENTRY_ITALY"
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.1.6"
-#define DGCVerifier_Local_Version "1.1.10"
+#define DGCVerifier_SDK_Version "1.1.10"
+#define DGCVerifier_Local_Version "1.1.11"
 
 /**
  * Implements Digital Certificate verification
@@ -86,7 +85,6 @@ private:
 	CertificateStatus vaccineStandardStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineStrengthenedStrategy(const CertificateModel& certificate) const;
 	CertificateStatus vaccineBoosterStrategy(const CertificateModel& certificate) const;
-	CertificateStatus vaccineEntryItalyStrategy(const CertificateModel& certificate) const;
 
 	IKeysStorage* m_keysStorage;
 	IRulesStorage* m_rulesStorage;
