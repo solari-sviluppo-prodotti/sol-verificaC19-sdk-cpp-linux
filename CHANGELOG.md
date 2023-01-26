@@ -2,7 +2,8 @@
 
 ## [1.1.12] - 26/01/2023
 
-- Removed BOOSTER and STRENGTHENED scand mode
+- Removed BOOSTER and STRENGTHENED scan mode
+- Updated check with only STANDARD scan mode
 - Align to official Android SDK 1.1.11
 
 ## [1.1.11] - 14/07/2022
