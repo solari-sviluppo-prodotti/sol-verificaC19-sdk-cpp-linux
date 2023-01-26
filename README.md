@@ -89,7 +89,7 @@ if (!verifier.verifyMinSdkVersion()) {
 }
 
 // Setup scan mode
-verifier.setScanMode(SCAN_MODE_2G);
+verifier.setScanMode(SCAN_MODE_3G);
 
 std::string qrCode = "Raw qr code data starting with HC1:";
 
@@ -180,7 +180,7 @@ if (!verifier.verifyMinSdkVersion()) {
 }
 
 // Setup scan mode
-verifier.setScanMode(SCAN_MODE_2G);
+verifier.setScanMode(SCAN_MODE_3G);
 
 std::string qrCode = "Raw qr code data starting with HC1:";
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.12] - 26/01/2023
+
+- Removed BOOSTER and STRENGTHENED scand mode
+- Align to official Android SDK 1.1.11
+
 ## [1.1.11] - 14/07/2022
 
 - Removed IT entry mode

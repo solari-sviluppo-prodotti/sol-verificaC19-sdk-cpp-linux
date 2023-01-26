@@ -822,10 +822,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 
 					if (scanMode == SCAN_MODE_STANDARD) {
 						certificateSimple.certificateStatus = vaccineStandardStrategy(certificate);
-					} else if (scanMode == SCAN_MODE_STRENGTHENED) {
-						certificateSimple.certificateStatus = vaccineStrengthenedStrategy(certificate);
-					} else if (scanMode == SCAN_MODE_BOOSTER) {
-						certificateSimple.certificateStatus = vaccineBoosterStrategy(certificate);
 					} else {
 						m_logger->info("Unknown scan mode %s ",
 								scanMode.c_str());
@@ -922,15 +918,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = EXPIRED;
 						break;
 					}
-					// SDK version 1.1.1 booster mode
-					// SDK version 1.1.5 booster mode valid for R-PV
-					if (scanMode == SCAN_MODE_BOOSTER && (certificate.country != COUNTRY_ITALY || !keyUsageForRecovery)) {
-						m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) valid but test needed for selected scan mode",
-								certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
-								certificate.recoveryStatement.certificateValidUntil.c_str(), endDay);
-						certificateSimple.certificateStatus = TEST_NEEDED;
-						break;
-					}
 					certificateSimple.certificateStatus = VALID;
 					m_logger->info("Recovery certificate of %s (+%d) - %s (+%d) valid",
 							certificate.recoveryStatement.certificateValidFrom.c_str(), startDay,
@@ -1016,12 +1003,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 						certificateSimple.certificateStatus = EXPIRED;
 						break;
 					}
-					if (scanMode == SCAN_MODE_2G || scanMode == SCAN_MODE_BOOSTER) {
-						certificateSimple.certificateStatus = NOT_VALID;
-						m_logger->debug("Test certificate of %s not valid for selected scan mode",
-								certificate.test.dateTimeOfCollection.c_str());
-						break;
-					}
 					certificateSimple.certificateStatus = VALID;
 					m_logger->debug("Test certificate of %s valid (%d: %d - %d)",
 							certificate.test.dateTimeOfCollection.c_str(),
@@ -1067,14 +1048,6 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 								certificate.exemption.certificateValidFrom.c_str(),
 								certificate.exemption.certificateValidUntil.c_str());
 						certificateSimple.certificateStatus = EXPIRED;
-						break;
-					}
-					// SDK version 1.1.1 booster mode
-					if (scanMode == SCAN_MODE_BOOSTER) {
-						m_logger->info("Exemption certificate of %s - %s valid but test needed for selected scan mode",
-								certificate.exemption.certificateValidFrom.c_str(),
-								certificate.exemption.certificateValidUntil.c_str());
-						certificateSimple.certificateStatus = TEST_NEEDED;
 						break;
 					}
 					certificateSimple.certificateStatus = VALID;
@@ -1264,211 +1237,6 @@ CertificateStatus DGCVerifier::vaccineStandardStrategy(const CertificateModel& c
 			certificate.vaccination.dateOfVaccination.c_str(),
 			days, startDay, endDay);
 	return VALID;
-}
-
-CertificateStatus DGCVerifier::vaccineStrengthenedStrategy(const CertificateModel& certificate) const {
-	if (certificate.country == COUNTRY_ITALY) {
-		return vaccineStandardStrategy(certificate);
-	}
-
-	int startDay = 0;
-	int endDay = 0;
-	int extendedDay = 0;
-	if (isNotCompleteVaccine(certificate)) {
-		if (!isEMAVaccine(certificate)) {
-			m_logger->info("Unknown or not managed vaccine %s ",
-					certificate.vaccination.medicinalProduct.c_str());
-			return NOT_VALID;
-		}
-		startDay = getVaccineStartDayNotComplete(certificate.vaccination.medicinalProduct);
-		endDay = getVaccineEndDayNotComplete(certificate.vaccination.medicinalProduct);
-	} else if (isCompleteVaccine(certificate)) {
-		if (isBoosterVaccine(certificate)) {
-			startDay = getVaccineStartDayBoosterUnified(COUNTRY_ITALY);
-			endDay = getVaccineEndDayBoosterUnified(COUNTRY_ITALY);
-		} else {
-			startDay = getVaccineStartDayCompleteUnified(COUNTRY_ITALY, certificate.vaccination.medicinalProduct);
-			endDay = getVaccineEndDayCompleteUnified(COUNTRY_ITALY);
-		}
-		extendedDay = getVaccineEndDayCompleteExtendedEMA();
-	}
-
-	// get current date
-	time_t t = time(NULL);
-	struct tm currentDate;
-	localtime_r(&t, &currentDate);
-
-	// get current day
-	time_t currentDay = (t + currentDate.tm_gmtoff) / 3600 / 24;
-
-	// get vaccine date
-	struct tm vaccineDate;
-	memset(&vaccineDate, 0, sizeof(vaccineDate));
-	strptime(certificate.vaccination.dateOfVaccination.c_str(), "%Y-%m-%d", &vaccineDate);
-
-	// get vaccine day
-	time_t vaccineDay = (mktime(&vaccineDate) + 43200) / 3600 / 24;
-
-	long days = currentDay - vaccineDay;
-
-	if (isNotCompleteVaccine(certificate)) {
-		if (days < startDay) {
-			m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d - %d)",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return NOT_VALID_YET;
-		}
-		if (days > endDay) {
-			m_logger->info("Vaccine certificate of %s not valid (%d: %d - %d - %d)",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return EXPIRED;
-		}
-		m_logger->info("Vaccine certificate of %s valid (%d: %d - %d - %d)",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay, extendedDay);
-		return VALID;
-	} else if (isBoosterVaccine(certificate)) {
-		if (days < startDay) {
-			m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d - %d)",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return NOT_VALID_YET;
-		}
-		if (days > endDay) {
-			m_logger->info("Vaccine certificate of %s not valid (%d: %d - %d - %d)",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return EXPIRED;
-		}
-		if (!isEMAVaccine(certificate)) {
-			m_logger->info("Vaccine certificate of %s valid (%d: %d - %d - %d) but test needed for selected scan mode",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return TEST_NEEDED;
-		}
-		m_logger->info("Vaccine certificate of %s valid (%d: %d - %d - %d)",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay, extendedDay);
-		return VALID;
-	} else {
-		// complete vaccine
-		if (isEMAVaccine(certificate)) {
-			if (days < startDay) {
-				m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d - %d)",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay, extendedDay);
-				return NOT_VALID_YET;
-			}
-			if (days > endDay && days <= extendedDay) {
-				m_logger->info("Vaccine certificate of %s valid (%d: %d - %d - %d) but test needed for selected scan mode",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay, extendedDay);
-				return TEST_NEEDED;
-			}
-			if (days > endDay && days > extendedDay) {
-				m_logger->info("Vaccine certificate of %s expired (%d: %d - %d - %d)",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay, extendedDay);
-				return EXPIRED;
-			}
-			m_logger->info("Vaccine certificate of %s valid (%d: %d - %d - %d)",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return VALID;
-		} else {
-			if (days < startDay) {
-				m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d - %d)",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay, extendedDay);
-				return NOT_VALID_YET;
-			}
-			if (days > endDay && days > extendedDay) {
-				m_logger->info("Vaccine certificate of %s expired (%d: %d - %d - %d)",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay, extendedDay);
-				return EXPIRED;
-			}
-			m_logger->info("Vaccine certificate of %s valid (%d: %d - %d - %d) but test needed for selected scan mode",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay, extendedDay);
-			return TEST_NEEDED;
-		}
-	}
-}
-
-CertificateStatus DGCVerifier::vaccineBoosterStrategy(const CertificateModel& certificate) const {
-	int startDay = 0;
-	int endDay = 0;
-	if (isNotCompleteVaccine(certificate)) {
-		startDay = getVaccineStartDayNotComplete(certificate.vaccination.medicinalProduct);
-		endDay = getVaccineEndDayNotComplete(certificate.vaccination.medicinalProduct);
-	} else if (isCompleteVaccine(certificate)) {
-		if (isBoosterVaccine(certificate)) {
-			startDay = getVaccineStartDayBoosterUnified(COUNTRY_ITALY);
-			endDay = getVaccineEndDayBoosterUnified(COUNTRY_ITALY);
-		} else {
-			startDay = getVaccineStartDayCompleteUnified(COUNTRY_ITALY, certificate.vaccination.medicinalProduct);
-			endDay = getVaccineEndDayCompleteUnified(COUNTRY_ITALY);
-		}
-	}
-
-	// get current date
-	time_t t = time(NULL);
-	struct tm currentDate;
-	localtime_r(&t, &currentDate);
-
-	// get current day
-	time_t currentDay = (t + currentDate.tm_gmtoff) / 3600 / 24;
-
-	// get vaccine date
-	struct tm vaccineDate;
-	memset(&vaccineDate, 0, sizeof(vaccineDate));
-	strptime(certificate.vaccination.dateOfVaccination.c_str(), "%Y-%m-%d", &vaccineDate);
-
-	// get vaccine day
-	time_t vaccineDay = (mktime(&vaccineDate) + 43200) / 3600 / 24;
-
-	long days = currentDay - vaccineDay;
-	if (days < startDay) {
-		// digital certificate not valid
-		m_logger->info("Vaccine certificate of %s not valid yet (%d: %d - %d)",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return NOT_VALID_YET;
-	}
-	if (days > endDay) {
-		// digital certificate not valid
-		m_logger->info("Vaccine certificate of %s not valid (%d: %d - %d)",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return EXPIRED;
-	}
-	if (isCompleteVaccine(certificate)) {
-		if (isBoosterVaccine(certificate)) {
-			if (isEMAVaccine(certificate)) {
-				m_logger->info("Vaccine certificate of %s valid (%d: %d - %d)",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay);
-				return VALID;
-			} else {
-				m_logger->info("Vaccine certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
-						certificate.vaccination.dateOfVaccination.c_str(),
-						days, startDay, endDay);
-				return TEST_NEEDED;
-			}
-		} else {
-			m_logger->info("Vaccine certificate of %s valid (%d: %d - %d) but test needed for selected scan mode",
-					certificate.vaccination.dateOfVaccination.c_str(),
-					days, startDay, endDay);
-			return TEST_NEEDED;
-		}
-	} else {
-		m_logger->info("Vaccine certificate of %s valid (%d: %d - %d) but not valid for selected scan mode",
-				certificate.vaccination.dateOfVaccination.c_str(),
-				days, startDay, endDay);
-		return NOT_VALID;
-	}
 }
 
 DGCVerifier* DGCVerifier_create(IKeysStorage* keysStorage, IRulesStorage* rulesStorage, ICRLStorage* crlStorage, ILogger* logger) {

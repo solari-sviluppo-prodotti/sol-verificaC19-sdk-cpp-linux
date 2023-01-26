@@ -102,11 +102,8 @@ int main (int argc, char** argv) {
 	LoggerStdout logger(DEBUG);
 
 	if (argc < 2) {
-		logger.error("Usage: verificaC19-client <qrfile> [mode]");
-		logger.error("       where mode can be 2G for Super Green Pass, BOOSTER for booster, or empty for Standard Green Pass");
+		logger.error("Usage: verificaC19-client <qrfile>");
 		logger.error("Example: verificaC19-client ./test.qr");
-		logger.error("Example: verificaC19-client ./test.qr 2G");
-		logger.error("Example: verificaC19-client ./test.qr BOOSTER");
 	} else {
 		logger.info("---------- Test with command line ----------");
 		KeysStorageFile keysStorage;
@@ -160,10 +157,6 @@ int main (int argc, char** argv) {
 					std::string scanMode = readed.substr(readed.find(";") + 1);
 					if (scanMode == "3G") {
 						scanMode = SCAN_MODE_3G;
-					} else if (scanMode == "2G") {
-						scanMode = SCAN_MODE_2G;
-					} else if (scanMode == "BOOSTER") {
-						scanMode = SCAN_MODE_BOOSTER;
 					}
 					CertificateSimple certificate = verifier.verify(qr, scanMode);
 					logCertificate(certificate, sock_logger);
@@ -180,12 +173,6 @@ int main (int argc, char** argv) {
 					fcertificate.close();
 					std::string qr = qrs.str();
 					const char* scanMode = SCAN_MODE_3G;
-					if (argc > 2 && strcmp(argv[2], "2G") == 0) {
-						scanMode = SCAN_MODE_2G;
-					}
-					if (argc > 2 && strcmp(argv[2], "BOOSTER") == 0) {
-						scanMode = SCAN_MODE_BOOSTER;
-					}
 					CertificateSimple certificate = verifier.verify(qr, scanMode);
 					logCertificate(certificate, logger);
 				}

@@ -11,16 +11,13 @@
 #include <verificaC19-sdk/models/CertificateSimple.hpp>
 #include <verificaC19-sdk/models/CertificateModel.hpp>
 
-#define SCAN_MODE_2G   "2G"
 #define SCAN_MODE_3G   "3G"
 #define SCAN_MODE_STANDARD      SCAN_MODE_3G
-#define SCAN_MODE_STRENGTHENED  SCAN_MODE_2G
-#define SCAN_MODE_BOOSTER       "BOOSTED"
 
 namespace verificaC19Sdk {
 
-#define DGCVerifier_SDK_Version "1.1.10"
-#define DGCVerifier_Local_Version "1.1.11"
+#define DGCVerifier_SDK_Version "1.1.11"
+#define DGCVerifier_Local_Version "1.1.12"
 
 /**
  * Implements Digital Certificate verification
@@ -56,10 +53,7 @@ public:
 	 *
 	 * @param dgcQr Digital Certificate to verify (raw qr code data starting with HC1:)
 	 *
-	 * @param scanMode Scan mode, SCAN_MODE_STRENGTHENED accept only vaccination and recovery
-	 *                 certificates, SCAN_MODE_STANDARD accept also test certificates,
-	 *                 SCAN_MODE_BOOSTER signals test needed for complete vaccination (not booster)
-	 *                 or for recovery certificate
+	 * @param scanMode Scan mode, supported only SCAN_MODE_STANDARD
 	 *
 	 * @return CertificateSimple Result of Digital Certification verify
 	 */
@@ -83,8 +77,6 @@ private:
 	int getVaccineEndDayCompleteUnder18() const;
 	int getVaccineCompleteUnder18Offset() const;
 	CertificateStatus vaccineStandardStrategy(const CertificateModel& certificate) const;
-	CertificateStatus vaccineStrengthenedStrategy(const CertificateModel& certificate) const;
-	CertificateStatus vaccineBoosterStrategy(const CertificateModel& certificate) const;
 
 	IKeysStorage* m_keysStorage;
 	IRulesStorage* m_rulesStorage;
