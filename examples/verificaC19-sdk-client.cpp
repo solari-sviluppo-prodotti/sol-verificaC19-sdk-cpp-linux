@@ -86,9 +86,10 @@ void LoggerFd::log(LogLevel level, const std::string& format, va_list ap) const 
 	//Time
 	struct timeval rawtime;
 	gettimeofday(&rawtime, NULL);
-	struct tm* info=localtime(&rawtime.tv_sec);
+	struct tm info;
+	localtime_r(&rawtime.tv_sec, &info);
 	char buffer[80];
-	strftime(buffer, sizeof(buffer), "%d/%m %H:%M:%S", info);
+	strftime(buffer, sizeof(buffer), "%d/%m %H:%M:%S", &info);
 	write(m_fd, buffer, strlen(buffer));
 	sprintf(buffer, ".%03ld: ", rawtime.tv_usec / 1000);
 	write(m_fd, buffer, strlen(buffer));

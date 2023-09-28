@@ -746,10 +746,10 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				{
-					std::tm* lt = std::localtime(&expiry);
-					if (lt != NULL) {
+					std::tm lt;
+					if (localtime_r(&expiry, &lt) != NULL) {
 						char mbstr[100];
-						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", lt);
+						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", &lt);
 						certificate.dateTimeOfExpiration = std::string(mbstr);
 					} else {
 						// set for invalid value
@@ -758,10 +758,10 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 				}
 
 				{
-					std::tm* lt = std::localtime(&generated);
-					if (lt != NULL) {
+					std::tm lt;
+					if (localtime_r(&generated, &lt) != NULL) {
 						char mbstr[100];
-						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", lt);
+						std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", &lt);
 						certificate.dateTimeOfGeneration = std::string(mbstr);
 					} else {
 						// set for invalid value
@@ -1067,7 +1067,9 @@ CertificateSimple DGCVerifier::verify(const std::string& dgcQr, const std::strin
 	// set verification timestamp
 	char mbstr[100];
 	std::time_t t = std::time(NULL);
-	std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", std::localtime(&t));
+	std::tm info;
+	localtime_r(&t, &info);
+	std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%dT%H:%M:%S%z", &info);
 	certificateSimple.timeStamp = std::string(mbstr);
 
 	return certificateSimple;

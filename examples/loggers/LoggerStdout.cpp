@@ -38,9 +38,10 @@ void LoggerStdout::log(LogLevel level, const std::string& format, va_list ap) co
 	//Time
 	struct timeval rawtime;
 	gettimeofday(&rawtime, NULL);
-	struct tm* info=localtime(&rawtime.tv_sec);
+	struct tm info;
+	localtime_r(&rawtime.tv_sec, &info);
 	char buffer[80];
-	strftime(buffer, sizeof(buffer), "%d/%m %H:%M:%S", info);
+	strftime(buffer, sizeof(buffer), "%d/%m %H:%M:%S", &info);
 	std::cout << std::string(buffer);
 	std::printf(".%03ld: ", rawtime.tv_usec / 1000);
 	std::vprintf(format.c_str(), ap);

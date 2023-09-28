@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.13] - 28/09/2023
+
+- Fixes for non thread safe localtime function usage
+
 ## [1.1.12] - 26/01/2023
 
 - Removed BOOSTER and STRENGTHENED scan mode
